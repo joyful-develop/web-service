@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
     /* Projects */
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
 
     /* Language and Environment */
     "target": "es2023",
-    "lib": ["ES2023", "DOM"],
-    "jsx": "react-jsx",
+    "lib": ["ES2023"],
     "moduleDetection": "force",
 
     /* Modules */
     "module": "esnext",
     "moduleResolution": "bundler",
-    "typeRoots": ["./node_modules/@types", "@types"],
-    "types": ["vite/client"],
+    "typeRoots": ["node_modules/@types", "@types"],
+    "types": ["node"],
     "allowImportingTsExtensions": true,
     "noUncheckedSideEffectImports": true,
     "resolveJsonModule": true,
@@ -41,7 +40,5 @@
     /* Completeness */
     "skipLibCheck": true
   },
-  "include": ["../src"],
-  "exclude": ["../node_modules"],
-  "extends": "./tsconfig.path.json"
+  "include": ["./vite.config.ts"]
 }

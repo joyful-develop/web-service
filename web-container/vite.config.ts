@@ -31,7 +31,40 @@ export default ({ mode }: { mode: string }) => {
       }),
     ],
     resolve: {
-      tsconfigPaths: true,
+      alias: [
+        {
+          find: '@',
+          replacement: path.resolve(__dirname, 'src'),
+        },
+        {
+          find: '@app',
+          replacement: path.resolve(__dirname, 'src/app'),
+        },
+        {
+          find: '@entities',
+          replacement: path.resolve(__dirname, 'src/entities'),
+        },
+        {
+          find: '@features',
+          replacement: path.resolve(__dirname, 'src/features'),
+        },
+        {
+          find: '@lib',
+          replacement: path.resolve(__dirname, 'src/lib'),
+        },
+        {
+          find: '@pages',
+          replacement: path.resolve(__dirname, 'src/pages'),
+        },
+        {
+          find: '@sharded',
+          replacement: path.resolve(__dirname, 'src/sharded'),
+        },
+        {
+          find: '@widgets',
+          replacement: path.resolve(__dirname, 'src/widgets'),
+        },
+      ],
       extensions: [],
     },
     mode: env.VITE_APP_MODE,

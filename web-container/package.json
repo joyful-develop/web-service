@@ -1,14 +1,14 @@
 {
   "name": "web-container",
   "version": "0.0.1",
-  "main": "app.tsx",
+  "main": "main.tsx",
   "repository": "https://github.com/joyful-develop/web-service.git",
   "author": "joyful-develop <joyful0159@gmail.com>",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && tsc -p config/tsconfig.node.json && vite build",
+    "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",

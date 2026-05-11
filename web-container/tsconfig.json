@@ -1,11 +1,14 @@
 {
   "files": [],
   "references": [
-    { "path": "./config/tsconfig.app.json" },
-    { "path": "./config/tsconfig.node.json" }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "types": ["vite-plugin-svgr/client"]
+    "types": ["vite-plugin-svgr/client"],
+    "paths": {
+      "@/*": ["../src/*"]
+    }
   },
-  "include": ["svg.d.ts"]
+  "include": ["vite-env.d.ts", "svg.d.ts"]
 }

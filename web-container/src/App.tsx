@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import heroImg from '@/assets/hero.png';
-import reactLogo from '@/assets/react.svg';
-import viteLogo from '@/assets/vite.svg';
+import ReactLogo from '@/assets/react.svg?react';
+import ViteLogo from '@/assets/vite.svg?react';
 import '@/App.css';
 
 function App() {
@@ -13,8 +13,8 @@ function App() {
       <section id='center'>
         <div className='hero'>
           <img src={heroImg} className='base' width='170' height='179' alt='' />
-          <img src={reactLogo} className='framework' alt='React logo' />
-          <img src={viteLogo} className='vite' alt='Vite logo' />
+          <ReactLogo className='framework' />
+          <ViteLogo className='vite' />
         </div>
         <div>
           <h1>Get started</h1>
@@ -25,7 +25,8 @@ function App() {
         <button
           type='button'
           className='counter'
-          onClick={() => setCount((count) => count + 1)}>
+          onClick={() => setCount((count) => count + 1)}
+        >
           Count is {count}
         </button>
       </section>
@@ -42,13 +43,13 @@ function App() {
           <ul>
             <li>
               <a href='https://vite.dev/' target='_blank'>
-                <img className='logo' src={viteLogo} alt='' />
+                <ViteLogo className='logo' />
                 Explore Vite
               </a>
             </li>
             <li>
               <a href='https://react.dev/' target='_blank'>
-                <img className='button-icon' src={reactLogo} alt='' />
+                <ReactLogo className='button-icon' />
                 Learn more
               </a>
             </li>
@@ -66,7 +67,8 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'>
+                  aria-hidden='true'
+                >
                   <use href='/icons.svg#github-icon'></use>
                 </svg>
                 GitHub
@@ -77,7 +79,8 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'>
+                  aria-hidden='true'
+                >
                   <use href='/icons.svg#discord-icon'></use>
                 </svg>
                 Discord
@@ -88,7 +91,8 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'>
+                  aria-hidden='true'
+                >
                   <use href='/icons.svg#x-icon'></use>
                 </svg>
                 X.com
@@ -99,7 +103,8 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'>
+                  aria-hidden='true'
+                >
                   <use href='/icons.svg#bluesky-icon'></use>
                 </svg>
                 Bluesky
