@@ -17,6 +17,7 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     envDir: './config/',
+    envPrefix: ['VITE_'],
     plugins: [
       react(),
       tailwindcss(),
@@ -72,7 +73,9 @@ export default ({ mode }: { mode: string }) => {
     publicDir: './public/',
     base: env.VITE_APP_BASE_PATH,
     define: {
+      __APP_ENV__: JSON.stringify(env.APP_ENV),
       __APP_VERSION__: JSON.stringify(env.VITE_APP_VERSION),
+      'import.meta.env.ENV_VARIABLE': JSON.stringify(process.env.ENV_VARIABLE),
     },
     build: {
       outDir: path.resolve(__dirname, './dist'),
@@ -114,10 +117,12 @@ export default ({ mode }: { mode: string }) => {
     server: {
       host: env.VITE_APP_HOST,
       port: SERVER_PORT,
+      strictPort: true,
+      // https
       open: true,
       proxy: {
         '/api': {
-          target: env.VITE_APP_PROXY_TARGET,
+          target: env.VITE_APP_API_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
           // secure: false,

@@ -8,7 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_BASE_PATH: string;
   readonly VITE_APP_HOST: string;
   readonly VITE_APP_PORT: number;
-  readonly VITE_APP_PROXY_TARGET: string;
+  readonly VITE_APP_API_URL: string;
 }
 
 interface ImportMeta {
