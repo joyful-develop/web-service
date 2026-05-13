@@ -8,6 +8,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 import js from '@eslint/js';
+import tanStackQuery from '@tanstack/eslint-plugin-query';
 
 export default defineConfig(
   { ignores: ['dist'] },
@@ -42,12 +43,14 @@ export default defineConfig(
       'react-refresh': reactRefresh,
       prettier: prettierPlugin,
       import: importPlugin,
+      '@tanstack/query': tanStackQuery,
     },
     rules: {
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
+      ...tanStackQuery.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
       'react-refresh/only-export-components': 'off',
       'prettier/prettier': 'error',

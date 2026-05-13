@@ -25,8 +25,7 @@ function App() {
         <button
           type='button'
           className='counter'
-          onClick={() => setCount((count) => count + 1)}
-        >
+          onClick={() => setCount((count) => count + 1)}>
           Count is {count}
         </button>
       </section>
@@ -67,8 +66,7 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'
-                >
+                  aria-hidden='true'>
                   <use href='/icons.svg#github-icon'></use>
                 </svg>
                 GitHub
@@ -79,8 +77,7 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'
-                >
+                  aria-hidden='true'>
                   <use href='/icons.svg#discord-icon'></use>
                 </svg>
                 Discord
@@ -91,8 +88,7 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'
-                >
+                  aria-hidden='true'>
                   <use href='/icons.svg#x-icon'></use>
                 </svg>
                 X.com
@@ -103,8 +99,7 @@ function App() {
                 <svg
                   className='button-icon'
                   role='presentation'
-                  aria-hidden='true'
-                >
+                  aria-hidden='true'>
                   <use href='/icons.svg#bluesky-icon'></use>
                 </svg>
                 Bluesky
