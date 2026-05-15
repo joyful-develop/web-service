@@ -20,13 +20,14 @@
     ],
     "types": ["vite/client", "vitest/globals"],
     "noUncheckedSideEffectImports": true,
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
 
     /* Emit */
-    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "noEmit": true,
     "outDir": "./dist",
     "declarationDir": "./dist",
 
@@ -47,13 +48,14 @@
 
     "paths": {
       "@/*": ["./src/*"],
-      "@app/*": ["./src/assets/*"],
-      "@entities/*": ["./src/components/*"],
-      "@features/*": ["./src/hooks/*"],
-      "@lib/*": ["./src/pages/*"],
-      "@pages/*": ["./src/stores/*"],
-      "@sharded/*": ["./src/types/*"],
-      "@widgets/*": ["./src/utils/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@layout/*": ["./src/layout/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@types/*": ["./src/types/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["./src"],

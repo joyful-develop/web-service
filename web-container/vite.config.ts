@@ -68,6 +68,10 @@ export default ({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, 'src/pages'),
         },
         {
+          find: '@layout',
+          replacement: path.resolve(__dirname, 'src/layout'),
+        },
+        {
           find: '@stores',
           replacement: path.resolve(__dirname, 'src/stores'),
         },

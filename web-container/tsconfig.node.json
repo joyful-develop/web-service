@@ -14,13 +14,14 @@
     "typeRoots": ["node_modules/@types", "@types"],
     "types": ["node"],
     "noUncheckedSideEffectImports": true,
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
 
     /* Emit */
-    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "noEmit": true,
     "outDir": "./dist",
     "declarationDir": "./dist",
 
