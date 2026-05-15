@@ -33,59 +33,67 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 
 ## 실행 (개발)
 
-### `pnpm run lint`
+### `pnpm lint`
 
     ESLint(린터)를 실행 합니다.
 
-### `pnpm run lint:fix`
+### `pnpm lint:fix`
 
     ESLint(린터)를 실행하고, 자동으로 수정 가능한 코드 스타일 오류나 잠재적 에러를 수정(fix) 합니다.
 
-### `pnpm run format`
+### `pnpm format`
 
     프로젝트 내에서 정의된 코드 스타일 포맷팅(Formatting) 스크립트를 실행 합니다.
 
-### `pnpm run dev`
+### `pnpm test`
+
+    프로젝트 내의 테스트 코드(unit test, integration test 등)를 실행 합니다.
+
+### `pnpm test:run`
+
+    프로젝트의 모든 테스트를 일회성(One-time)으로 실행하고 종료 합니다.
+
+### `pnpm dev`
 
     .env/.env.local 환경 파일을 적용한 개발용 서버(Development Server)를 실행 합니다.\
     코드를 실시간으로 반영하는 핫 리로딩(Hot Reloading) 기능을 제공 됩니다.
 
-### `pnpm run build`
+### `pnpm build`
 
     .env/.env.local 환경 파일을 적용하여여 프로젝트의 소스 코드를\
     실제 서비스 환경(Production)에서 실행 가능한 최적화된 파일(JS, CSS, HTML)로 변환 합니다.
 
-### `pnpm run preview`
+### `pnpm preview`
 
     .env/.env.local 환경 파일을 적용하여 빌드된 프로젝트(프로덕션 환경)를 로컬에서 미리 실행 합니다.\
     코드를 실시간으로 반영하는 핫 리로딩(Hot Reloading) 기능을 제공 됩니다.
 
-### `pnpm run dev:stg`
+### `pnpm dev:stg`
 
     .env.stg/.env.stg.local 환경 파일을 적용한 개발용 서버(Development Server)를 실행 합니다.\
     코드를 실시간으로 반영하는 핫 리로딩(Hot Reloading) 기능을 제공 됩니다.
 
-### `pnpm run build:stg`
+### `pnpm build:stg`
 
     .env.stg/.env.stg.local 환경 파일을 적용하여 프로젝트의 소스 코드를\
     실제 서비스 환경(Production)에서 실행 가능한 최적화된 파일(JS, CSS, HTML)로 변환 합니다.
 
-### `pnpm run preview:stg`
+### `pnpm preview:stg`
 
     .env.stg/.env.stg.local 환경 파일을 적용하여 빌드된 프로젝트(프로덕션 환경)를 로컬에서 미리 실행 합니다.\
     코드를 실시간으로 반영하는 핫 리로딩(Hot Reloading) 기능을 제공 됩니다.
 
-### `pnpm run dev:prd`
+### `pnpm dev:prd`
 
     .env.prd/.env.prd.local 환경 파일을 적용한 개발용 서버(Development Server)를 실행 합니다.\
     코드를 실시간으로 반영하는 핫 리로딩(Hot Reloading) 기능을 제공 됩니다.
 
-### `pnpm run build:prd`
+### `pnpm build:prd`
 
     .env.prd/.env.prd.local 환경 파일을 적용하여 프로젝트의 소스 코드를\
     실제 서비스 환경(Production)에서 실행 가능한 최적화된 파일(JS, CSS, HTML)로 변환 합니다.
 
-### `pnpm run preview:prd`
+### `pnpm preview:prd`
 
     .env.prd/.env.prd.local 환경 파일을 적용하여 빌드된 프로젝트(프로덕션 환경)를 로컬에서 미리 실행 합니다.\
     코드를 실시간으로 반영하는 핫 리로딩(Hot Reloading) 기능을 제공 됩니다.
@@ -121,7 +129,7 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 
     페이지별 폴더 (Dashboard, Setting 등)
 
-### `src\store`
+### `src\stores`
 
     전역 상태 관리 폴더
 

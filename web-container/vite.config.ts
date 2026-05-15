@@ -52,32 +52,32 @@ export default ({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, 'src'),
         },
         {
-          find: '@app',
-          replacement: path.resolve(__dirname, 'src/app'),
+          find: '@assets',
+          replacement: path.resolve(__dirname, 'src/assets'),
         },
         {
-          find: '@entities',
-          replacement: path.resolve(__dirname, 'src/entities'),
+          find: '@components',
+          replacement: path.resolve(__dirname, 'src/components'),
         },
         {
-          find: '@features',
-          replacement: path.resolve(__dirname, 'src/features'),
-        },
-        {
-          find: '@lib',
-          replacement: path.resolve(__dirname, 'src/lib'),
+          find: '@hooks',
+          replacement: path.resolve(__dirname, 'src/hooks'),
         },
         {
           find: '@pages',
           replacement: path.resolve(__dirname, 'src/pages'),
         },
         {
-          find: '@sharded',
-          replacement: path.resolve(__dirname, 'src/sharded'),
+          find: '@stores',
+          replacement: path.resolve(__dirname, 'src/stores'),
         },
         {
-          find: '@widgets',
-          replacement: path.resolve(__dirname, 'src/widgets'),
+          find: '@types',
+          replacement: path.resolve(__dirname, 'src/types'),
+        },
+        {
+          find: '@utils',
+          replacement: path.resolve(__dirname, 'src/utils'),
         },
       ],
       extensions: [],

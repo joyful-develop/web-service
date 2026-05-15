@@ -12,17 +12,21 @@
     /* Modules */
     "module": "esnext",
     "moduleResolution": "bundler",
-    "typeRoots": ["node_modules/@types", "@types", "./node_modules"],
+    "typeRoots": [
+      "node_modules/@types",
+      "@types",
+      "./node_modules",
+      "./src/types"
+    ],
     "types": ["vite/client", "vitest/globals"],
-    "allowImportingTsExtensions": true,
     "noUncheckedSideEffectImports": true,
     "resolveJsonModule": true,
 
     /* Emit */
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "noEmit": true,
     "outDir": "./dist",
     "declarationDir": "./dist",
 
@@ -43,15 +47,15 @@
 
     "paths": {
       "@/*": ["./src/*"],
-      "@app/*": ["./src/app/*"],
-      "@entities/*": ["./src/entities/*"],
-      "@features/*": ["./src/features/*"],
-      "@lib/*": ["./src/lib/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@sharded/*": ["./src/sharded/*"],
-      "@widgets/*": ["./src/widgets/*"]
+      "@app/*": ["./src/assets/*"],
+      "@entities/*": ["./src/components/*"],
+      "@features/*": ["./src/hooks/*"],
+      "@lib/*": ["./src/pages/*"],
+      "@pages/*": ["./src/stores/*"],
+      "@sharded/*": ["./src/types/*"],
+      "@widgets/*": ["./src/utils/*"]
     }
   },
   "include": ["./src"],
-  "exclude": ["./node_modules"]
+  "exclude": ["./node_modules", "./tests"]
 }
