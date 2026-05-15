@@ -12,8 +12,8 @@
     /* Modules */
     "module": "esnext",
     "moduleResolution": "bundler",
-    "typeRoots": ["node_modules/@types", "@types"],
-    "types": ["vite/client"],
+    "typeRoots": ["node_modules/@types", "@types", "./node_modules"],
+    "types": ["vite/client", "vitest/globals"],
     "allowImportingTsExtensions": true,
     "noUncheckedSideEffectImports": true,
     "resolveJsonModule": true,

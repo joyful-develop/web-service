@@ -1,4 +1,5 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
+
 import path from 'path';
 
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -18,7 +19,32 @@ export default ({ mode }: { mode: string }) => {
   return defineConfig({
     envDir: './config/',
     envPrefix: ['VITE_'],
-    plugins: [react(), tailwindcss(), svgr(), visualizer()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      svgr({
+        svgrOptions: {
+          svgo: true,
+          svgoConfig: {
+            plugins: [
+              {
+                name: 'preset-default',
+                params: {
+                  overrides: {
+                    removeViewBox: false,
+                  },
+                },
+              },
+              'cleanupIDs',
+              'removeStyleElement',
+              'removeScriptElement',
+            ],
+          },
+        },
+        include: '**/*.svg?react',
+      }),
+      visualizer(),
+    ],
     resolve: {
       alias: [
         {
@@ -56,9 +82,12 @@ export default ({ mode }: { mode: string }) => {
       ],
       extensions: [],
     },
-    // test: {
-    //   /* 추가 테스트 설정 */
-    // },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: ['./tests/vitest.setup.ts'],
+      exclude: ['./node_modules/**', './dist/**', './e2e/**'],
+    },
     mode: env.VITE_APP_MODE,
     root: './',
     publicDir: './public/',
@@ -71,7 +100,6 @@ export default ({ mode }: { mode: string }) => {
     build: {
       outDir: path.resolve(__dirname, './dist'),
       emptyOutDir: true,
-      sourcemap: true,
       rollupOptions: {
         output: {
           entryFileNames: 'assets/[name]-[hash].js',
@@ -91,15 +119,15 @@ export default ({ mode }: { mode: string }) => {
           chunkFileNames: 'assets/[name]-[hash].js',
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              const module = id.split('node_modules/').pop()?.split('/')[0];
               if (
-                module === 'react-dom' ||
-                module === 'react-router' ||
-                module === 'headlessui' ||
-                module === 'floating-ui'
+                id.includes('react@') ||
+                id.includes('react-dom@') ||
+                id.includes('react-router@') ||
+                id.includes('react-router-dom@')
               ) {
-                return `vendor/${module}`;
+                return `vendor/react`;
               }
+              return `vendor/common`;
             }
           },
         },
