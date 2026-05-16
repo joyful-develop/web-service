@@ -10,5 +10,9 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./tests/vitest-setup.ts", "vite-env.d.ts", "global.d.ts"]
+  "include": [
+    "./tests/vitest-setup.ts",
+    "./types/vite-env.d.ts",
+    "./types/global.d.ts"
+  ]
 }
