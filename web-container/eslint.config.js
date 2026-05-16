@@ -63,14 +63,7 @@ export default defineConfig(
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            ['sibling', 'parent', 'index'],
-            'type',
-            'unknown',
-          ],
+          groups: ['builtin', 'external', 'internal', ['sibling', 'parent', 'index'], 'type', 'unknown'],
           pathGroups: [
             {
               pattern: 'react',
@@ -115,24 +108,171 @@ export default defineConfig(
         'error',
         {
           zones: [
-            { target: './src/entities', from: './src/app' },
-            { target: './src/entities', from: './src/features' },
-            { target: './src/entities', from: './src/pages' },
-            { target: './src/entities', from: './src/widgets' },
-            { target: './src/features', from: './src/app' },
-            { target: './src/features', from: './src/pages' },
-            { target: './src/features', from: './src/widgets' },
-            { target: './src/lib', from: './src/entities' },
-            { target: './src/lib', from: './src/features' },
-            { target: './src/lib', from: './src/pages' },
-            { target: './src/lib', from: './src/widgets' },
-            { target: './src/pages', from: './src/app' },
-            { target: './src/shared', from: './src/app' },
-            { target: './src/shared', from: './src/entities' },
-            { target: './src/shared', from: './src/features' },
-            { target: './src/shared', from: './src/pages' },
-            { target: './src/shared', from: './src/widgets' },
-            { target: './src/widgets', from: './src/pages' },
+            {
+              target: './src/components',
+              from: './src/app',
+              message: 'components 에서는 app 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/components',
+              from: './src/pages',
+              message: 'components 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/hooks',
+              from: './src/app',
+              message: 'hooks 에서는 app 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/hooks',
+              from: './src/components',
+              message: 'hooks 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/hooks',
+              from: './src/pages',
+              message: 'hooks 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/hooks',
+              from: './src/styles',
+              message: 'hooks 에서는 styles 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/pages',
+              from: './src/app',
+              message: 'pages 에서는 app 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/stores',
+              from: './src/app',
+              message: 'stores 에서는 app 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/stores',
+              from: './src/components',
+              message: 'stores 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/stores',
+              from: './src/hooks',
+              message: 'stores 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/stores',
+              from: './src/pages',
+              message: 'stores 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/stores',
+              from: './src/styles',
+              message: 'stores 에서는 styles 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/app',
+              message: 'styles 에서는 app 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/components',
+              message: 'styles 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/hooks',
+              message: 'styles 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/pages',
+              message: 'styles 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/stores',
+              message: 'styles 에서는 stores 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/types',
+              message: 'styles 에서는 types 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/utils',
+              message: 'styles 에서는 utils 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/app',
+              message: 'types 에서는 app 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/components',
+              message: 'types 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/hooks',
+              message: 'types 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/pages',
+              message: 'types 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/stores',
+              message: 'types 에서는 stores 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/styles',
+              message: 'types 에서는 styles 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/utils',
+              message: 'types 에서는 utils 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/app',
+              message: 'utils 에서는 app 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/components',
+              message: 'utils 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/hooks',
+              message: 'utils 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/pages',
+              message: 'utils 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/stores',
+              message: 'utils 에서는 stores 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/styles',
+              message: 'utils 에서는 styles 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/types',
+              message: 'utils 에서는 types 의 모듈을 import할 수 없습니다.',
+            },
           ],
         },
       ],

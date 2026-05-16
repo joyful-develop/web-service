@@ -2,6 +2,8 @@
 
 import path from 'path';
 
+import browserslist from 'browserslist';
+import { browserslistToTargets } from 'lightningcss';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 import svgr from 'vite-plugin-svgr';
@@ -52,8 +54,8 @@ export default ({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, 'src'),
         },
         {
-          find: '@assets',
-          replacement: path.resolve(__dirname, 'src/assets'),
+          find: '@app',
+          replacement: path.resolve(__dirname, 'src/app'),
         },
         {
           find: '@components',
@@ -68,12 +70,12 @@ export default ({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, 'src/pages'),
         },
         {
-          find: '@layout',
-          replacement: path.resolve(__dirname, 'src/layout'),
-        },
-        {
           find: '@stores',
           replacement: path.resolve(__dirname, 'src/stores'),
+        },
+        {
+          find: '@styles',
+          replacement: path.resolve(__dirname, 'src/styles'),
         },
         {
           find: '@types',
@@ -104,15 +106,15 @@ export default ({ mode }: { mode: string }) => {
     build: {
       outDir: path.resolve(__dirname, './dist'),
       emptyOutDir: true,
+      cssMinify: 'lightningcss',
+      sourcemap: true,
       rollupOptions: {
         output: {
           entryFileNames: 'assets/[name]-[hash].js',
           assetFileNames: (assetInfo) => {
             const fileName = assetInfo.names?.[0] ?? '';
-            const fileNames: string[] =
-              fileName !== '' ? fileName.split('.') : [];
-            let ext: string =
-              fileNames.length > 0 ? fileNames[fileNames.length - 1] : '';
+            const fileNames: string[] = fileName !== '' ? fileName.split('.') : [];
+            let ext: string = fileNames.length > 0 ? fileNames[fileNames.length - 1] : '';
             if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
               ext = 'images';
             } else if (/woff|woff2/i.test(ext)) {
@@ -137,6 +139,12 @@ export default ({ mode }: { mode: string }) => {
         },
       },
     },
+    css: {
+      transformer: 'lightningcss',
+      lightningcss: {
+        targets: browserslistToTargets(browserslist('>= 0.25%')),
+      },
+    },
     server: {
       host: env.VITE_APP_HOST,
       port: SERVER_PORT,
@@ -155,18 +163,10 @@ export default ({ mode }: { mode: string }) => {
               console.log('proxy error', err);
             });
             proxy.on('proxyReq', (_proxyReq, req) => {
-              console.log(
-                'Sending Request to the Target:',
-                req.method,
-                req.url
-              );
+              console.log('Sending Request to the Target:', req.method, req.url);
             });
             proxy.on('proxyRes', (proxyRes, req) => {
-              console.log(
-                'Received Response from the Target:',
-                proxyRes.statusCode,
-                req.url
-              );
+              console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
             });
           },
         },

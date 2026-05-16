@@ -5,7 +5,7 @@ const config = {
   htmlWhitespaceSensitivity: 'ignore',
   jsxBracketSameLine: true,
   jsxSingleQuote: true,
-  printWidth: 80,
+  printWidth: 120,
   proseWrap: 'preserve',
   quoteProps: 'as-needed',
   semi: true,
@@ -20,7 +20,7 @@ const config = {
     {
       files: '*.json',
       options: {
-        printWidth: 80,
+        printWidth: 120,
       },
     },
   ],

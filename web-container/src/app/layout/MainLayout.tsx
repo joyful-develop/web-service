@@ -2,8 +2,7 @@ import { Outlet, Link } from 'react-router-dom';
 
 const MainLayout = () => {
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <header style={{ padding: '1rem', background: '#eee' }}>
         <nav>
           <Link to='/'>Home</Link> | <Link to='/about'>About</Link>
@@ -15,9 +14,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
 
-      <footer style={{ padding: '1rem', background: '#333', color: '#fff' }}>
-        © 2026 Layout App
-      </footer>
+      <footer style={{ padding: '1rem', background: '#333', color: '#fff' }}>© 2026 Layout App</footer>
     </div>
   );
 };
