@@ -10,6 +10,7 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
     Tailwind CSS IntelliSense
     Tailwind Twin IntelliSense
     Tailwind Fold
+    Comment Anchors
 
 ## 실행 전 확인 및 설치
 
@@ -47,11 +48,15 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 
 ### `pnpm test`
 
-    프로젝트 내의 테스트 코드(unit test, integration test 등)를 실행 합니다.
+    감시(Watch) 모드: 코드 변경 사항을 감지하여 자동으로 테스트를 다시 실행 합니다.
 
 ### `pnpm test:run`
 
-    프로젝트의 모든 테스트를 일회성(One-time)으로 실행하고 종료 합니다.
+    1회성 실행 (CI 환경용): 감시 모드를 끄고 테스트를 한 번만 실행한 후 종료 합니다.
+
+### `pnpm test:ui`
+
+    UI 모드: 브라우저 기반의 시각적 대시보드(Vitest UI)를 통해 테스트를 실행하고 결과를 확인 합니다.
 
 ### `pnpm dev`
 
@@ -168,3 +173,32 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 ### `tests`
 
     ViTest 로 작성된 테스트 파일 폴더
+
+## 주석 - Comment Anchors
+
+    ANCHOR - 특정 주제나 섹션을 가리키는 책갈피 역할
+    TODO - 완료를 기다리는 항목
+    FIXME - 버그 수정이 필요한 항목
+    STUB - 생성된 기본 코드 조각에 사용
+    NOTE - 특정 코드 섹션에 대한 중요 참고 사항
+    REVIEW - 추가 검토가 필요한 항목
+    SECTION - 코드 내부의 특정 영역을 정의하고 계층적 앵커 구조 (SECTION 밑에 TODO, FIXME 등을 배치치)
+    LINK - 편집기 내에서 열 수 있는 파일 연결
+
+## 테스트
+
+### `Vitest`
+
+    단위 및 통합 테스트
+
+### `Testing Library`
+
+    컴포넌트 테스트, 사용자의 관점에서 UI 구성 요소를 테스트
+
+### `PlayWright `
+
+    종단 간 테스트, Chromium, Firefox, WebKit 전반에서 클릭, 폼 제출, 내비게이션 등 실제 브라우저 사용을 시뮬레이션
+
+### `MSW`
+
+    테스트 및 개발에서 API 호출을 모의 기능으로 활용, 프론트엔드 동작을 불안정하거나 사용 불가능한 백엔드 서비스와 분리

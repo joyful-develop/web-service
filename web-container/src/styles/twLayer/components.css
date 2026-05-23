@@ -1,0 +1,7 @@
+/* 버튼, 카드 등 재사용 가능한 복잡한 UI 컴포넌트 클래스 정의 */
+@layer components {
+  .btn-primary {
+    background-color: var(--color-primary);
+    @apply rounded-lg px-4 py-2 text-white;
+  }
+}

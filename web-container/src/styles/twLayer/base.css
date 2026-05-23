@@ -1,0 +1,11 @@
+/* CSS 초기화(Reset), 기본 태그 스타일(h1, p, body 등) 정의 */
+@layer base {
+  body {
+    font-family: var(--font-display);
+    color: var(--color-mint-500);
+  }
+
+  h1 {
+    @apply text-2xl font-bold;
+  }
+}

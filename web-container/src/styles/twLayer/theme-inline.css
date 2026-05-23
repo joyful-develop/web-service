@@ -1,0 +1,14 @@
+/* 브라우저가 바로 쓰는 순수 CSS 전역 변수 */
+:root {
+  --font-sans:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+/* :root 에 선언된 변수를 Tailwind 유틸과 연결 */
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-sans);
+  --font-mono: var(--font-sans);
+}

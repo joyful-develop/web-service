@@ -1,7 +1,7 @@
 {
   "name": "web-container",
   "version": "0.0.1",
-  "main": "main.tsx",
+  "main": "index.tsx",
   "repository": "https://github.com/joyful-develop/web-service.git",
   "author": "joyful-develop <joyful0159@gmail.com>",
   "license": "MIT",
@@ -18,6 +18,8 @@
     "preview:prd": "vite preview --mode prd",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write --cache ."
@@ -33,6 +35,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.60.0",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tailwindcss/vite": "^4.2.4",
     "@tanstack/eslint-plugin-query": "^5.100.10",
