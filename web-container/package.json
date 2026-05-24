@@ -64,6 +64,7 @@
     "globals": "^17.5.0",
     "jsdom": "^29.1.1",
     "lightningcss": "^1.32.0",
+    "msw": "^2.14.6",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "rollup-plugin-visualizer": "^7.0.1",
@@ -73,5 +74,10 @@
     "vite": "^8.0.10",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.6"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
