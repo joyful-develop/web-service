@@ -105,6 +105,8 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 
 ## 폴더 구조
 
+유지보수와 확장성을 고려해 기능(Feature) 또는 도메인 단위로 폴더를 구성
+
 ### `config`
 
     환경 변수 파일 등의 config 파일들이 저장되는 폴더
@@ -113,66 +115,87 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 
     빌드 결과가 저장되는 폴더
 
-### `src\app`
+### `src\assets`
 
-    전체 app 의 로직이 초기화 되는 곳으로, app 의 entry point 역할
+    이미지, 폰트, 아이콘 등의 정적 파일
 
-    1. import 가능한 폴더 : components, hooks, pages, stores, styles, types, utils
-    2. layout, provider, router 등으로 구성
-    3. index.ts 파일에서 export 한 기능만 외부에서 import 가능
+    1. import 가능한 폴더 :
 
 #### `src\components`
 
-    재사용 가능하고 개별 기능을 가진 UI 구성 요소(컴포넌트)를 저장
+    전역 공용 UI 컴포넌트
 
-    1. import 가능한 폴더 : hooks, stores, styles, types, utils
+    1. import 가능한 폴더 : assets, hooks, services, store, styles, types, utils
     2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
+
+#### `src\features`
+
+    기능(도메인)별 전용 컴포넌트, 커스텀 훅, API 호출/비즈니스 로직, TypeScript 인터페이스, Vitest 테스트 파일  등을 저장
+
+    1. import 가능한 폴더 : assets, components, hooks, services, store, styles, types, utils
+    2. 기능 / 도메인 별 (권한, 사용자) components, hooks, services, types, tests 폴더 포함
+    3. index.ts 파일에서 export 한 기능만 외부에서 import 가능
 
 ### `src\hooks`
 
-    재사용 가능하고 개별 기능을 가진 커스텀 훅 저장
+    전역 공통 커스텀 훅
 
-    1. import 가능한 폴더 : stores, types, utils
+    1. import 가능한 폴더 : assets, services, store, types, utils
     2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
+
+### `src\layouts`
+
+    페이지 공통 레이아웃
+
+    1. import 가능한 폴더 : assets, components, features, hooks, services, store, styles, types, utils
+    2. header, footer, sideBar, menuBat 등 포함
+    3. index.ts 파일에서 export 한 기능만 외부에서 import 가능
+
+### `src\mocks`
+
+    MSW 의 외부 api 역할을 하는 요청 핸들러
 
 ### `src\pages`
 
-    라우트 구조에서 사용하는 개별 기능의 페이지 저장
+    라우팅에 대응하는 페이지 단위 컴포넌트
 
-    1. import 가능한 폴더 : components, hooks, stores, styles, types, utils
+    1. import 가능한 폴더 : assets, components, features, hooks, services, store, styles, types, utils
     2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
 
-### `src\stores`
+### `src\services`
 
-    전역 상태(Zustand)와 비즈니스 로직(API 호출, 데이터 가공 및 상태 변경 로직) 저장
+    전역 공통 외부 API 호출/비즈니스 로직
 
-    1. import 가능한 폴더 : types, utils
+    1. import 가능한 폴더 : assets, store, types, utils
+    2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
+
+### `src\store`
+
+    전역 상태 관리 (Zustand)
+
+    1. import 가능한 폴더 : assets, types, utils
     2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
 
 ### `src\styles`
 
-    디자인과 관련된 스타일 시트(폰트, CSS, 테마 파일, 이미지 파일 등) 저장
+    Tailwind CSS 전역 설정 파일 또는 전역 CSS
 
-    1. import 가능한 폴더 :
+    1. import 가능한 폴더 : assets
     2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
 
 ### `src\types`
 
-    전역적으로 사용되는 데이터 구조, 인터페이스, 타입 정의 파일(.d.ts 또는 .ts) 저장
+    전역 TypeScript 인터페이스 및 타입 선언 (*.d.ts)
 
     1. import 가능한 폴더 :
     2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
 
 ### `src\utils`
 
-    컴포넌트나 페이지에서 호출하는 재사용 가능하고 개별 기능의 공통 유틸리티 함수 저장
+    날짜 포맷팅 등 순수 유틸리티 함수
 
     1. import 가능한 폴더 :
     2. index.ts 파일에서 export 한 기능만 외부에서 import 가능
-
-### `tests`
-
-    ViTest 로 작성된 테스트 파일 폴더
 
 ## 주석 - Comment Anchors
 

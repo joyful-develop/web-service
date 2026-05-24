@@ -74,10 +74,5 @@
     "vite": "^8.0.10",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.6"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }

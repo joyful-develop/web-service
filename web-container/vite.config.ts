@@ -54,24 +54,40 @@ export default ({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, 'src'),
         },
         {
-          find: '@app',
-          replacement: path.resolve(__dirname, 'src/app'),
+          find: '@assets',
+          replacement: path.resolve(__dirname, 'src/assets'),
         },
         {
           find: '@components',
           replacement: path.resolve(__dirname, 'src/components'),
         },
         {
+          find: '@features',
+          replacement: path.resolve(__dirname, 'src/features'),
+        },
+        {
           find: '@hooks',
           replacement: path.resolve(__dirname, 'src/hooks'),
+        },
+        {
+          find: '@layouts',
+          replacement: path.resolve(__dirname, 'src/layouts'),
+        },
+        {
+          find: '@mocks',
+          replacement: path.resolve(__dirname, 'src/mocks'),
         },
         {
           find: '@pages',
           replacement: path.resolve(__dirname, 'src/pages'),
         },
         {
-          find: '@stores',
-          replacement: path.resolve(__dirname, 'src/stores'),
+          find: '@services',
+          replacement: path.resolve(__dirname, 'src/services'),
+        },
+        {
+          find: '@store',
+          replacement: path.resolve(__dirname, 'src/store'),
         },
         {
           find: '@styles',
@@ -91,7 +107,7 @@ export default ({ mode }: { mode: string }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: ['./tests/vitest.setup.ts'],
+      setupFiles: ['./test/vitest.setup.ts'],
       exclude: ['./node_modules/**', './dist/**', './e2e/**'],
     },
     mode: env.VITE_APP_MODE,

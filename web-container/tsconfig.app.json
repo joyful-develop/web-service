@@ -12,12 +12,7 @@
     /* Modules */
     "module": "esnext",
     "moduleResolution": "bundler",
-    "typeRoots": [
-      "node_modules/@types",
-      "@types",
-      "./node_modules",
-      "./src/types"
-    ],
+    "typeRoots": ["node_modules/@types", "@types", "./node_modules", "./src/types"],
     "types": ["vite/client", "vitest/globals"],
     "noUncheckedSideEffectImports": true,
     "allowImportingTsExtensions": true,
@@ -48,16 +43,20 @@
 
     "paths": {
       "@/*": ["./src/*"],
-      "@app/*": ["./src/app/*"],
+      "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
+      "@features/*": ["./src/features/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@mocks/*": ["./src/mocks/*"],
       "@pages/*": ["./src/pages/*"],
-      "@stores/*": ["./src/stores/*"],
+      "@services/*": ["./src/services/*"],
+      "@stores/*": ["./src/store/*"],
       "@styles/*": ["./src/styles/*"],
       "@types/*": ["./src/types/*"],
       "@utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["./src"],
-  "exclude": ["./node_modules", "./tests"]
+  "include": ["./src", "test/server.ts"],
+  "exclude": ["./node_modules", "test"]
 }

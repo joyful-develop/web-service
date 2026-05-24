@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import MainLayout from '@app/layout/MainLayout.tsx';
+import MainLayout from '@layouts/MainLayout.tsx';
 import About from '@pages/About/About.tsx';
 import Home from '@pages/Home/Home.tsx';
 

@@ -109,9 +109,64 @@ export default defineConfig(
         {
           zones: [
             {
+              target: './src/assets',
+              from: './src/components',
+              message: 'assets 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/features',
+              message: 'assets 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/hooks',
+              message: 'assets 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/layouts',
+              message: 'assets 에서는 layouts 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/pages',
+              message: 'assets 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/services',
+              message: 'assets 에서는 services 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/store',
+              message: 'assets 에서는 store 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/styles',
+              message: 'assets 에서는 styles 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/types',
+              message: 'assets 에서는 types 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/assets',
+              from: './src/utils',
+              message: 'assets 에서는 utils 의 모듈을 import할 수 없습니다.',
+            },
+            {
               target: './src/components',
-              from: './src/app',
-              message: 'components 에서는 app 의 모듈을 import할 수 없습니다.',
+              from: './src/features',
+              message: 'components 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/components',
+              from: './src/layouts',
+              message: 'components 에서는 layouts 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/components',
@@ -119,14 +174,29 @@ export default defineConfig(
               message: 'components 에서는 pages 의 모듈을 import할 수 없습니다.',
             },
             {
-              target: './src/hooks',
-              from: './src/app',
-              message: 'hooks 에서는 app 의 모듈을 import할 수 없습니다.',
+              target: './src/features',
+              from: './src/layouts',
+              message: 'features 에서는 layouts 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/features',
+              from: './src/pages',
+              message: 'features 에서는 pages 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/hooks',
               from: './src/components',
               message: 'hooks 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/hooks',
+              from: './src/features',
+              message: 'hooks 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/hooks',
+              from: './src/layouts',
+              message: 'hooks 에서는 layouts 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/hooks',
@@ -139,39 +209,79 @@ export default defineConfig(
               message: 'hooks 에서는 styles 의 모듈을 import할 수 없습니다.',
             },
             {
-              target: './src/pages',
-              from: './src/app',
-              message: 'pages 에서는 app 의 모듈을 import할 수 없습니다.',
-            },
-            {
-              target: './src/stores',
-              from: './src/app',
-              message: 'stores 에서는 app 의 모듈을 import할 수 없습니다.',
-            },
-            {
-              target: './src/stores',
-              from: './src/components',
-              message: 'stores 에서는 components 의 모듈을 import할 수 없습니다.',
-            },
-            {
-              target: './src/stores',
-              from: './src/hooks',
-              message: 'stores 에서는 hooks 의 모듈을 import할 수 없습니다.',
-            },
-            {
-              target: './src/stores',
+              target: './src/layouts',
               from: './src/pages',
-              message: 'stores 에서는 pages 의 모듈을 import할 수 없습니다.',
+              message: 'layouts 에서는 pages 의 모듈을 import할 수 없습니다.',
             },
             {
-              target: './src/stores',
+              target: './src/pages',
+              from: './src/layouts',
+              message: 'pages 에서는 layouts 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/services',
+              from: './src/components',
+              message: 'services 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/services',
+              from: './src/features',
+              message: 'services 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/services',
+              from: './src/hooks',
+              message: 'services 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/services',
+              from: './src/layouts',
+              message: 'services 에서는 layouts 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/services',
+              from: './src/pages',
+              message: 'services 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/services',
               from: './src/styles',
-              message: 'stores 에서는 styles 의 모듈을 import할 수 없습니다.',
+              message: 'services 에서는 styles 의 모듈을 import할 수 없습니다.',
             },
             {
-              target: './src/styles',
-              from: './src/app',
-              message: 'styles 에서는 app 의 모듈을 import할 수 없습니다.',
+              target: './src/store',
+              from: './src/components',
+              message: 'store 에서는 components 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/store',
+              from: './src/features',
+              message: 'store 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/store',
+              from: './src/hooks',
+              message: 'store 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/store',
+              from: './src/layouts',
+              message: 'store 에서는 layouts 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/store',
+              from: './src/pages',
+              message: 'store 에서는 pages 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/store',
+              from: './src/services',
+              message: 'store 에서는 services 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/store',
+              from: './src/styles',
+              message: 'store 에서는 styles 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/styles',
@@ -180,8 +290,18 @@ export default defineConfig(
             },
             {
               target: './src/styles',
+              from: './src/features',
+              message: 'styles 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
               from: './src/hooks',
               message: 'styles 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/layouts',
+              message: 'styles 에서는 layouts 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/styles',
@@ -190,8 +310,13 @@ export default defineConfig(
             },
             {
               target: './src/styles',
-              from: './src/stores',
-              message: 'styles 에서는 stores 의 모듈을 import할 수 없습니다.',
+              from: './src/services',
+              message: 'styles 에서는 services 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/styles',
+              from: './src/store',
+              message: 'styles 에서는 store 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/styles',
@@ -205,8 +330,8 @@ export default defineConfig(
             },
             {
               target: './src/types',
-              from: './src/app',
-              message: 'types 에서는 app 의 모듈을 import할 수 없습니다.',
+              from: './src/assets',
+              message: 'types 에서는 assets 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/types',
@@ -215,8 +340,18 @@ export default defineConfig(
             },
             {
               target: './src/types',
+              from: './src/features',
+              message: 'types 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
               from: './src/hooks',
               message: 'types 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/layouts',
+              message: 'types 에서는 layouts 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/types',
@@ -225,8 +360,13 @@ export default defineConfig(
             },
             {
               target: './src/types',
-              from: './src/stores',
-              message: 'types 에서는 stores 의 모듈을 import할 수 없습니다.',
+              from: './src/services',
+              message: 'types 에서는 services 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/types',
+              from: './src/store',
+              message: 'types 에서는 store 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/types',
@@ -240,8 +380,8 @@ export default defineConfig(
             },
             {
               target: './src/utils',
-              from: './src/app',
-              message: 'utils 에서는 app 의 모듈을 import할 수 없습니다.',
+              from: './src/assets',
+              message: 'utils 에서는 assets 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/utils',
@@ -250,8 +390,18 @@ export default defineConfig(
             },
             {
               target: './src/utils',
+              from: './src/features',
+              message: 'utils 에서는 features 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
               from: './src/hooks',
               message: 'utils 에서는 hooks 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/layouts',
+              message: 'utils 에서는 layouts 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/utils',
@@ -260,8 +410,13 @@ export default defineConfig(
             },
             {
               target: './src/utils',
-              from: './src/stores',
-              message: 'utils 에서는 stores 의 모듈을 import할 수 없습니다.',
+              from: './src/services',
+              message: 'utils 에서는 services 의 모듈을 import할 수 없습니다.',
+            },
+            {
+              target: './src/utils',
+              from: './src/store',
+              message: 'utils 에서는 store 의 모듈을 import할 수 없습니다.',
             },
             {
               target: './src/utils',
