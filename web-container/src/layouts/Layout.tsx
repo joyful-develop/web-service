@@ -1,6 +1,6 @@
 import { Outlet, Link } from 'react-router-dom';
 
-const MainLayout = () => {
+const Layout = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <header style={{ padding: '1rem', background: '#eee' }}>
@@ -10,7 +10,6 @@ const MainLayout = () => {
       </header>
 
       <main style={{ flex: 1, padding: '1rem' }}>
-        {/* 콘텐츠가 들어가는 자리 */}
         <Outlet />
       </main>
 
@@ -19,4 +18,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default Layout;

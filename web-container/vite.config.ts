@@ -1,5 +1,6 @@
 /// <reference types="vitest/config" />
 
+import fs from 'fs';
 import path from 'path';
 
 import browserslist from 'browserslist';
@@ -163,10 +164,19 @@ export default ({ mode }: { mode: string }) => {
     },
     server: {
       host: env.VITE_APP_HOST,
+      allowedHosts: ['.joyful.com'],
       port: SERVER_PORT,
       strictPort: true,
-      // https
       open: true,
+      https: {
+        key: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3-key.pem')),
+        cert: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3.pem')),
+      },
+      hmr: {
+        host: env.VITE_APP_HOST,
+        port: SERVER_PORT,
+        clientPort: SERVER_PORT,
+      },
       proxy: {
         '/api': {
           target: env.VITE_APP_API_URL,

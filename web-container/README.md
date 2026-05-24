@@ -225,3 +225,14 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 ### `MSW`
 
     테스트 및 개발에서 API 호출을 모의 기능으로 활용, 프론트엔드 동작을 불안정하거나 사용 불가능한 백엔드 서비스와 분리
+
+## 개발 시 SSL 적용
+
+## hosts 파일 수정
+
+    127.0.0.1 testDev.joyful.com
+    127.0.0.1 testDevLocal.joyful.com
+    127.0.0.1 testStg.joyful.com
+    127.0.0.1 testStgLocal.joyful.com
+    127.0.0.1 test.joyful.com
+    127.0.0.1 testLocal.joyful.com

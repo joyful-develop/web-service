@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import MainLayout from '@layouts/MainLayout.tsx';
+import Layout from '@layouts/Layout.tsx';
 import About from '@pages/About/About.tsx';
 import Home from '@pages/Home/Home.tsx';
 
@@ -10,7 +10,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* 레이아웃 적용 */}
-          <Route element={<MainLayout />}>
+          <Route element={<Layout />}>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />} />
           </Route>
