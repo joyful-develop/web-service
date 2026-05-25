@@ -236,3 +236,27 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
     127.0.0.1 testStgLocal.joyful.com
     127.0.0.1 test.joyful.com
     127.0.0.1 testLocal.joyful.com
+
+## 명명 규칙
+
+- 일반 폴더/파일: 소문자 카멜케이스 (예: components, hooks, utils, api-client.ts)
+- React 컴포넌트: 파스칼케이스 (예: UserProfile.tsx, AuthForm.tsx)
+- 라우트 기반 파일/폴더: 소문자 카멜케이스 사용 권장 (예: src/routes/about/index.tsx)
+
+1. 파일 및 폴더 이름
+   - 컴포넌트 (Components): PascalCase (UserProfile.tsx, NavigationDrawer.tsx)
+   - 기타 파일 (유틸, 타입, 훅 등): kebab-case (api-client.ts, use-auth.ts, types.ts)
+   - 폴더 (Directory): kebab-case (components, hooks, store)
+   - Entry 포인트: Vite 기본 규칙에 따라 루트 파일은 main.tsx 또는 main.ts를 사용합니다.
+2. 컴포넌트 내부 코드
+   - 컴포넌트 함수: PascalCase (const UserProfile = () => {...})
+   - 일반 변수 및 함수: camelCase (const userId = 123;, const fetchData = () => {...})
+   - 상수 (Constants): UPPER_SNAKE_CASE (const MAX_COUNT = 10;)
+   - boolean 변수: is, has, should 등의 접두사 사용 (const isVisible = true;)
+3. TypeScript 타입 규칙
+   - 인터페이스 (Interface): 접두사 I를 붙이지 않는 것이 최근 TypeScript 커뮤니티의 표준입니다. PascalCase만 사용 (interface User { ... })
+   - 타입 별칭 (Type Alias): PascalCase (type UserID = string;)
+   - 제네릭 (Generics): 의미 있는 단어를 사용하되, 단일 문자가 필요할 땐 T, U, K 순으로 사용 (function identity<T>(arg: T): T)
+4. Vite 환경변수
+   - 사용자 정의 환경 변수: 반드시 VITE\_ 접두사를 사용해야 합니다 (const apiUrl = import.meta.env.VITE_API_URL;)
+   - 변수 명명: UPPER_SNAKE_CASE (VITE_APP_TITLE)
