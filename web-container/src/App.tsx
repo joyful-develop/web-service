@@ -1,21 +1,24 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Layout from '@layouts/Layout.tsx';
+import { TooltipProvider } from '@components/shadcn-ui/tooltip.tsx';
+import RootLayout from '@layouts/RootLayout.tsx';
 import About from '@pages/About/About.tsx';
 import Home from '@pages/Home/Home.tsx';
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          {/* 레이아웃 적용 */}
-          <Route element={<Layout />}>
-            <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <TooltipProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* 레이아웃 적용 */}
+            <Route element={<RootLayout />}>
+              <Route path='/' element={<Home />} />
+              <Route path='/about' element={<About />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
     </>
   );
 }

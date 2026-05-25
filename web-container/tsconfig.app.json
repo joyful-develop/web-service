@@ -17,6 +17,7 @@
     "noUncheckedSideEffectImports": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
+    "resolvePackageJsonImports": true,
 
     /* Emit */
     "declaration": true,
