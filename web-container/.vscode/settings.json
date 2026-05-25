@@ -6,5 +6,9 @@
   },
   "tailwindCSS.suggestions": true,
   "tailwindCSS.experimental.configFile": "./src/styles/index.css",
-  "cSpell.words": ["lightningcss"]
+
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifierEnding": "js"
 }
