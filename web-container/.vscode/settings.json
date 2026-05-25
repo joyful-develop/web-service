@@ -7,8 +7,13 @@
   "tailwindCSS.suggestions": true,
   "tailwindCSS.experimental.configFile": "./src/styles/index.css",
 
-  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.suggest.autoImports": true,
   "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+
+  "javascript.suggest.autoImports": true,
   "javascript.preferences.importModuleSpecifier": "non-relative",
-  "javascript.preferences.importModuleSpecifierEnding": "js"
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "javascript.preferences.includePackageJsonAutoImports": "auto"
 }

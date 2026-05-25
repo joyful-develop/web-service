@@ -11,6 +11,7 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
     Tailwind Twin IntelliSense
     Tailwind Fold
     Comment Anchors
+    Auto Import - ES6, TS, JSX, TSX
 
 ## 실행 전 확인 및 설치
 
