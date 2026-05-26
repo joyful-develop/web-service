@@ -202,6 +202,10 @@ export default ({ mode }: { mode: string }) => {
       host: env.VITE_APP_HOST,
       port: SERVER_PORT,
       open: true,
+      https: {
+        key: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3-key.pem')),
+        cert: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3.pem')),
+      },
     },
   });
 };
