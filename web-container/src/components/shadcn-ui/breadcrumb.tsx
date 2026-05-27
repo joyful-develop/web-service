@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
 import { Slot } from 'radix-ui';
 
-import { cn } from '@/utils/shadcn/utils.ts';
+import { cn } from '#utils/shadcn/utils.ts';
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<'nav'>) {
   return <nav aria-label='breadcrumb' data-slot='breadcrumb' className={cn(className)} {...props} />;

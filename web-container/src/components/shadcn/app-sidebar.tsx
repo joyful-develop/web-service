@@ -1,203 +1,184 @@
 import * as React from 'react';
 
-import { ChevronRightIcon } from 'lucide-react';
+import {
+  TerminalSquareIcon,
+  BotIcon,
+  BookOpenIcon,
+  Settings2Icon,
+  LifeBuoyIcon,
+  SendIcon,
+  FrameIcon,
+  PieChartIcon,
+  MapIcon,
+  TerminalIcon,
+} from 'lucide-react';
 
-import { SearchForm } from '@/components/shadcn/search-form.tsx';
-import { VersionSwitcher } from '@/components/shadcn/version-switcher.tsx';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/shadcn-ui/collapsible.tsx';
+import { NavMain } from '@/components/shadcn/nav-main.tsx';
+import { NavProjects } from '@/components/shadcn/nav-projects.tsx';
+import { NavSecondary } from '@/components/shadcn/nav-secondary.tsx';
+import { NavUser } from '@/components/shadcn/nav-user.tsx';
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from '@/components/shadcn-ui/sidebar.tsx';
 
-// This is sample data.
 const data = {
-  versions: ['1.0.1', '1.1.0-alpha', '2.0.0-beta1'],
+  user: {
+    name: 'shadcn',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
+  },
   navMain: [
     {
-      title: 'Getting Started',
+      title: 'Playground',
       url: '#',
+      icon: <TerminalSquareIcon />,
+      isActive: true,
       items: [
         {
-          title: 'Installation',
+          title: 'History',
           url: '#',
         },
         {
-          title: 'Project Structure',
+          title: 'Starred',
+          url: '#',
+        },
+        {
+          title: 'Settings',
           url: '#',
         },
       ],
     },
     {
-      title: 'Build Your Application',
+      title: 'Models',
       url: '#',
+      icon: <BotIcon />,
       items: [
         {
-          title: 'Routing',
+          title: 'Genesis',
           url: '#',
         },
         {
-          title: 'Data Fetching',
-          url: '#',
-          isActive: true,
-        },
-        {
-          title: 'Rendering',
+          title: 'Explorer',
           url: '#',
         },
         {
-          title: 'Caching',
-          url: '#',
-        },
-        {
-          title: 'Styling',
-          url: '#',
-        },
-        {
-          title: 'Optimizing',
-          url: '#',
-        },
-        {
-          title: 'Configuring',
-          url: '#',
-        },
-        {
-          title: 'Testing',
-          url: '#',
-        },
-        {
-          title: 'Authentication',
-          url: '#',
-        },
-        {
-          title: 'Deploying',
-          url: '#',
-        },
-        {
-          title: 'Upgrading',
-          url: '#',
-        },
-        {
-          title: 'Examples',
+          title: 'Quantum',
           url: '#',
         },
       ],
     },
     {
-      title: 'API Reference',
+      title: 'Documentation',
       url: '#',
+      icon: <BookOpenIcon />,
       items: [
         {
-          title: 'Components',
+          title: 'Introduction',
           url: '#',
         },
         {
-          title: 'File Conventions',
+          title: 'Get Started',
           url: '#',
         },
         {
-          title: 'Functions',
+          title: 'Tutorials',
           url: '#',
         },
         {
-          title: 'next.config.js Options',
-          url: '#',
-        },
-        {
-          title: 'CLI',
-          url: '#',
-        },
-        {
-          title: 'Edge Runtime',
+          title: 'Changelog',
           url: '#',
         },
       ],
     },
     {
-      title: 'Architecture',
+      title: 'Settings',
       url: '#',
+      icon: <Settings2Icon />,
       items: [
         {
-          title: 'Accessibility',
+          title: 'General',
           url: '#',
         },
         {
-          title: 'Fast Refresh',
+          title: 'Team',
           url: '#',
         },
         {
-          title: 'Next.js Compiler',
+          title: 'Billing',
           url: '#',
         },
         {
-          title: 'Supported Browsers',
-          url: '#',
-        },
-        {
-          title: 'Turbopack',
+          title: 'Limits',
           url: '#',
         },
       ],
     },
+  ],
+  navSecondary: [
     {
-      title: 'Community',
+      title: 'Support',
       url: '#',
-      items: [
-        {
-          title: 'Contribution Guide',
-          url: '#',
-        },
-      ],
+      icon: <LifeBuoyIcon />,
+    },
+    {
+      title: 'Feedback',
+      url: '#',
+      icon: <SendIcon />,
+    },
+  ],
+  projects: [
+    {
+      name: 'Design Engineering',
+      url: '#',
+      icon: <FrameIcon />,
+    },
+    {
+      name: 'Sales & Marketing',
+      url: '#',
+      icon: <PieChartIcon />,
+    },
+    {
+      name: 'Travel',
+      url: '#',
+      icon: <MapIcon />,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props}>
+    <Sidebar className='top-(--header-height) h-[calc(100svh-var(--header-height))]!' {...props}>
       <SidebarHeader>
-        <VersionSwitcher versions={data.versions} defaultVersion={data.versions[0]} />
-        <SearchForm />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size='lg' asChild>
+              <a href='#'>
+                <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
+                  <TerminalIcon className='size-4' />
+                </div>
+                <div className='grid flex-1 text-left text-sm leading-tight'>
+                  <span className='truncate font-medium'>Acme Inc</span>
+                  <span className='truncate text-xs'>Enterprise</span>
+                </div>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className='gap-0'>
-        {/* We create a collapsible SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
-          <Collapsible key={item.title} title={item.title} defaultOpen className='group/collapsible'>
-            <SidebarGroup>
-              <SidebarGroupLabel
-                asChild
-                className='group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm'>
-                <CollapsibleTrigger>
-                  {item.title}{' '}
-                  <ChevronRightIcon className='ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90' />
-                </CollapsibleTrigger>
-              </SidebarGroupLabel>
-              <CollapsibleContent>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {item.items.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url}>{item.title}</a>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </CollapsibleContent>
-            </SidebarGroup>
-          </Collapsible>
-        ))}
+      <SidebarContent>
+        <NavMain items={data.navMain} />
+        <NavProjects projects={data.projects} />
+        <NavSecondary items={data.navSecondary} className='mt-auto' />
       </SidebarContent>
-      <SidebarRail />
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }

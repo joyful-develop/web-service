@@ -30,9 +30,12 @@
     "axios": "^1.16.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.3.0",
     "lucide-react": "^1.16.0",
     "radix-ui": "^1.4.3",
     "react": "^19.2.5",
+    "react-calendar": "^6.0.1",
+    "react-day-picker": "^10.0.1",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.15.0",
     "shadcn": "^4.8.0",
@@ -82,5 +85,11 @@
     "vite": "^8.0.10",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.6"
+  },
+  "imports": {
+    "#components/*": "./src/components/*",
+    "#utils/*": "./src/utils/*",
+    "#lib/*": "./src/lib/*",
+    "#hooks/*": "./src/hooks/*"
   }
 }
