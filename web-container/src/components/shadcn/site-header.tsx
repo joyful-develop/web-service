@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/shadcn-ui/button.tsx';
 import { Separator } from '@/components/shadcn-ui/separator.tsx';
 import { useSidebar } from '@/components/shadcn-ui/sidebar.tsx';
+import { ModeToggle } from '@/components/theme/mode-toggle.tsx';
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -35,6 +36,7 @@ export function SiteHeader() {
           </BreadcrumbList>
         </Breadcrumb>
         <SearchForm className='w-full sm:ml-auto sm:w-auto' />
+        <ModeToggle />
       </div>
     </header>
   );
