@@ -1,10 +1,14 @@
+import RootLayout from '@/layouts/RootLayout.tsx';
+
+import { TooltipProvider } from '@components/shadcn-ui/tooltip.tsx';
 import { ThemeProvider } from '@components/theme/theme-provider.tsx';
-import RootLayout from '@layouts/RootLayout.tsx';
 
 function App() {
   return (
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-      <RootLayout />
+      <TooltipProvider>
+        <RootLayout />
+      </TooltipProvider>
     </ThemeProvider>
   );
 }

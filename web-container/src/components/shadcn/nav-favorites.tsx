@@ -50,7 +50,8 @@ export function NavFavorites({
               <DropdownMenuContent
                 className='w-56 rounded-lg'
                 side={isMobile ? 'bottom' : 'right'}
-                align={isMobile ? 'end' : 'start'}>
+                align={isMobile ? 'end' : 'start'}
+              >
                 <DropdownMenuItem>
                   <StarOffIcon className='text-muted-foreground' />
                   <span>Remove from Favorites</span>
