@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ChevronRightIcon, PlusIcon, MoreHorizontalIcon } from 'lucide-react';
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '#components/shadcn-ui/collapsible.tsx';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@components/shadcn-ui/collapsible.tsx';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -14,7 +14,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from '#components/shadcn-ui/sidebar.tsx';
+} from '@components/shadcn-ui/sidebar.tsx';
 
 export function NavWorkspaces({
   workspaces,
@@ -45,8 +45,7 @@ export function NavWorkspaces({
                 <CollapsibleTrigger asChild>
                   <SidebarMenuAction
                     className='bg-sidebar-accent text-sidebar-accent-foreground left-2 data-[state=open]:rotate-90'
-                    showOnHover
-                  >
+                    showOnHover>
                     <ChevronRightIcon />
                   </SidebarMenuAction>
                 </CollapsibleTrigger>

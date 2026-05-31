@@ -1,4 +1,4 @@
-import { NavigationMenuDemo } from '@layouts/menuBar/NavigationMenu.tsx';
+import { NavigationMenuDemo } from '@layouts/menu/NavigationMenu.tsx';
 
 export function MenuBar() {
   return (

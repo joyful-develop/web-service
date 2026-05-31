@@ -31,8 +31,7 @@ export function Calendars({
             <Collapsible defaultOpen={index === 0} className='group/collapsible'>
               <SidebarGroupLabel
                 asChild
-                className='group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground w-full text-sm'
-              >
+                className='group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground w-full text-sm'>
                 <CollapsibleTrigger>
                   {calendar.name}{' '}
                   <ChevronRightIcon className='ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90' />
@@ -46,8 +45,7 @@ export function Calendars({
                         <SidebarMenuButton>
                           <div
                             data-active={index < 2}
-                            className='group/calendar-item border-sidebar-border text-sidebar-primary-foreground data-[active=true]:border-sidebar-primary data-[active=true]:bg-sidebar-primary flex aspect-square size-4 shrink-0 items-center justify-center rounded-xs border'
-                          >
+                            className='group/calendar-item border-sidebar-border text-sidebar-primary-foreground data-[active=true]:border-sidebar-primary data-[active=true]:bg-sidebar-primary flex aspect-square size-4 shrink-0 items-center justify-center rounded-xs border'>
                             <CheckIcon className='hidden size-3 group-data-[active=true]/calendar-item:block' />
                           </div>
                           {item}

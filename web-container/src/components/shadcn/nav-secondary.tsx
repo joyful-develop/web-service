@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import {
@@ -7,7 +9,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '#components/shadcn-ui/sidebar.tsx';
+} from '@components/shadcn-ui/sidebar.tsx';
 
 export function NavSecondary({
   items,

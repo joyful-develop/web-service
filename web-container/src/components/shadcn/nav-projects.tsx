@@ -52,8 +52,7 @@ export function NavProjects({
               <DropdownMenuContent
                 className='w-48'
                 side={isMobile ? 'bottom' : 'right'}
-                align={isMobile ? 'end' : 'start'}
-              >
+                align={isMobile ? 'end' : 'start'}>
                 <DropdownMenuItem>
                   <FolderIcon className='text-muted-foreground' />
                   <span>View Project</span>

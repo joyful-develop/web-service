@@ -3,13 +3,12 @@ import React from 'react';
 import { SidebarInset, SidebarProvider } from '@/components/shadcn-ui/sidebar.tsx';
 import { Footer } from '@/layouts/footer/Footer.tsx';
 import { Header } from '@/layouts/header/Header.tsx';
-import { MenuBar } from '@/layouts/menuBar/MenuBar.tsx';
-import { Cards } from '@/layouts/sideBar/Cards.tsx';
-// import { Icons } from '@/layouts/sideBar/Icons.tsx';
-import { CollapsibleMenus } from '@/layouts/sideBar/CollapsibleMenus.tsx';
-
-// import { Conditions } from '@/layouts/sideBar/Conditions.tsx';
-// import { FileTree } from '@/layouts/sideBar/FileTree.tsx';
+import { CollapsibleMenus } from '@/layouts/menu/CollapsibleMenus.tsx';
+// import { FileTree } from '@/layouts/menu/FileTree.tsx';
+import { MenuBar } from '@/layouts/menu/MenuBar.tsx';
+// import { Cards } from '@/layouts/side/Cards.tsx';
+import { Conditions } from '@/layouts/side/Conditions.tsx';
+import { Icons } from '@/layouts/side/Icons.tsx';
 
 export const iframeHeight = '800px';
 
@@ -22,6 +21,7 @@ export default function RootLayout() {
         <Header />
         <MenuBar />
         <div className='flex flex-1'>
+          <Icons />
           <CollapsibleMenus />
           <SidebarInset>
             <div className='flex flex-1 flex-col gap-4 p-4'>
@@ -33,7 +33,8 @@ export default function RootLayout() {
               <div className='bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min' />
             </div>
           </SidebarInset>
-          <Cards />
+          <Conditions />
+          <Icons />
         </div>
         <Footer />
       </SidebarProvider>

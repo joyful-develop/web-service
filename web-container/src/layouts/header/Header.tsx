@@ -1,5 +1,6 @@
 import { PanelLeftIcon } from 'lucide-react';
 
+import { NavActions } from '@/components/shadcn/nav-actions.tsx';
 import { SearchForm } from '@/components/shadcn/search-form.tsx';
 import {
   Breadcrumb,
@@ -35,6 +36,7 @@ export function Header() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+        <NavActions />
         <SearchForm className='w-full sm:ml-auto sm:w-auto' />
         <ModeToggle />
       </div>

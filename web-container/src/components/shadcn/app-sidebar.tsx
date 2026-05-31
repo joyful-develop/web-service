@@ -192,8 +192,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         setOpen(true);
                       }}
                       isActive={activeItem?.title === item.title}
-                      className='px-2.5 md:px-2'
-                    >
+                      className='px-2.5 md:px-2'>
                       {item.icon}
                       <span>{item.title}</span>
                     </SidebarMenuButton>
@@ -228,8 +227,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <a
                   href='#'
                   key={mail.email}
-                  className='hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0'
-                >
+                  className='hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0'>
                   <div className='flex w-full items-center gap-2'>
                     <span>{mail.name}</span> <span className='ml-auto text-xs'>{mail.date}</span>
                   </div>

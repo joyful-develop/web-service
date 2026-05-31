@@ -1,8 +1,6 @@
-'use client';
-
 import * as React from 'react';
 
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '#components/shadcn-ui/sidebar.tsx';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@components/shadcn-ui/sidebar.tsx';
 
 export function NavMain({
   items,

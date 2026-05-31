@@ -17,8 +17,8 @@ import {
   SidebarRail,
 } from '@/components/shadcn-ui/sidebar.tsx';
 
-import { SearchForm } from '@layouts/sideBar/SearchForm.tsx';
-import { VersionSwitcher } from '@layouts/sideBar/VersionSwitcher.tsx';
+import { SearchForm } from '@layouts/side/SearchForm.tsx';
+import { VersionSwitcher } from '@layouts/side/VersionSwitcher.tsx';
 
 // This is sample data.
 const data = {
@@ -167,8 +167,7 @@ export function CollapsibleMenus({ ...props }: React.ComponentProps<typeof Sideb
     <Sidebar
       collapsible='none'
       className='top-(--header-height) h-[calc(100svh-var(--header-height)-var(--footer-height))]! border-l lg:flex'
-      {...props}
-    >
+      {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

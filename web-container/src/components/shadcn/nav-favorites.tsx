@@ -1,3 +1,5 @@
+'use client';
+
 import { MoreHorizontalIcon, StarOffIcon, LinkIcon, ArrowUpRightIcon, Trash2Icon } from 'lucide-react';
 
 import {
@@ -6,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '#components/shadcn-ui/dropdown-menu.tsx';
+} from '@components/shadcn-ui/dropdown-menu.tsx';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -15,7 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '#components/shadcn-ui/sidebar.tsx';
+} from '@components/shadcn-ui/sidebar.tsx';
 
 export function NavFavorites({
   favorites,
@@ -50,8 +52,7 @@ export function NavFavorites({
               <DropdownMenuContent
                 className='w-56 rounded-lg'
                 side={isMobile ? 'bottom' : 'right'}
-                align={isMobile ? 'end' : 'start'}
-              >
+                align={isMobile ? 'end' : 'start'}>
                 <DropdownMenuItem>
                   <StarOffIcon className='text-muted-foreground' />
                   <span>Remove from Favorites</span>
