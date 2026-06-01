@@ -1,0 +1,79 @@
+<svg xmlns="http://w3.org" viewBox="0 0 1200 630" width="100%" height="100%">
+  <defs>
+    <!-- 투명 체크무늬 배경 패턴 -->
+    <pattern id="checkerboard" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="#e5e7eb" />
+      <rect width="10" height="10" fill="#f3f4f6" />
+      <rect x="10" y="10" width="10" height="10" fill="#f3f4f6" />
+    </pattern>
+
+    <!-- 좌측 블루 루프 그라데이션 -->
+    <linearGradient id="blueLoop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d2ff" />
+      <stop offset="50%" stop-color="#0066ff" />
+      <stop offset="100%" stop-color="#0022aa" />
+    </linearGradient>
+
+    <!-- 우측 핑크 루프 그라데이션 -->
+    <linearGradient id="pinkLoop" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7000aa" />
+      <stop offset="50%" stop-color="#ff007a" />
+      <stop offset="100%" stop-color="#ff66cc" />
+    </linearGradient>
+
+    <!-- 폰트 텍스트 X 그라데이션 -->
+    <linearGradient id="textXGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff007a" />
+      <stop offset="100%" stop-color="#9d4edd" />
+    </linearGradient>
+
+    <!-- 글로우(발광) 효과 필터 -->
+    <filter id="glowEffect" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- 입체감을 위한 그림자 효과 -->
+    <filter id="shadowEffect" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="15" stdDeviation="20" flood-color="#0f172a" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- 1. 배경: PNG 투명도 느낌을 주는 모던 흑백 체크 그리드 -->
+  <rect width="100%" height="100%" fill="url(#checkerboard)" />
+
+  <!-- 2. 메인 입체 뫼비우스/토러스형 X 로고 심볼 -->
+  <g filter="url(#shadowEffect)" transform="translate(0, -20)">
+
+    <!-- 뒤쪽 레이어: 두 루프가 교차하며 넘어가는 베이스 곡선 -->
+    <path d="M 510,310 C 420,340 370,280 375,220 C 380,150 440,140 490,190 C 530,230 570,300 610,320" 
+          fill="none" stroke="url(#blueLoop)" stroke-width="42" stroke-linecap="round" opacity="0.9" />
+
+    <path d="M 690,310 C 780,340 830,280 825,220 C 820,150 760,140 710,190 C 670,230 630,300 590,320" 
+          fill="none" stroke="url(#pinkLoop)" stroke-width="42" stroke-linecap="round" opacity="0.8" />
+
+    <!-- 앞쪽 레이어: 무한대(∞) 및 X 형태를 그리며 꼬이는 핵심 비주얼 라인 -->
+    <path d="M 380,240 C 370,170 450,130 520,200 C 580,260 620,320 670,310 C 740,300 770,210 740,160" 
+          fill="none" stroke="url(#blueLoop)" stroke-width="44" stroke-linecap="round" filter="url(#glowEffect)" />
+
+    <path d="M 820,240 C 830,170 750,130 680,200 C 620,260 580,320 530,310 C 460,300 430,210 460,160" 
+          fill="none" stroke="url(#pinkLoop)" stroke-width="44" stroke-linecap="round" />
+
+    <!-- 중앙 결합 하이라이트 (빛나는 노드 효과) -->
+    <circle cx="555" cy="235" r="10" fill="#ffffff" filter="url(#glowEffect)" />
+    <circle cx="645" cy="235" r="10" fill="#ffffff" filter="url(#glowEffect)" />
+  </g>
+
+  <!-- 3. 타이포그래피 브랜딩 섹션 -->
+  <g text-anchor="middle">
+    <!-- PORTALX 브랜드 네임 -->
+    <text x="600" y="480" font-family="-apple-system, BlinkMacSystemFont, 'Montserrat', 'Segoe UI', sans-serif" font-weight="900" font-size="76" letter-spacing="6" fill="#1e293b">
+      PORTAL<tspan fill="url(#textXGrad)" filter="url(#glowEffect)">X</tspan>
+    </text>
+
+    <!-- 하단 서브타이틀 -->
+    <text x="600" y="530" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="20" letter-spacing="10" fill="#475569">
+      INTEGRATED SYSTEM PORTAL
+    </text>
+  </g>
+</svg>
