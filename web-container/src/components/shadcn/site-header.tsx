@@ -1,5 +1,7 @@
 import { PanelLeftIcon } from 'lucide-react';
 
+import { ModeToggle } from '#components/theme/ModeToggle.tsx';
+
 import { SearchForm } from '@/components/shadcn/search-form.tsx';
 import {
   Breadcrumb,
@@ -12,7 +14,6 @@ import {
 import { Button } from '@/components/shadcn-ui/button.tsx';
 import { Separator } from '@/components/shadcn-ui/separator.tsx';
 import { useSidebar } from '@/components/shadcn-ui/sidebar.tsx';
-import { ModeToggle } from '@/components/theme/mode-toggle.tsx';
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();

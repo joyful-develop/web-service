@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { startTransition } from 'react';
 
 import {
   Settings2Icon,
@@ -15,7 +15,7 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   StarIcon,
-  MoreHorizontalIcon,
+  GripIcon,
 } from 'lucide-react';
 
 import { Button } from '@components/shadcn-ui/button.tsx';
@@ -97,7 +97,9 @@ export function NavActions() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    setIsOpen(true);
+    startTransition(() => {
+      setIsOpen(true);
+    });
   }, []);
 
   return (
@@ -109,7 +111,7 @@ export function NavActions() {
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button variant='ghost' size='icon' className='data-[state=open]:bg-accent h-7 w-7'>
-            <MoreHorizontalIcon />
+            <GripIcon />
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-56 overflow-hidden rounded-lg p-0' align='end'>
