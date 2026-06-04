@@ -4,7 +4,7 @@ import { PlusIcon } from 'lucide-react';
 
 import { Calendars } from '#components/shadcn/calendars.tsx';
 import { DatePicker } from '#components/shadcn/date-picker.tsx';
-import { NavUser } from '#components/shadcn/nav-user.tsx';
+import { NavUser } from '@/layouts/header/UserProfile';
 import {
   Sidebar,
   SidebarContent,

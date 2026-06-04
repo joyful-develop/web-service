@@ -14,19 +14,21 @@ import {
 } from '@components/shadcn-ui/dropdown-menu.tsx';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@components/shadcn-ui/sidebar.tsx';
 
-export function NavUser({
+export function UserProfile({
   user,
 }: {
   user: {
     name: string;
-    email: string;
+    employeeId: string;
+    authority: string;
     avatar: string;
   };
 }) {
   const { isMobile } = useSidebar();
+  const fallbackText = user?.name ? user.name[0].toUpperCase() : 'CN';
 
   return (
-    <SidebarMenu>
+    <SidebarMenu className='w-auto'>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -35,11 +37,13 @@ export function NavUser({
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
               <Avatar className='h-8 w-8 rounded-lg'>
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
+                <AvatarFallback className='rounded-lg'>{fallbackText}</AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-medium'>{user.name}</span>
-                <span className='truncate text-xs'>{user.email}</span>
+                <span className='truncate text-center font-medium'>
+                  {user.name} ({user.employeeId})
+                </span>
+                <span className='truncate text-center font-medium'>({user.authority})</span>
               </div>
               <ChevronsUpDownIcon className='ml-auto size-4' />
             </SidebarMenuButton>
@@ -56,8 +60,10 @@ export function NavUser({
                   <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-medium'>{user.name}</span>
-                  <span className='truncate text-xs'>{user.email}</span>
+                  <span className='truncate text-center font-medium'>
+                    {user.name} ({user.employeeId})
+                  </span>
+                  <span className='truncate text-center text-xs'>({user.authority})</span>
                 </div>
               </div>
             </DropdownMenuLabel>

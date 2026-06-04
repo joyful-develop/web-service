@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { InboxIcon, FileIcon, SendIcon, ArchiveXIcon, Trash2Icon, TerminalIcon } from 'lucide-react';
 
-import { NavUser } from '#components/shadcn/nav-user.tsx';
+import { NavUser } from '@/layouts/header/UserProfile';
 import { Label } from '#components/shadcn-ui/label.tsx';
 import {
   Sidebar,

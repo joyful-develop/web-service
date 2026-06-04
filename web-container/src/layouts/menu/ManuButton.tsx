@@ -92,15 +92,15 @@ const data = [
   ],
 ];
 
-export function NavActions() {
+export function ManuButton() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <div className='flex items-center gap-2 text-sm'>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button variant='ghost' size='icon-lg' className='data-[state=open]:bg-accent h-9 w-9'>
-            <LucideIcon name='gripIcon' size={36} strokeWidth={1} className='size-7' />
+          <Button variant='ghost' size='icon-lg' className='data-[state=open]:bg-accent h-7 w-7'>
+            <LucideIcon name='menuIcon' size={36} strokeWidth={1} className='size-5' />
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-56 overflow-hidden rounded-lg p-0' align='end'>

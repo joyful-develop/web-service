@@ -4,7 +4,6 @@ import { PlusIcon } from 'lucide-react';
 
 import { Calendars } from '#components/shadcn/calendars.tsx';
 import { DatePicker } from '#components/shadcn/date-picker.tsx';
-import { NavUser } from '#components/shadcn/nav-user.tsx';
 import {
   Sidebar,
   SidebarContent,
@@ -16,11 +15,14 @@ import {
   SidebarSeparator,
 } from '#components/shadcn-ui/sidebar.tsx';
 
+import { UserProfile } from '@layouts/header/UserProfile.tsx';
+
 // This is sample data.
 const data = {
   user: {
     name: 'shadcn',
-    email: 'm@example.com',
+    employeeId: '123456',
+    authority: 'Manager',
     avatar: '/avatars/shadcn.jpg',
   },
   calendars: [
@@ -43,7 +45,7 @@ export function Conditions({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible='none' className='sticky top-0 hidden h-svh border-l lg:flex' {...props}>
       <SidebarHeader className='border-sidebar-border h-16 border-b'>
-        <NavUser user={data.user} />
+        <UserProfile user={data.user} />
       </SidebarHeader>
       <SidebarContent>
         <DatePicker />

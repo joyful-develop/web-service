@@ -1,4 +1,4 @@
-import { Grip, PanelLeft, Settings2, Square } from 'lucide-react';
+import { Bell, EllipsisVertical, Menu, PanelLeft, RefreshCw, Square } from 'lucide-react';
 
 /**
  * 아이콘 레지스트리
@@ -6,9 +6,11 @@ import { Grip, PanelLeft, Settings2, Square } from 'lucide-react';
  * - key는 프로젝트에서 사용할 이름 (camelCase)
  */
 export const icons = {
-  gripIcon: Grip,
+  bellIcon: Bell,
+  ellipsisVerticalIcon: EllipsisVertical,
+  menuIcon: Menu,
   panelLeftIcon: PanelLeft,
-  settings2Icon: Settings2,
+  refreshCwIcon: RefreshCw,
   squareIcon: Square,
 } as const;
 

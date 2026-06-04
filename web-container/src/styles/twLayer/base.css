@@ -1,11 +1,31 @@
 /* CSS 초기화(Reset), 기본 태그 스타일(h1, p, body 등) 정의 */
 @layer base {
-  body {
-    font-family: var(--font-display);
-    color: var(--color-mint-500);
+  * {
+    @apply border-border outline-ring/50;
   }
-
+  body {
+    /* font-family: var(--font-display); */
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-display;
+  }
   h1 {
-    @apply text-2xl font-bold;
+    @apply text-4xl font-extrabold tracking-tight;
+  }
+  h2 {
+    @apply text-3xl font-bold tracking-tight;
+  }
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+  h4 {
+    @apply text-xl font-semibold;
+  }
+  h5 {
+    @apply text-lg font-medium;
+  }
+  h6 {
+    @apply text-base font-medium;
   }
 }
