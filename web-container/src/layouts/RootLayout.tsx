@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { SidebarInset, SidebarProvider } from '@/components/shadcn-ui/sidebar.tsx';
 import { Footer } from '@/layouts/footer/Footer.tsx';
 import { Header } from '@/layouts/header/Header.tsx';
@@ -16,7 +14,7 @@ export const description = 'A sidebar with a header and a search form.';
 
 export default function RootLayout() {
   return (
-    <div className='[--footer-height:calc(--spacing(14))] [--header-height:calc(--spacing(14))] [--menuBar-height:calc(--spacing(14))]'>
+    <div className='[--footer-height:calc(--spacing(10))] [--header-height:calc(--spacing(14))] [--menuBar-height:calc(--spacing(14))]'>
       <SidebarProvider className='flex max-h-svh flex-col overflow-y-hidden'>
         <Header />
         <MenuBar />

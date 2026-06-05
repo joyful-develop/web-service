@@ -43,11 +43,14 @@ const data = {
 
 export function Conditions({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible='none' className='sticky top-0 hidden h-svh border-l lg:flex' {...props}>
+    <Sidebar
+      collapsible='none'
+      className='top-[calc(var(--header-height)+var(--menuBar-height)+2px)] h-[calc(100svh-var(--header-height)-var(--menuBar-height)-var(--footer-height)-3px)]! border-l lg:flex'
+      {...props}>
       <SidebarHeader className='border-sidebar-border h-16 border-b'>
         <UserProfile user={data.user} />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className='overflow-x-hidden'>
         <DatePicker />
         <SidebarSeparator className='mx-0' />
         <Calendars calendars={data.calendars} />

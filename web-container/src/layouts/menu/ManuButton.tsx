@@ -16,7 +16,8 @@ import {
   ArrowDownIcon,
 } from 'lucide-react';
 
-import { LucideIcon } from '@components/icons/LucideIcon.tsx';
+import { HeroIcon } from '@components/icons/HeroIcon.tsx';
+// import { LucideIcon } from '@components/icons/LucideIcon.tsx';
 import { Button } from '@components/shadcn-ui/button.tsx';
 import { Popover, PopoverContent, PopoverTrigger } from '@components/shadcn-ui/popover.tsx';
 import {
@@ -99,8 +100,9 @@ export function ManuButton() {
     <div className='flex items-center gap-2 text-sm'>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button variant='ghost' size='icon-lg' className='data-[state=open]:bg-accent h-7 w-7'>
-            <LucideIcon name='menuIcon' size={36} strokeWidth={1} className='size-5' />
+          <Button variant='ghost' size='icon-lg' className='data-[state=open]:bg-accent h-8 w-8'>
+            {/* <LucideIcon name='menuIcon' size={36} strokeWidth={2} className='size-5' /> */}
+            <HeroIcon name='bars4Icon' className='size-6' />
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-56 overflow-hidden rounded-lg p-0' align='end'>

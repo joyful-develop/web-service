@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import * as React from 'react';
 
@@ -187,7 +187,7 @@ export function Icons({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar
       collapsible='none'
-      className='top-(--header-height) h-[calc(100svh-var(--header-height)-var(--footer-height))]! w-[3em] min-w-[3em] border-l lg:flex'
+      className='top-[calc(var(--header-height)+var(--menuBar-height)+2px)] h-[calc(100svh-var(--header-height)-var(--menuBar-height)-var(--footer-height)-3px)]! w-[3em] min-w-[3em] border-l lg:flex'
       {...props}>
       {/* This is the first sidebar */}
       {/* We disable collapsible and adjust width to icon. */}

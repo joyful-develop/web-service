@@ -166,7 +166,7 @@ export function CollapsibleMenus({ ...props }: React.ComponentProps<typeof Sideb
   return (
     <Sidebar
       collapsible='none'
-      className='top-(--header-height) h-[calc(100svh-var(--header-height)-var(--footer-height))]! border-l lg:flex'
+      className='top-[calc(var(--header-height)+var(--menuBar-height)+2px)] h-[calc(100svh-var(--header-height)-var(--menuBar-height)-var(--footer-height)-3px)]! border-l lg:flex'
       {...props}>
       <SidebarHeader>
         <SidebarMenu>
