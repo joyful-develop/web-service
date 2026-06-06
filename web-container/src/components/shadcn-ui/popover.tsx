@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Popover as PopoverPrimitive } from 'radix-ui';
 
-import { cn } from '@utils/shadcn/utils.ts';
+import { cn } from '#utils/shadcn/utils.ts';
 
 function Popover({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root data-slot='popover' {...props} />;

@@ -4,7 +4,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    /* font-family: var(--font-display); */
     @apply bg-background text-foreground;
   }
   html {
