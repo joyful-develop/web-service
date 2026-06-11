@@ -1,7 +1,7 @@
 {
   "name": "web-container",
   "version": "0.0.1",
-  "main": "main.tsx",
+  "main": "Main.tsx",
   "repository": "https://github.com/joyful-develop/web-service.git",
   "author": "joyful-develop <joyful0159@gmail.com>",
   "license": "MIT",
