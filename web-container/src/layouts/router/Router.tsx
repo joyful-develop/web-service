@@ -2,40 +2,71 @@ import React from 'react';
 
 import { createBrowserRouter, type LoaderFunction, type ActionFunction } from 'react-router-dom';
 
-interface RouteCommon {
+import RootLayout from '@/layouts/RootLayout.tsx';
+import RouteErrorBoundary from '@/layouts/router/RouteErrorBoundary.tsx';
+
+interface RouteLinkCommon {
   loader?: LoaderFunction;
   action?: ActionFunction;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ErrorBoundary?: React.ComponentType<any>;
+  ErrorBoundary?: React.ComponentType<object>;
 }
 
-interface IRoute extends RouteCommon {
+interface RouteLink extends RouteLinkCommon {
+  index: boolean;
   path: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Element: React.ComponentType<any>;
+  Element: React.ComponentType<object>;
 }
 
 interface Pages {
   [key: string]: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    default: React.ComponentType<any>;
-  } & RouteCommon;
+    default: React.ComponentType<object>;
+  } & RouteLinkCommon;
 }
 
+type Menu = {
+  id: number;
+  index: boolean;
+  path: string;
+  label: string;
+  file: string;
+  isRequiresAdmin: boolean;
+};
+
+const menuList: Menu[] = [
+  {
+    id: 1,
+    index: true,
+    path: '',
+    label: 'Home',
+    file: 'pages/Home/Home.tsx',
+    isRequiresAdmin: true,
+  },
+  {
+    id: 2,
+    index: false,
+    path: '/about',
+    label: 'Home',
+    file: 'pages/About/About.tsx',
+    isRequiresAdmin: true,
+  },
+];
+
 const pages: Pages = import.meta.glob('../../pages/**/*.tsx', { eager: true });
-console.log(pages);
-const routes: IRoute[] = [];
+
+const routeLinks: RouteLink[] = [];
 for (const path of Object.keys(pages)) {
-  const fileName = path.match(/\.\/pages\/(.*)\.tsx$/)?.[1];
-  if (!fileName) {
+  const file = path.match(/pages\/(.*)\.tsx$/)?.[0];
+  if (!file) {
     console.error(`Component for path ${path} is not found or not exported correctly`);
     continue;
   }
 
-  const normalizedPathName = fileName.includes('$') ? fileName.replace('$', ':') : fileName.replace(/\/index/, '');
+  const findMenu = menuList.find((menu) => menu.file === file);
+  if (findMenu === undefined) continue;
 
-  routes.push({
-    path: fileName === 'index' ? '/' : `/${normalizedPathName.toLowerCase()}`,
+  routeLinks.push({
+    index: findMenu.index,
+    path: findMenu.path.toLowerCase(),
     Element: pages[path].default,
     loader: pages[path]?.loader as LoaderFunction | undefined,
     action: pages[path]?.action as ActionFunction | undefined,
@@ -43,18 +74,25 @@ for (const path of Object.keys(pages)) {
   });
 }
 
-console.log('Generated routes:', routes);
-
-if (routes.length === 0) {
+if (routeLinks.length === 0) {
   throw new Error('No routes found. Check your page component and paths');
 }
 
-const router = createBrowserRouter(
-  routes.map(({ Element, ErrorBoundary, ...rest }) => ({
-    ...rest,
-    element: <Element />,
-    ...(ErrorBoundary && { errorElement: <ErrorBoundary /> }),
-  }))
-);
+console.log('Generated routes:', routeLinks);
+
+const children = routeLinks.map(({ Element, ErrorBoundary, ...rest }) => ({
+  ...rest,
+  element: <Element />,
+  ...(ErrorBoundary && { errorElement: <ErrorBoundary /> }),
+}));
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    errorElement: <RouteErrorBoundary />,
+    children: [...children],
+  },
+]);
 
 export default router;
