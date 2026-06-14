@@ -58,6 +58,6 @@
       "@utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["./src", "test/server.ts"],
+  "include": ["./src", "src/mocks/server.ts"],
   "exclude": ["./node_modules", "test"]
 }

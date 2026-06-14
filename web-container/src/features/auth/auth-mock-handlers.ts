@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-export const handlers = [
+export const authMockHandlers = [
   http.get('/api/users', () => {
     return HttpResponse.json([
       { id: 1, name: 'Alice' },
