@@ -1,20 +1,6 @@
-import React from 'react';
+import { Link } from 'react-router';
 
-import {
-  Settings2Icon,
-  FileTextIcon,
-  LinkIcon,
-  CopyIcon,
-  CornerUpRightIcon,
-  Trash2Icon,
-  CornerUpLeftIcon,
-  ChartLineIcon,
-  GalleryVerticalEndIcon,
-  TrashIcon,
-  BellIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-} from 'lucide-react';
+import { useMenuStore } from '@/store/useMenuStore.ts';
 
 import { HeroIcon } from '@components/icons/HeroIcon.tsx';
 // import { LucideIcon } from '@components/icons/LucideIcon.tsx';
@@ -30,75 +16,16 @@ import {
   SidebarMenuItem,
 } from '@components/shadcn-ui/sidebar.tsx';
 
-const data = [
-  [
-    {
-      label: 'Customize Page',
-      icon: <Settings2Icon />,
-    },
-    {
-      label: 'Turn into wiki',
-      icon: <FileTextIcon />,
-    },
-  ],
-  [
-    {
-      label: 'Copy Link',
-      icon: <LinkIcon />,
-    },
-    {
-      label: 'Duplicate',
-      icon: <CopyIcon />,
-    },
-    {
-      label: 'Move to',
-      icon: <CornerUpRightIcon />,
-    },
-    {
-      label: 'Move to Trash',
-      icon: <Trash2Icon />,
-    },
-  ],
-  [
-    {
-      label: 'Undo',
-      icon: <CornerUpLeftIcon />,
-    },
-    {
-      label: 'View analytics',
-      icon: <ChartLineIcon />,
-    },
-    {
-      label: 'Version History',
-      icon: <GalleryVerticalEndIcon />,
-    },
-    {
-      label: 'Show delete pages',
-      icon: <TrashIcon />,
-    },
-    {
-      label: 'Notifications',
-      icon: <BellIcon />,
-    },
-  ],
-  [
-    {
-      label: 'Import',
-      icon: <ArrowUpIcon />,
-    },
-    {
-      label: 'Export',
-      icon: <ArrowDownIcon />,
-    },
-  ],
-];
-
 export function ManuButton() {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const { menus, activeMenuId, isLoading, error, isMenuPanelOpen, setActiveMenuId, setIsMenuPanelOpen } =
+    useMenuStore();
+
+  if (isLoading) return <div>메뉴 로딩 중 ...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className='flex items-center gap-2 text-sm'>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Popover open={isMenuPanelOpen} onOpenChange={() => setIsMenuPanelOpen(!isMenuPanelOpen)}>
         <PopoverTrigger asChild>
           <Button variant='ghost' size='icon-lg' className='data-[state=open]:bg-accent h-8 w-8'>
             {/* <LucideIcon name='menuIcon' size={36} strokeWidth={2} className='size-5' /> */}
@@ -108,17 +35,21 @@ export function ManuButton() {
         <PopoverContent className='w-56 overflow-hidden rounded-lg p-0' align='end'>
           <Sidebar collapsible='none' className='bg-transparent'>
             <SidebarContent>
-              {data.map((group, index) => (
-                <SidebarGroup key={index} className='border-b last:border-none'>
+              {menus.map((menu) => (
+                <SidebarGroup key={menu.groupId} className='border-b last:border-none'>
                   <SidebarGroupContent className='gap-0'>
                     <SidebarMenu>
-                      {group.map((item, index) => (
-                        <SidebarMenuItem key={index}>
-                          <SidebarMenuButton>
-                            {item.icon} <span>{item.label}</span>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
+                      {/* {group.map((item, index) => ( */}
+                      <SidebarMenuItem key={menu.id}>
+                        <SidebarMenuButton asChild onClick={() => setActiveMenuId(menu.id)}>
+                          <Link
+                            to={menu.path}
+                            className={`${activeMenuId !== null && activeMenuId === menu.id ? 'text-red-500' : 'text-black-500'}`}>
+                            {menu.icon} {menu.label}
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                      {/* ))} */}
                     </SidebarMenu>
                   </SidebarGroupContent>
                 </SidebarGroup>

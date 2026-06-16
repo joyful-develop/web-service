@@ -1,6 +1,5 @@
 /// <reference types="vitest/config" />
 
-import fs from 'fs';
 import path from 'path';
 
 import browserslist from 'browserslist';
@@ -108,7 +107,7 @@ export default ({ mode }: { mode: string }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: ['./test/vitest.setup.ts'],
+      setupFiles: ['./src/__test__/vitest.setup.ts'],
       exclude: ['./node_modules/**', './dist/**', './e2e/**'],
     },
     mode: env.VITE_APP_MODE,
@@ -142,15 +141,14 @@ export default ({ mode }: { mode: string }) => {
           chunkFileNames: 'assets/[name]-[hash].js',
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (
-                id.includes('react@') ||
-                id.includes('react-dom@') ||
-                id.includes('react-router@') ||
-                id.includes('react-router-dom@')
-              ) {
-                return `vendor/react`;
+              if (id.includes('react@') || id.includes('react-dom@') || id.includes('react-router@')) {
+                return 'vendor/react';
+              } else if (id.includes('msw')) {
+                return 'vendor/msw';
+              } else if (id.includes('.pnpm')) {
+                return 'vendor/pnpm';
               }
-              return `vendor/common`;
+              return 'vendor/common';
             }
           },
         },
@@ -168,10 +166,6 @@ export default ({ mode }: { mode: string }) => {
       port: SERVER_PORT,
       strictPort: true,
       open: true,
-      https: {
-        key: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3-key.pem')),
-        cert: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3.pem')),
-      },
       hmr: {
         host: env.VITE_APP_HOST,
         port: SERVER_PORT,
@@ -202,10 +196,6 @@ export default ({ mode }: { mode: string }) => {
       host: env.VITE_APP_HOST,
       port: SERVER_PORT,
       open: true,
-      https: {
-        key: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3-key.pem')),
-        cert: fs.readFileSync(path.resolve(__dirname, 'ssl/_wildcard.joyful.com+3.pem')),
-      },
     },
   });
 };

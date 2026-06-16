@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 import { SidebarInset, SidebarProvider } from '@/components/shadcn-ui/sidebar.tsx';
 import { Footer } from '@/layouts/footer/Footer.tsx';

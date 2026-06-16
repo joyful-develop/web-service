@@ -1,0 +1,54 @@
+import { beforeEach, describe, expect, it } from 'vitest';
+
+import { useMenuStore } from '@/store/useMenuStore.ts';
+
+describe('Menu Store', () => {
+  beforeEach(() => {
+    useMenuStore.getState().reset();
+  });
+
+  it('초기 menus 는 빈 배열이어야 한다.', () => {
+    const state = useMenuStore.getState();
+    expect(state.menus.length).toBe(0);
+  });
+
+  it('fetchMenus 호출 시 사용자 메뉴 데이터를 성공적으로 가져와 상태를 변경해야 한다.', async () => {
+    await useMenuStore.getState().fetchMenus('123456');
+
+    expect(useMenuStore.getState().menus).toEqual([
+      {
+        rawid: 1,
+        groupId: 'g1',
+        id: '1',
+        label: 'Home',
+        path: '',
+        file: 'pages/Home/Home.tsx',
+        icon: '',
+        isDefault: false,
+        order: 1,
+        parentId: '',
+        children: [],
+        desc: '',
+      },
+      {
+        rawid: 2,
+        groupId: 'g2',
+        id: '2',
+        label: 'About',
+        path: '/about',
+        file: 'pages/About/About.tsx',
+        icon: '',
+        isDefault: false,
+        order: 2,
+        parentId: '',
+        children: [],
+        desc: '',
+      },
+    ]);
+    expect(useMenuStore.getState().activeMenuId).toBe(false);
+    expect(useMenuStore.getState().isLoading).toBe(false);
+    expect(useMenuStore.getState().isLoaded).toBe(true);
+    expect(useMenuStore.getState().error).toBe(null);
+    expect(useMenuStore.getState().isMenuPanelOpen).toBe(false);
+  });
+});
