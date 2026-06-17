@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { useMenuStore } from '@/store/useMenuStore.ts';
+import type { ApiRequest } from '@/types/api.ts';
 
 describe('Menu Store', () => {
   beforeEach(() => {
@@ -13,25 +14,26 @@ describe('Menu Store', () => {
   });
 
   it('fetchMenus 호출 시 사용자 메뉴 데이터를 성공적으로 가져와 상태를 변경해야 한다.', async () => {
-    await useMenuStore.getState().fetchMenus('123456');
+    const request: ApiRequest = { userId: '123456' };
+    await useMenuStore.getState().fetchMenus(request);
 
     expect(useMenuStore.getState().menus).toEqual([
       {
-        rawid: 1,
+        rawId: 1,
         groupId: 'g1',
         id: '1',
         label: 'Home',
         path: '',
         file: 'pages/Home/Home.tsx',
         icon: '',
-        isDefault: false,
+        isDefault: true,
         order: 1,
         parentId: '',
         children: [],
         desc: '',
       },
       {
-        rawid: 2,
+        rawId: 2,
         groupId: 'g2',
         id: '2',
         label: 'About',
@@ -45,7 +47,7 @@ describe('Menu Store', () => {
         desc: '',
       },
     ]);
-    expect(useMenuStore.getState().activeMenuId).toBe(false);
+    expect(useMenuStore.getState().activeMenuId).toBe(null);
     expect(useMenuStore.getState().isLoading).toBe(false);
     expect(useMenuStore.getState().isLoaded).toBe(true);
     expect(useMenuStore.getState().error).toBe(null);

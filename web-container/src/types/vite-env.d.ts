@@ -5,10 +5,11 @@ interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string;
   readonly VITE_APP_VERSION: string;
   readonly VITE_APP_MODE: string;
+  readonly VITE_APP_RUN_LOCAL: boolean;
   readonly VITE_APP_BASE_PATH: string;
   readonly VITE_APP_HOST: string;
   readonly VITE_APP_PORT: number;
-  readonly VITE_APP_API_URL: string;
+  readonly VITE_API_BASE_URL: string;
 }
 
 interface ImportMeta {

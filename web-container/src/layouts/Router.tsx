@@ -1,37 +1,36 @@
 import React, { useEffect, useMemo } from 'react';
 
-import { createBrowserRouter, type LoaderFunction, type ActionFunction } from 'react-router';
+import { createBrowserRouter, type LoaderFunction, type ActionFunction, RouterProvider } from 'react-router';
 
 import RootLayout from '@/layouts/RootLayout.tsx';
 import RouteErrorBoundary from '@/layouts/RouteErrorBoundary.tsx';
 import { useMenuStore } from '@/store/useMenuStore.ts';
-
-interface PageCommon {
-  loader?: LoaderFunction;
-  action?: ActionFunction;
-  ErrorBoundary?: React.ComponentType<object>;
-}
+import type { ApiRequest } from '@/types/api.ts';
 
 interface Pages {
   [key: string]: {
     default: React.ComponentType<object>;
-  } & PageCommon;
+    loader?: LoaderFunction;
+    action?: ActionFunction;
+    ErrorBoundary?: React.ComponentType<object>;
+  };
 }
 
 export default function Router() {
   const { menus, isLoaded, fetchMenus } = useMenuStore();
 
   useEffect(() => {
-    fetchMenus('123456');
+    const request: ApiRequest = { userId: '123456' };
+    fetchMenus(request);
   }, [fetchMenus]);
 
   const router = useMemo(() => {
     if (!isLoaded || menus.length === 0) return null;
 
-    const pages: Pages = import.meta.glob('../../pages/**/*.tsx', { eager: true });
+    const pages: Pages = import.meta.glob('../pages/**/*.tsx', { eager: true });
 
     const dynamicRoutes = menus.map((menu) => {
-      const path = `../../${menu.path}`;
+      const path = `../${menu.file}`;
       if (path in pages) {
         const TargetComponent = pages[path].default;
         return {
@@ -76,4 +75,6 @@ export default function Router() {
   if (!isLoaded || !router) {
     return <div>URL 라우팅 테이블 구성 중 ...</div>;
   }
+
+  return <RouterProvider router={router} />;
 }

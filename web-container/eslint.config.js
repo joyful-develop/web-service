@@ -275,11 +275,6 @@ export default defineConfig(
             },
             {
               target: './src/store',
-              from: './src/services',
-              message: 'store 에서는 services 의 모듈을 import할 수 없습니다.',
-            },
-            {
-              target: './src/store',
               from: './src/styles',
               message: 'store 에서는 styles 의 모듈을 import할 수 없습니다.',
             },

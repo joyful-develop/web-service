@@ -107,7 +107,7 @@ export default ({ mode }: { mode: string }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: ['./src/__test__/vitest.setup.ts'],
+      setupFiles: ['./src/__tests__/vitest.setup.ts'],
       exclude: ['./node_modules/**', './dist/**', './e2e/**'],
     },
     mode: env.VITE_APP_MODE,
@@ -173,7 +173,7 @@ export default ({ mode }: { mode: string }) => {
       },
       proxy: {
         '/api': {
-          target: env.VITE_APP_API_URL,
+          target: env.VITE_API_BASE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
           // secure: false,
