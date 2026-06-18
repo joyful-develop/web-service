@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import '@fontsource-variable/geist';
 
 @import './twLayer/theme.css';
 @import './twLayer/theme-inline.css';
@@ -11,7 +10,6 @@
 @import '../assets/font.css';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import '@fontsource-variable/inter';
 
 /* 다크 모드 활성화 */
 @custom-variant dark (&:where(.dark, .dark *));
