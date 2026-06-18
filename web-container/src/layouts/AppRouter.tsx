@@ -2,8 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 
 import { createBrowserRouter, type LoaderFunction, type ActionFunction, RouterProvider } from 'react-router';
 
+import AppRouteErrorBoundary from '@/layouts/AppRouteErrorBoundary.tsx';
 import RootLayout from '@/layouts/RootLayout.tsx';
-import RouteErrorBoundary from '@/layouts/RouteErrorBoundary.tsx';
 import { useMenuStore } from '@/store/useMenuStore.ts';
 import type { ApiRequest } from '@/types/api.ts';
 
@@ -56,7 +56,7 @@ export default function Router() {
       {
         path: '/',
         element: <RootLayout />,
-        errorElement: <RouteErrorBoundary />,
+        errorElement: <AppRouteErrorBoundary />,
         children: [
           ...dynamicRoutes,
           {

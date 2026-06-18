@@ -42,7 +42,7 @@ export const useMenuStore = create<MenuState>((set) => ({
           isMenuPanelOpen: false,
         });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       let message: string;
       if (axios.isAxiosError(error)) {
         message = (error.response?.data as ApiErrorResponse).message;

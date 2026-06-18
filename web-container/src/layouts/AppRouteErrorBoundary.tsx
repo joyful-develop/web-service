@@ -1,6 +1,6 @@
 import { useRouteError, isRouteErrorResponse } from 'react-router';
 
-function RouteErrorBoundary() {
+export default function AppRouteErrorBoundary() {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
@@ -32,5 +32,3 @@ function RouteErrorBoundary() {
     </div>
   );
 }
-
-export default RouteErrorBoundary;

@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 
 import { createRoot } from 'react-dom/client';
 
-import Router from '@/layouts/Router.tsx';
+import AppRouter from '@/layouts/AppRouter.tsx';
 
 import { TooltipProvider } from '@components/shadcn-ui/tooltip.tsx';
 import { ThemeProvider } from '@components/theme/ThemeProvider.tsx';
@@ -12,7 +12,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import '@styles/global.css';
 
 async function enableMocking() {
-  if (import.meta.env.VITE_APP_MODE_LOC !== 'local') {
+  if (!import.meta.env.VITE_APP_RUN_LOCAL) {
     return;
   }
 
@@ -31,7 +31,7 @@ enableMocking().then(() => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
           <TooltipProvider>
-            <Router />
+            <AppRouter />
           </TooltipProvider>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />

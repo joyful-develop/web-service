@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    // 백엔드 공통 규격인 { sucess, message, data, code } 구조가 반환됨
+    // 백엔드 공통 규격인 { success, message, data, code } 구조가 반환됨
     return response.data;
   },
   (error: Error | AxiosError) => {
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
       const { response } = error;
 
       if (response) {
-        // 서버가 응답을 반환했으나 상태 코드가 2XX 범위를 벗어난 경우 (5XX, 6XX)
+        // 서버가 응답을 반환했으나 상태 코드가 2XX 범위를 벗어난 경우 (4XX, 5XX)
         const status = response.status;
         const errorData = response.data; // ApiErrorResponse 타입으로 추론됨
         const errorMessage = errorData?.message;
@@ -41,8 +41,8 @@ axiosInstance.interceptors.response.use(
         switch (status) {
           case 401:
             console.error('인증 오류: 로그인이 필요합니다.');
-            // 필요 시 토크 재발급 로직 구현 또는 리다이렉트
-            // localStorage.removeItem('accedssToken');
+            // 필요 시 토큰 재발급 로직 구현 또는 리다이렉트
+            // localStorage.removeItem('accessToken');
             // window.location.href = '/login';
             break;
           case 403:
@@ -58,7 +58,7 @@ axiosInstance.interceptors.response.use(
             console.error(`오류 상태코드 [${status}]: ${errorMessage}`);
         }
       } else {
-        // 서버 응답 자체가 없는 경우(네트워크 끊힘, 타임아웃 등)
+        // 서버 응답 자체가 없는 경우(네트워크 끊김, 타임아웃 등)
         console.error('네트워크 오류 또는 서버가 응답하지 않습니다.');
       }
     } else {
