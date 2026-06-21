@@ -1,4 +1,4 @@
-import { safeAwait } from '#utils/safeAwait.ts';
+import { safeAwait } from '#utils/safe-await.ts';
 
 import axiosInstance from '@/services/axios-instance.ts';
 import type { ApiRequest, ApiResponse } from '@/types/api.ts';

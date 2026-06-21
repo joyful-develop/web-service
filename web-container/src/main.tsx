@@ -23,7 +23,20 @@ async function enableMocking() {
   });
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      // Axios 인터셉터를 통과해 넘어온 치명적인 에러(500 등)만 ErrorBoundary로 던짐
+      throwOnError: true,
+    },
+    mutations: {
+      // Mutation 에러도 전역 Error Boundary로 전달 원할 시 설정
+      throwOnError: false,
+    },
+  },
+});
 
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(

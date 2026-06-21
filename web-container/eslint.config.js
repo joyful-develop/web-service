@@ -235,11 +235,6 @@ export default defineConfig(
             },
             {
               target: './src/services',
-              from: './src/layouts',
-              message: 'services 에서는 layouts 의 모듈을 import할 수 없습니다.',
-            },
-            {
-              target: './src/services',
               from: './src/pages',
               message: 'services 에서는 pages 의 모듈을 import할 수 없습니다.',
             },

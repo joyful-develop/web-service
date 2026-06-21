@@ -18,13 +18,17 @@ export interface MenuState {
   reset: () => void;
 }
 
-export const useMenuStore = create<MenuState>((set) => ({
+const initialState = {
   menus: [],
   activeMenuId: null,
   isLoading: false,
   isLoaded: false,
   error: null,
   isMenuPanelOpen: false,
+};
+
+export const useMenuStore = create<MenuState>((set) => ({
+  ...initialState,
 
   fetchMenus: async (request: ApiRequest) => {
     set({ menus: [], activeMenuId: null, isLoading: true, isLoaded: false, error: null, isMenuPanelOpen: false });
@@ -53,8 +57,10 @@ export const useMenuStore = create<MenuState>((set) => ({
       set({ menus: [], activeMenuId: null, isLoading: false, isLoaded: false, error: message, isMenuPanelOpen: false });
     }
   },
+
   setActiveMenuId: (activeMenuId: string) => set({ activeMenuId: activeMenuId }),
+
   setIsMenuPanelOpen: (isMenuPanelOpen: boolean) => set({ isMenuPanelOpen: isMenuPanelOpen }),
-  reset: () =>
-    set({ menus: [], activeMenuId: null, isLoading: false, isLoaded: false, error: null, isMenuPanelOpen: false }),
+
+  reset: () => set(initialState),
 }));

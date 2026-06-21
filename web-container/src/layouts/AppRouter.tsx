@@ -16,7 +16,7 @@ interface Pages {
   };
 }
 
-export default function Router() {
+export default function AppRouter() {
   const { menus, isLoaded, fetchMenus } = useMenuStore();
 
   useEffect(() => {
@@ -78,3 +78,53 @@ export default function Router() {
 
   return <RouterProvider router={router} />;
 }
+
+// import { createBrowserRouter, Navigate, type LoaderFunctionArgs } from 'react-router';
+// import { RootLayout } from './layouts/RootLayout';
+// import { ProductsPage } from './pages/ProductsPage';
+// import { LoginPage } from './pages/LoginPage';
+// import { queryClient } from './api/queryClient';
+// import { axiosInstance } from './api/axiosInstance';
+
+// // 상품 타입 정의
+// interface Product {
+//   id: string;
+//   name: string;
+// }
+
+// export const router = createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <RootLayout />,
+//     children: [
+//       {
+//         path: 'products',
+//         element: <ProductsPage />,
+//         // v7 명시적 로더 선언 및 타입 추론 레이어
+//         loader: async ({ request }: LoaderFunctionArgs) => {
+//           const url = new URL(request.url);
+//           const search = url.searchParams.get('q') || '';
+
+//           // 컴포넌트 렌더링 전 React Query 캐싱 및 페칭 사전 보장
+//           await queryClient.ensureQueryData({
+//             queryKey: ['products', search],
+//             queryFn: async () => {
+//               const { data } = await axiosInstance.get<Product[]>('/products');
+//               return data;
+//             }
+//           });
+
+//           return { search };
+//         }
+//       }
+//     ]
+//   },
+//   {
+//     path: '/login',
+//     element: <LoginPage />
+//   },
+//   {
+//     path: '*',
+//     element: <Navigate to="/products" replace />
+//   }
+// ]);

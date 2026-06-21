@@ -20,6 +20,7 @@ export default function AppRouteErrorBoundary() {
       <div>
         <h1>애플리케이션 오류가 발생했습니다!</h1>
         <pre>{error.message}</pre>
+        <pre>{error.stack}</pre>
         <button onClick={() => window.location.reload()}>새로고침</button>
       </div>
     );
