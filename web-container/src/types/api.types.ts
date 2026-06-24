@@ -10,10 +10,3 @@ export interface ApiResponse<T> {
   data: T;
   code?: string;
 }
-
-// 오류 처리에 사용되는 공통 규격
-export interface ApiErrorResponse {
-  message: string;
-  code?: string;
-  status?: number;
-}

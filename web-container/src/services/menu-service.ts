@@ -1,7 +1,7 @@
 import { safeAwait } from '#utils/safe-await.ts';
 
 import axiosInstance from '@/services/axios-instance.ts';
-import type { ApiRequest, ApiResponse } from '@/types/api.ts';
+import type { ApiRequest, ApiResponse } from '@/types/api.types';
 
 export interface MenuItem {
   rawId: number;
@@ -18,7 +18,7 @@ export interface MenuItem {
   desc?: string;
 }
 
-export const menuApi = {
+export const menuService = {
   getUserMenu: async (request: ApiRequest) => {
     return axiosInstance.post<ApiResponse<MenuItem[]>>('userMenus', request);
   },

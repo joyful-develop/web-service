@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { useMenuStore } from '@/store/useMenuStore.ts';
-import type { ApiRequest } from '@/types/api.ts';
+import type { ApiRequest } from '@/types/api.types.ts';
 
 describe('Menu Store', () => {
   beforeEach(() => {

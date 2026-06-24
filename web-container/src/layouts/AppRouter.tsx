@@ -5,7 +5,7 @@ import { createBrowserRouter, type LoaderFunction, type ActionFunction, RouterPr
 import AppRouteErrorBoundary from '@/layouts/AppRouteErrorBoundary.tsx';
 import RootLayout from '@/layouts/RootLayout.tsx';
 import { useMenuStore } from '@/store/useMenuStore.ts';
-import type { ApiRequest } from '@/types/api.ts';
+import type { ApiRequest } from '@/types/api.types.ts';
 
 interface Pages {
   [key: string]: {

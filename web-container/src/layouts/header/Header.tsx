@@ -1,18 +1,18 @@
 import { Button } from '#components/shadcn-ui/button.tsx';
 
 import { UserProfile } from '@/layouts/header/UserProfile.tsx';
+import { MenuPopover } from '@/layouts/menu/MenuPopover.tsx';
 
 import { LucideIcon } from '@components/icons/LucideIcon.tsx';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/shadcn-ui/tooltip.tsx';
 import { ModeToggle } from '@components/theme/ModeToggle.tsx';
-import { ManuButton } from '@layouts/menu/ManuButton.tsx';
 
 export function Header() {
   return (
     <header className='bg-background sticky top-0 z-50 flex w-full items-center border-b'>
       <div className='flex h-(--header-height) w-full items-center gap-2 px-4'>
         <div className='flex w-full basis-3/6 flex-row flex-wrap items-center justify-start gap-2'>
-          <ManuButton />
+          <MenuPopover />
           <div className='relative inline-block text-center'>
             <LucideIcon name='squareIcon' size={32} strokeWidth={2} className='bg-blue-500 text-white' />
             <span className='absolute top-1/2 left-1/2 -translate-1/2 text-[10px] leading-none font-bold text-pretty text-white'>

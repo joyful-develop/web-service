@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
-import type { MenuItem } from '@/services/menu-api.ts';
-import type { ApiRequest, ApiResponse } from '@/types/api.ts';
+import type { MenuItem } from '@/services/menu-service';
+import type { ApiRequest, ApiResponse } from '@/types/api.types';
 
 export const menuHandlers = [
   http.post(`${import.meta.env.VITE_API_BASE_URL}/userMenus`, async ({ request }) => {

@@ -1,9 +1,7 @@
-import axios from 'axios';
-
 import { create } from 'zustand';
 
-import { menuApi, type MenuItem } from '@/services/menu-api.ts';
-import type { ApiErrorResponse, ApiRequest } from '@/types/api.ts';
+import { menuService, type MenuItem } from '@/services/menu-service.ts';
+import type { ApiRequest } from '@/types/api.types';
 
 export interface MenuState {
   menus: MenuItem[];
@@ -32,30 +30,17 @@ export const useMenuStore = create<MenuState>((set) => ({
 
   fetchMenus: async (request: ApiRequest) => {
     set({ menus: [], activeMenuId: null, isLoading: true, isLoaded: false, error: null, isMenuPanelOpen: false });
-    try {
-      const response = await menuApi.getUserMenu(request);
 
-      if (response.success) {
-        console.log('성공', response.data);
-        set({
-          menus: response.data,
-          activeMenuId: null,
-          isLoading: false,
-          isLoaded: true,
-          error: null,
-          isMenuPanelOpen: false,
-        });
-      }
-    } catch (error: unknown) {
-      let message: string;
-      if (axios.isAxiosError(error)) {
-        message = (error.response?.data as ApiErrorResponse).message;
-      } else {
-        message = (error as Error).message;
-      }
-      console.log(message);
-      set({ menus: [], activeMenuId: null, isLoading: false, isLoaded: false, error: message, isMenuPanelOpen: false });
-    }
+    const response = await menuService.getUserMenu(request);
+    console.log('성공', response.data);
+    set({
+      menus: response.data,
+      activeMenuId: null,
+      isLoading: false,
+      isLoaded: true,
+      error: null,
+      isMenuPanelOpen: false,
+    });
   },
 
   setActiveMenuId: (activeMenuId: string) => set({ activeMenuId: activeMenuId }),
