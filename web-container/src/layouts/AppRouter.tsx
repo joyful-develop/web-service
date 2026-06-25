@@ -56,16 +56,20 @@ export default function AppRouter() {
       {
         path: '/',
         element: <RootLayout />,
-        errorElement: <AppRouteErrorBoundary />,
         children: [
-          ...dynamicRoutes,
           {
-            path: '*',
-            element: (
-              <React.Suspense fallback={null}>
-                <div>Not Found</div>
-              </React.Suspense>
-            ),
+            errorElement: <AppRouteErrorBoundary />,
+            children: [
+              ...dynamicRoutes,
+              {
+                path: '*',
+                element: (
+                  <React.Suspense fallback={null}>
+                    <div>Not Found</div>
+                  </React.Suspense>
+                ),
+              },
+            ],
           },
         ],
       },

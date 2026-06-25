@@ -50,7 +50,6 @@ describe('Menu Store', () => {
     expect(useMenuStore.getState().activeMenuId).toBe(null);
     expect(useMenuStore.getState().isLoading).toBe(false);
     expect(useMenuStore.getState().isLoaded).toBe(true);
-    expect(useMenuStore.getState().error).toBe(null);
     expect(useMenuStore.getState().isMenuPanelOpen).toBe(false);
   });
 });

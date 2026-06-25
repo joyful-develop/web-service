@@ -17,11 +17,9 @@ import {
 } from '@components/shadcn-ui/sidebar.tsx';
 
 export function ManuButton() {
-  const { menus, activeMenuId, isLoading, error, isMenuPanelOpen, setActiveMenuId, setIsMenuPanelOpen } =
-    useMenuStore();
+  const { menus, activeMenuId, isLoading, isMenuPanelOpen, setActiveMenuId, setIsMenuPanelOpen } = useMenuStore();
 
   if (isLoading) return <div>메뉴 로딩 중 ...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <div className='flex items-center gap-2 text-sm'>

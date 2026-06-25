@@ -43,9 +43,9 @@ export function MenuPopover() {
           <div className='mr-6 min-w-3xs border-r pr-6'>
             <div>
               <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                <span>최근 메뉴</span>
+                최근 메뉴
               </div>
-              <div>
+              <div className='flex flex-col'>
                 <Link to='/' className={menuItemClass} onClick={handleMenuClick}>
                   <span>Home</span>
                 </Link>
@@ -58,55 +58,53 @@ export function MenuPopover() {
               </div>
             </div>
           </div>
-          <div className='grid gap-2 md:grid-cols-2'>
-            <div className={`grid min-w-3xs gap-2 md:min-w-md md:gap-6 ${menuColClass}`}>
-              <div className='flex flex-col'>
-                <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                  <span>최근 메뉴</span>
-                </div>
-                <div>
-                  <Link to='/' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>Home</span>
-                  </Link>
-                  <Link to='/about' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>About</span>
-                  </Link>
-                  <Link to='/error' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>Error</span>
-                  </Link>
-                </div>
+          <div className={`grid min-w-3xs gap-2 md:min-w-md md:gap-6 ${menuColClass}`}>
+            <div>
+              <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
+                최근 메뉴
               </div>
               <div className='flex flex-col'>
-                <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                  <span>최근 메뉴</span>
-                </div>
-                <div>
-                  <Link to='/' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>Home</span>
-                  </Link>
-                  <Link to='/about' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>About</span>
-                  </Link>
-                  <Link to='/error' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>Error</span>
-                  </Link>
-                </div>
+                <Link to='/' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>Home</span>
+                </Link>
+                <Link to='/about' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>About</span>
+                </Link>
+                <Link to='/error' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>Error</span>
+                </Link>
+              </div>
+            </div>
+            <div>
+              <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
+                최근 메뉴
               </div>
               <div className='flex flex-col'>
-                <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                  <span>최근 메뉴</span>
-                </div>
-                <div>
-                  <Link to='/' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>Home</span>
-                  </Link>
-                  <Link to='/about' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>About</span>
-                  </Link>
-                  <Link to='/error' className={menuItemClass} onClick={handleMenuClick}>
-                    <span>Error</span>
-                  </Link>
-                </div>
+                <Link to='/' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>Home</span>
+                </Link>
+                <Link to='/about' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>About</span>
+                </Link>
+                <Link to='/error' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>Error</span>
+                </Link>
+              </div>
+            </div>
+            <div>
+              <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
+                최근 메뉴
+              </div>
+              <div className='flex flex-col'>
+                <Link to='/' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>Home</span>
+                </Link>
+                <Link to='/about' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>About</span>
+                </Link>
+                <Link to='/error' className={menuItemClass} onClick={handleMenuClick}>
+                  <span>Error</span>
+                </Link>
               </div>
             </div>
           </div>

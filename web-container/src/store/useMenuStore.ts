@@ -8,7 +8,6 @@ export interface MenuState {
   activeMenuId: string | null;
   isLoading: boolean;
   isLoaded: boolean;
-  error: string | null;
   isMenuPanelOpen: boolean;
   fetchMenus: (request: ApiRequest) => Promise<void>;
   setActiveMenuId: (activeMenuId: string) => void;
@@ -21,7 +20,6 @@ const initialState = {
   activeMenuId: null,
   isLoading: false,
   isLoaded: false,
-  error: null,
   isMenuPanelOpen: false,
 };
 
@@ -29,7 +27,7 @@ export const useMenuStore = create<MenuState>((set) => ({
   ...initialState,
 
   fetchMenus: async (request: ApiRequest) => {
-    set({ menus: [], activeMenuId: null, isLoading: true, isLoaded: false, error: null, isMenuPanelOpen: false });
+    set({ menus: [], activeMenuId: null, isLoading: true, isLoaded: false, isMenuPanelOpen: false });
 
     const response = await menuService.getUserMenu(request);
     console.log('성공', response.data);
@@ -38,7 +36,6 @@ export const useMenuStore = create<MenuState>((set) => ({
       activeMenuId: null,
       isLoading: false,
       isLoaded: true,
-      error: null,
       isMenuPanelOpen: false,
     });
   },

@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { Suspense } from 'react';
 
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 
-import { toast, Toaster } from 'sonner';
+// import { toast, Toaster } from 'sonner';
+
+import { GlobalErrorBoundary } from '#components/error/GlobalErrorBoundary.tsx';
+import { GlobalLoadingFallback } from '#components/error/GlobalLoadingFallback.tsx';
 
 import { SidebarInset, SidebarProvider } from '@/components/shadcn-ui/sidebar.tsx';
 import { Footer } from '@/layouts/footer/Footer.tsx';
@@ -13,49 +16,45 @@ import { MenuBar } from '@/layouts/menu/MenuBar.tsx';
 // import { Cards } from '@/layouts/side/Cards.tsx';
 import { Conditions } from '@/layouts/side/Conditions.tsx';
 import { Icons } from '@/layouts/side/Icons.tsx';
-import { useErrorStore } from '@/store/useErrorStore.ts';
-
-import type { IconName } from '@components/icons/lucide-icon-registry.ts';
-import { LucideIcon } from '@components/icons/LucideIcon.tsx';
 
 export const iframeHeight = '800px';
 
 export const description = 'A sidebar with a header and a search form.';
 
 export default function RootLayout() {
-  const { type, message, description, reset } = useErrorStore();
+  const location = useLocation(); // 💡 라우트 경로가 바뀔 때 에러 화면을 자동으로 리셋하기 위함
 
-  useEffect(() => {
-    if (message) {
-      let iconName: IconName;
-      switch (type) {
-        case 'Info':
-          iconName = 'info';
-          break;
-        case 'Warning':
-          iconName = 'triangleAlert';
-          break;
-        case 'Error':
-          iconName = 'circleX';
-          break;
-        case 'Success':
-          iconName = 'circleCheckBig';
-          break;
-        default:
-          iconName = null;
-          break;
-      }
+  // useEffect(() => {
+  //   if (message) {
+  //     let iconName: IconName;
+  //     switch (type) {
+  //       case 'Info':
+  //         iconName = 'info';
+  //         break;
+  //       case 'Warning':
+  //         iconName = 'triangleAlert';
+  //         break;
+  //       case 'Error':
+  //         iconName = 'circleX';
+  //         break;
+  //       case 'Success':
+  //         iconName = 'circleCheckBig';
+  //         break;
+  //       default:
+  //         iconName = null;
+  //         break;
+  //     }
 
-      toast(message, {
-        description: description,
-        position: 'top-right',
-        icon: iconName ? (
-          <LucideIcon name={iconName} size={32} strokeWidth={2} className='bg-blue-500 text-white' />
-        ) : null,
-      });
-      reset();
-    }
-  }, [type, message, description, reset]);
+  //     toast(message, {
+  //       description: description,
+  //       position: 'top-right',
+  //       icon: iconName ? (
+  //         <LucideIcon name={iconName} size={32} strokeWidth={2} className='bg-blue-500 text-white' />
+  //       ) : null,
+  //     });
+  //     reset();
+  //   }
+  // }, [type, message, description, reset]);
 
   return (
     <div className='[--footer-height:calc(--spacing(10))] [--header-height:calc(--spacing(14))] [--menuBar-height:calc(--spacing(14))]'>
@@ -66,8 +65,12 @@ export default function RootLayout() {
           <Icons />
           <CollapsibleMenus />
           <SidebarInset>
-            <Outlet />
-            <Toaster />
+            <GlobalErrorBoundary resetKey={location.key}>
+              {/* Shadcn 디자인 무드에 맞는 스켈레톤/로더 배치 */}
+              <Suspense fallback={<GlobalLoadingFallback />}>
+                <Outlet />
+              </Suspense>
+            </GlobalErrorBoundary>
           </SidebarInset>
           <Conditions />
           <Icons />

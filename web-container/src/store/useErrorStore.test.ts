@@ -93,7 +93,7 @@ describe('Error Store', () => {
     expect(state.description).toBe(error.stack);
   });
 
-  it('clearError를 호출하면 message가 다시 null이 되어야 한다.', () => {
+  it('reset을 호출하면 message가 다시 null이 되어야 한다.', () => {
     const error = new Error('에러 테스트 중 입니다.');
     error.name = 'Error';
 

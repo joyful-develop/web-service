@@ -2,8 +2,8 @@ import axiosInstance from '@/services/axios-instance.ts';
 import type { ApiRequest, ApiResponse } from '@/types/api.types.ts';
 
 export interface UiSettings {
-  rawId: number;
-  themeColor: string;
+  rawId?: number;
+  themeColor?: string;
 }
 
 export const uiSettingsService = {
