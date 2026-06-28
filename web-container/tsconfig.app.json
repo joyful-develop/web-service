@@ -44,20 +44,17 @@
 
     "paths": {
       "@/*": ["./src/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@components/*": ["./src/components/*"],
+      "@app/*": ["./src/app/*"],
       "@features/*": ["./src/features/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@layouts/*": ["./src/layouts/*"],
-      "@mocks/*": ["./src/mocks/*"],
       "@pages/*": ["./src/pages/*"],
-      "@services/*": ["./src/services/*"],
-      "@store/*": ["./src/store/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@types/*": ["./src/types/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@shared/*": ["./src/shared/*"]
     }
   },
-  "include": ["./src", "src/__mocks__/server.ts"],
-  "exclude": ["./node_modules", "test"]
+  "include": [
+    "./src",
+    "src/__tests__/mocks/server.ts",
+    "src/shared/types/global.d.ts",
+    "src/shared/types/vite-env.d.ts"
+  ],
+  "exclude": ["./node_modules"]
 }

@@ -7,5 +7,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["test/vitest-setup.ts", "./types/vite-env.d.ts", "./types/global.d.ts"]
+  "include": []
 }

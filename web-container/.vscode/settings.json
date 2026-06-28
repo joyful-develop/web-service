@@ -15,5 +15,7 @@
   "javascript.suggest.autoImports": true,
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "javascript.preferences.importModuleSpecifierEnding": "js",
-  "javascript.preferences.includePackageJsonAutoImports": "auto"
+  "javascript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always"
 }

@@ -54,52 +54,20 @@ export default ({ mode }: { mode: string }) => {
           replacement: path.resolve(__dirname, 'src'),
         },
         {
-          find: '@assets',
-          replacement: path.resolve(__dirname, 'src/assets'),
-        },
-        {
-          find: '@components',
-          replacement: path.resolve(__dirname, 'src/components'),
+          find: '@app',
+          replacement: path.resolve(__dirname, 'src/app'),
         },
         {
           find: '@features',
           replacement: path.resolve(__dirname, 'src/features'),
         },
         {
-          find: '@hooks',
-          replacement: path.resolve(__dirname, 'src/hooks'),
-        },
-        {
-          find: '@layouts',
-          replacement: path.resolve(__dirname, 'src/layouts'),
-        },
-        {
-          find: '@mocks',
-          replacement: path.resolve(__dirname, 'src/mocks'),
-        },
-        {
           find: '@pages',
           replacement: path.resolve(__dirname, 'src/pages'),
         },
         {
-          find: '@services',
-          replacement: path.resolve(__dirname, 'src/services'),
-        },
-        {
-          find: '@store',
-          replacement: path.resolve(__dirname, 'src/store'),
-        },
-        {
-          find: '@styles',
-          replacement: path.resolve(__dirname, 'src/styles'),
-        },
-        {
-          find: '@types',
-          replacement: path.resolve(__dirname, 'src/types'),
-        },
-        {
-          find: '@utils',
-          replacement: path.resolve(__dirname, 'src/utils'),
+          find: '@shared',
+          replacement: path.resolve(__dirname, 'src/shared'),
         },
       ],
       extensions: [],
