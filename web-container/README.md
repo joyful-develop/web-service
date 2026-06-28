@@ -261,3 +261,72 @@ Mirco Frontend 방식으로 구성된 단위 어플리케이션을 통하여 서
 4. Vite 환경변수
    - 사용자 정의 환경 변수: 반드시 VITE\_ 접두사를 사용해야 합니다 (const apiUrl = import.meta.env.VITE_API_URL;)
    - 변수 명명: UPPER_SNAKE_CASE (VITE_APP_TITLE)
+
+src/
+├── app/ # 1. 앱 진입점 및 전역 설정 레이어
+│ ├── layouts/ # 공통 레이아웃 관리
+│ │ ├── components/ # 레이아웃 독점 UI 부품
+│ │ │ ├── Header.tsx # GNB 및 다국어 셀렉터
+│ │ │ └── Footer.tsx # 하단 푸터
+│ │ └── RootLayout.tsx # 레이아웃 조립 및 다국어 최초 로딩 차단
+│ ├── providers/ # 전역 프로바이더
+│ │ └── AppProvider.tsx # QueryClient, 전역 상태 관리 컨텍스트 감싸기
+│ ├── routes/ # 라우팅 정의
+│ │ └── router.tsx # createBrowserRouter 기반 라우터 설정
+│ ├── styles/ # 글로벌 스타일
+│ │ └── main.css # Tailwind 지시어 및 디자인 토큰
+│ ├── App.tsx # Provider + Router 주입
+│ └── main.tsx # ReactDOM 초기화 및 MSW 개발용 실행
+│
+├── features/ # 2. 도메인(기능) 중심 레이어
+│ ├── products/ # 예: 상품 기능 모듈
+│ │ ├── **tests**/ # 상품 기능 전용 테스트
+│ │ │ ├── ProductList.test.tsx
+│ │ │ └── useGetProducts.test.ts
+│ │ ├── api/ # 상품 전용 React Query 훅
+│ │ │ └── useGetProducts.ts
+│ │ ├── components/ # 상품 도메인 종속 컴포넌트
+│ │ │ ├── ProductCard.tsx
+│ │ │ └── ProductList.tsx
+│ │ ├── types/ # 상품 도메인 전용 타입
+│ │ │ └── product.types.ts
+│ │ └── index.ts # 외부 노출용 Public API (ProductListPage 등)
+│ └── ...
+│
+├── shared/ # 3. 앱 전역 공통 자원 레이어
+│ ├── components/ # 범용 UI 컴포넌트 (Button, Input, Spinner 등)
+│ │ └── Button/
+│ │ ├── Button.tsx
+│ │ └── Button.test.tsx
+│ ├── hooks/ # 순수 유틸 훅 (useDebounce 등)
+│ ├── lib/ # 서드파티 라이브러리 커스텀 설정
+│ │ ├── axios.ts # Axios 인스턴스 (인터셉터 포함)
+│ │ └── queryClient.ts # React Query의 QueryClient 인스턴스
+│ ├── utils/ # 순수 헬퍼 함수
+│ │ ├── date.ts # 날짜 포맷터
+│ │ └── cn.ts # 클래스 병합 유틸 (clsx + tailwind-merge)
+│ ├── types/ # 전역 공통 타입
+│ │ └── api.types.ts # 공통 API 응답 구조
+│ │
+│ └── i18n/ # 🌐 [공통 다국어 영역]
+│ ├── **tests**/ # 다국어 로직 테스트
+│ │ └── useTranslation.test.ts
+│ ├── api/ # DB 다국어 호출 함수
+│ │ └── fetchTranslations.ts
+│ ├── store/ # 언어 상태 관리 Zustand 스토어
+│ │ └── useI18nStore.ts
+│ ├── hooks/ # 컴포넌트용 t 함수 제공 훅
+│ │ └── useTranslation.ts
+│ └── types/ # 다국어 전역 타입
+│ └── i18n.types.ts
+│
+└── testing/ # 4. 전역 테스트 및 모킹 인프라 레이어
+├── mocks/ # MSW (Mock Service Worker) 관련 설정
+│ ├── handlers/ # API 엔드포인트별 가짜 핸들러
+│ │ ├── i18nHandlers.ts # DB 다국어 API 모크
+│ │ └── productHandlers.ts
+│ ├── browser.ts # 로컬 개발 서버용 MSW 구동체
+│ ├── server.ts # Vitest 테스트용 MSW 구동체
+│ └── index.ts
+├── setup.ts # Vitest 환경 전역 실행 전 세팅 리스너
+└── test-utils.tsx # React Query + Router가 통합된 customRender

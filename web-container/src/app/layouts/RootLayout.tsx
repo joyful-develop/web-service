@@ -30,7 +30,7 @@ export default function RootLayout() {
   if (isLoading) {
     return (
       <div className='bg-background text-foreground flex h-screen w-screen items-center justify-center'>
-        <p className='text-muted-foreground animate-pulse text-sm font-medium'>Initializing Mock DB Translations...</p>
+        <p className='text-muted-foreground animate-pulse text-sm font-medium'>Initializing DB Translations...</p>
       </div>
     );
   }

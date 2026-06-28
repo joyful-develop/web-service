@@ -1,11 +1,11 @@
 import { format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
-import type { TranslationDbData } from '@/shared/i18n/translation.api';
-import type { ApiResponse } from '@/shared/types/api.types';
+import type { TranslationDbData } from '@/shared/i18n/i18n.types.ts';
+import type { ApiResponse } from '@/shared/types/api.types.ts';
 
 export const i18n = [
-  http.post(`${import.meta.env.VITE_API_BASE_URL}/getTranslation`, async () => {
+  http.post(`${import.meta.env.VITE_API_BASE_URL}/getTranslations`, async () => {
     const date = new Date();
     const formattedDate: string = format(date, 'yyyy-MM-dd HH:mm:ss');
 
@@ -128,7 +128,7 @@ export const i18n = [
     return HttpResponse.json(menu, { status: 200 });
   }),
 
-  http.post(`${import.meta.env.VITE_API_BASE_URL}/updateTranslation`, async ({ request }) => {
+  http.post(`${import.meta.env.VITE_API_BASE_URL}/setTranslation`, async ({ request }) => {
     const translationDbData = (await request.json()) as TranslationDbData[];
 
     const groupCounts = translationDbData.reduce<Record<string, number>>((acc, obj) => {

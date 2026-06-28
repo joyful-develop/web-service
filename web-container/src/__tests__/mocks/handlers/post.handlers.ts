@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
-import type { Post } from '@/features/post/post-service';
-import type { ApiRequest, ApiResponse } from '@/shared/types/api.types';
+import type { Post } from '@/features/post/post-service.ts';
+import type { ApiRequest, ApiResponse } from '@/shared/types/api.types.ts';
 
 export const postHandlers = [
   http.post(`${import.meta.env.VITE_API_BASE_URL}/getPosts`, async ({ request }) => {

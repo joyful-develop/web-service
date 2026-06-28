@@ -1,4 +1,4 @@
-import type { BaseDbData } from '@shared/types/global.types.ts';
+import type { BaseDbData } from '@/shared/types/global.types.ts';
 
 export interface TranslationDbData extends BaseDbData {
   locale: string;

@@ -1,6 +1,6 @@
 import { delay, http, HttpResponse } from 'msw';
 
-import type { TodoResponse } from '@/features/todo/todo-service';
+import type { TodoResponse } from '@/features/todo/todo-service.ts';
 
 export const todoHandlers = [
   // Todo 생성 API 모킹 (POST)

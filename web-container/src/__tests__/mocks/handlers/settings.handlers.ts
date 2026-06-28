@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
-import type { UiSettings } from '@/features/settings/ui-settings-service';
-import type { ApiRequest, ApiResponse } from '@/shared/types/api.types';
+import type { UiSettings } from '@/features/settings/ui-settings-service.ts';
+import type { ApiRequest, ApiResponse } from '@/shared/types/api.types.ts';
 
 export const settingsHandlers = [
   http.post(`${import.meta.env.VITE_API_BASE_URL}/uiSettings`, async ({ request }) => {

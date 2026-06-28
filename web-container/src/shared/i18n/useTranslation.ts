@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 
-import { translationApi } from '@shared/i18n/translation.api.ts';
-import { useI18nStore } from '@shared/i18n/useI18nStore.ts';
+import { getAllTranslations } from '@/shared/i18n/translations.api.ts';
+import { useI18nStore } from '@/shared/i18n/useI18nStore.ts';
+
 import { useQuery } from '@tanstack/react-query';
 
 export function useTranslation() {
@@ -9,7 +10,7 @@ export function useTranslation() {
 
   const queryResult = useQuery({
     queryKey: ['globalTranslations'],
-    queryFn: () => translationApi.getTranslation(),
+    queryFn: () => getAllTranslations(),
     staleTime: Infinity, // 최초 1회만 호출 후 캐싱
     gcTime: Infinity, // 메모리 캐시 영구 보존
   });
