@@ -6,9 +6,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
-import { useErrorStore } from '@/app/routers/useErrorStore.ts';
-
-// 1. 대기 큐 인프라를 위한 상태 정의
+// 대기 큐 인프라를 위한 상태 정의
 let isRefreshing = false; // 토큰 재발급 API가 현재 실행 중인지 여부
 let refreshSubscribers: ((token: string) => void)[] = []; // 토큰이 갱신되기를 기다리는 대기 중인 요청들의 콜백 큐
 
@@ -120,9 +118,6 @@ axiosInstance.interceptors.response.use(
         }
       }
     }
-
-    // 에러 등록
-    useErrorStore.getState().setError(error);
 
     return Promise.reject(error);
   }

@@ -1,7 +1,6 @@
 import { PanelLeftIcon } from 'lucide-react';
 
-import { ModeToggle } from '@/features/theme/ModeToggle';
-import { SearchForm } from '@/shared/components/shadcn/search-form';
+import { SearchForm } from '@/shared/components/shadcn/search-form.tsx';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,7 +35,6 @@ export function SiteHeader() {
           </BreadcrumbList>
         </Breadcrumb>
         <SearchForm className='w-full sm:ml-auto sm:w-auto' />
-        <ModeToggle />
       </div>
     </header>
   );
