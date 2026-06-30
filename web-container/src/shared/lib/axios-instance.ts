@@ -44,7 +44,6 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    // 공통 규격 { success, message, data, code } 으로 반환
     return response.data;
   },
   async (error: Error | AxiosError) => {

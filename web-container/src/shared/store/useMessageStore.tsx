@@ -1,59 +1,87 @@
+import type { AxiosError } from 'axios';
+
 import { toast } from 'sonner';
 import { create } from 'zustand';
 
-// 1. 메시지 유형 정의
-export type MessageType = 'success' | 'info' | 'warning' | 'error' | 'critical';
+import type { IconName } from '@/shared/icons/lucide-icon-registry.ts';
+import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
+import type { AlertType, ApiErrorBody } from '@/shared/types/api.types.ts';
+import { errorParser } from '@/shared/utils/error-parser.ts';
 
 interface MessageState {
   lastMessage: string | null;
-  lastType: MessageType | null;
-  // 전역 알림 액션
-  notify: (type: MessageType, title: string, description?: string) => void;
-  // 에러 클리어
-  clearMessage: () => void;
+  lastType: AlertType | null;
+  notify: (type: AlertType, message?: string, description?: string | null, error?: Error | AxiosError | string) => void;
+  reset: () => void;
 }
 
 export const useMessageStore = create<MessageState>((set) => ({
   lastMessage: null,
   lastType: null,
 
-  notify: (type, title, description) => {
-    set({ lastMessage: title, lastType: type });
+  notify: (type, message, description, error) => {
+    let msg = message;
+    let desc = description;
+    if (error) {
+      const apiErrorBody: ApiErrorBody = errorParser(error, message, description);
+      msg = apiErrorBody.message;
+      desc = apiErrorBody.description;
+    }
 
-    // 2. 등급별 sonner 토스트 맵핑 및 디자인 커스텀
+    set({ lastType: type, lastMessage: msg });
+
+    let iconName: IconName;
     switch (type) {
       case 'success':
-        toast.success(title, { description });
+        iconName = 'circleCheckBig';
         break;
       case 'info':
-        toast.info(title, { description });
+        iconName = 'info';
         break;
       case 'warning':
-        toast.warning(title, { description });
+        iconName = 'triangleAlert';
         break;
       case 'error':
-        toast.error(title, { description });
+        iconName = 'circleX';
         break;
       case 'critical':
-        toast.error(`[심각] ${title}`, {
-          description,
-          duration: Infinity,
-          action: {
-            label: '새로고침',
-            onClick: () => window.location.reload(),
-          },
-        });
+        iconName = 'circleX';
         break;
+    }
+    if (type === 'critical') {
+      toast(msg, {
+        description: desc,
+        position: 'top-center',
+        icon: iconName ? (
+          <LucideIcon name={iconName} size={32} strokeWidth={2} className='bg-blue-500 text-white' />
+        ) : null,
+        duration: Infinity,
+        action: {
+          label: '새로코침',
+          onClick: () => window.location.reload(),
+        },
+      });
+    } else {
+      toast(msg, {
+        description: desc,
+        position: 'top-center',
+        icon: iconName ? (
+          <LucideIcon name={iconName} size={32} strokeWidth={2} className='bg-blue-500 text-white' />
+        ) : null,
+      });
     }
   },
 
-  clearMessage: () => set({ lastMessage: null, lastType: null }),
+  reset: () => set({ lastMessage: null, lastType: null }),
 }));
 
 export const globalNotifier = {
-  success: (title: string, desc?: string) => useMessageStore.getState().notify('success', title, desc),
-  info: (title: string, desc?: string) => useMessageStore.getState().notify('info', title, desc),
-  warn: (title: string, desc?: string) => useMessageStore.getState().notify('warning', title, desc),
-  error: (title: string, desc?: string) => useMessageStore.getState().notify('error', title, desc),
-  critical: (title: string, desc?: string) => useMessageStore.getState().notify('critical', title, desc),
+  success: (message: string, description?: string) =>
+    useMessageStore.getState().notify('success', message, description),
+  info: (message: string, description?: string) => useMessageStore.getState().notify('info', message, description),
+  warn: (message: string, description?: string) => useMessageStore.getState().notify('warning', message, description),
+  error: (message?: string, description?: string, error?: Error | AxiosError | string) =>
+    useMessageStore.getState().notify('error', message, description, error),
+  critical: (message?: string, description?: string, error?: Error | AxiosError | string) =>
+    useMessageStore.getState().notify('critical', message, description, error),
 };

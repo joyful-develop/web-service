@@ -7,9 +7,11 @@ export interface ApiRequest {
 // 백엔드가 보내는 공통 규격
 export interface ApiResponse<T> {
   success: boolean;
-  message: string;
-  data: T;
-  code?: string;
+  message?: string; // 메시지 제목 또는 다국어 코드
+  description?: string; // 메시지 본문 또는 다국어 코드
+  errorType?: AlertType; // 에러 타입
+  errorCode?: string; //에러 코드
+  data: T | string | null; // 성공 데이터 또는 에러 상세 정보
 }
 
 // @valid, @validated 로 DTO 검증 실패 오류
@@ -28,7 +30,7 @@ export interface ErrorDetail {
   messageCode: string | null; // 커스텀 메시지인 경우 다국어 코드
 }
 
-export type AlertType = 'Message' | 'Success' | 'Info' | 'Warning' | 'Error';
+export type AlertType = 'success' | 'info' | 'warning' | 'error' | 'critical';
 
 export interface ApiErrorResponse {
   type?: AlertType | null;
@@ -44,9 +46,9 @@ export interface ApiErrorResponse {
 }
 
 export interface ApiErrorBody {
-  type: AlertType;
   message: string;
-  code: string;
-  status?: number;
   description?: string;
+  errorType: AlertType;
+  errorCode?: string;
+  status?: number;
 }
