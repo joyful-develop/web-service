@@ -3,12 +3,12 @@ import React, { useEffect, useMemo } from 'react';
 import { createBrowserRouter, type LoaderFunction, type ActionFunction, RouterProvider } from 'react-router';
 
 import RootLayout from '@/app/layouts/RootLayout.tsx';
+import CentralErrorBoundary from '@/app/routers/CentralErrorBoundary.tsx';
+import RootErrorBoundary from '@/app/routers/RootErrorBoundary.tsx';
 import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import Forbidden from '@/pages/Forbidden.tsx';
 import Login from '@/pages/Login.tsx';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
-
-import AppRouteErrorBoundary from '@app/routers/AppRouteErrorBoundary.tsx';
 
 interface Pages {
   [key: string]: {
@@ -67,9 +67,10 @@ export default function AppRouter() {
       {
         path: '/',
         element: <RootLayout />,
+        errorElement: <RootErrorBoundary />,
         children: [
           {
-            errorElement: <AppRouteErrorBoundary />,
+            errorElement: <CentralErrorBoundary />,
             children: [
               ...dynamicRoutes,
               {

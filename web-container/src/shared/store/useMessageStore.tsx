@@ -5,7 +5,7 @@ import { create } from 'zustand';
 
 import type { IconName } from '@/shared/icons/lucide-icon-registry.ts';
 import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
-import type { AlertType, ApiErrorBody } from '@/shared/types/api.types.ts';
+import type { AlertType, ApiError } from '@/shared/types/api.types.ts';
 import { errorParser } from '@/shared/utils/error-parser.ts';
 
 interface MessageState {
@@ -23,9 +23,9 @@ export const useMessageStore = create<MessageState>((set) => ({
     let msg = message;
     let desc = description;
     if (error) {
-      const apiErrorBody: ApiErrorBody = errorParser(error, message, description);
-      msg = apiErrorBody.message;
-      desc = apiErrorBody.description;
+      const apiError: ApiError = errorParser(error, message, description);
+      msg = apiError.message;
+      desc = apiError.description;
     }
 
     set({ lastType: type, lastMessage: msg });

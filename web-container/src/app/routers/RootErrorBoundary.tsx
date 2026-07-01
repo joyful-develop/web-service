@@ -8,7 +8,7 @@ import { errorParser } from '@/shared/utils/error-parser.ts';
 
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 
-export default function CentralErrorBoundary() {
+export default function RootErrorBoundary() {
   const error = useRouteError();
   const navigate = useNavigate();
   const apiError = errorParser(error);
