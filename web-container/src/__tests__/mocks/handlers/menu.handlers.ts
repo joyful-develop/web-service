@@ -1,31 +1,35 @@
 import { http, HttpResponse } from 'msw';
 
-import type { MenuItem } from '@/features/menu/menu-service.ts';
+import type { MenuItem } from '@/features/menu/menu.type.ts';
 import type { ApiRequest, ApiResponse } from '@/shared/types/api.types.ts';
 
 export const menuHandlers = [
   http.post(`${import.meta.env.VITE_API_BASE_URL}/userMenus`, async ({ request }) => {
     const { userId } = (await request.json()) as ApiRequest;
 
-    const menu: ApiResponse<MenuItem[]> = {
+    const response: ApiResponse<MenuItem[]> = {
       success: !userId ? false : true,
-      message: !userId ? '필수 조건인 userId 가 없습니다.' : '',
+      status: !userId ? 400 : 200,
+      message: !userId ? '메뉴 조회 실패' : '',
+      description: !userId ? '필수 조건인 userId 가 없습니다.' : '',
       data: !userId
-        ? []
+        ? null
         : [
             {
               rawId: 1,
               groupId: 'g1',
               id: '1',
               label: 'Home',
-              path: '',
-              file: 'pages/Home/Home.tsx',
-              icon: '',
+              path: '/',
+              type: 'local',
+              localPath: 'pages/Home/Home',
+              remoteUrl: null,
+              icon: null,
               isDefault: true,
               order: 1,
-              parentId: '',
-              children: [],
-              desc: '',
+              parentId: null,
+              children: null,
+              desc: null,
             },
             {
               rawId: 2,
@@ -33,16 +37,27 @@ export const menuHandlers = [
               id: '2',
               label: 'About',
               path: '/about',
-              file: 'pages/About/About.tsx',
-              icon: '',
-              isDefault: false,
-              order: 2,
-              parentId: '',
-              children: [],
-              desc: '',
+              type: 'local',
+              localPath: 'pages/About/About',
+              remoteUrl: null,
+              icon: null,
+              isDefault: true,
+              order: 1,
+              parentId: null,
+              children: null,
+              desc: null,
             },
           ],
+      error: !userId
+        ? {
+            type: 'error',
+            status: 400,
+            code: 'INVALID_USER_ID',
+            message: '메뉴 조회 실패',
+            description: '필수 조건인 userId 가 없습니다.',
+          }
+        : null,
     };
-    return HttpResponse.json(menu, { status: !userId ? 400 : 201 });
+    return HttpResponse.json(response, { status: !userId ? 400 : 200 });
   }),
 ];

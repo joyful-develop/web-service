@@ -17,6 +17,9 @@ export const postHandlers = [
             { id: 2, title: '타이틀 2' },
             { id: 3, title: '타이틀 3' },
           ],
+      status: 0,
+      description: '',
+      error: null,
     };
     return HttpResponse.json(menu, { status: !userId ? 400 : 201 });
   }),
@@ -27,6 +30,9 @@ export const postHandlers = [
       success: !userId ? false : true,
       message: !userId ? '필수 조건인 userId 가 없습니다.' : '',
       data: !userId ? 0 : 1,
+      status: 0,
+      description: '',
+      error: null,
     };
     return HttpResponse.json(menu, { status: !userId ? 400 : 201 });
   }),

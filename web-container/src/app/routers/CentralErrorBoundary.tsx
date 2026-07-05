@@ -13,6 +13,11 @@ export default function CentralErrorBoundary() {
   const navigate = useNavigate();
   const apiError = errorParser(error);
 
+  // const isChunkLoadError =
+  //   apiError.message.includes('Failed to fetch') ||
+  //   apiError.message.includes('ChunkLoadError') ||
+  //   apiError.message.includes('Script load error');
+
   const { reset } = useQueryErrorResetBoundary();
 
   const handleRetry = () => {

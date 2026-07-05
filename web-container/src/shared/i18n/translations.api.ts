@@ -6,7 +6,7 @@ export const getAllTranslations = async () => {
   const response = await axiosInstance.post<ApiResponse<TranslationDbData[]>>('getTranslations');
 
   const translationData: TranslationData = {};
-  response.data.forEach(({ locale, key, value }) => {
+  response.data?.forEach(({ locale, key, value }) => {
     if (!translationData[locale]) {
       translationData[locale] = { translation: {} };
     }

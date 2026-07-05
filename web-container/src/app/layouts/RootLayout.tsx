@@ -7,9 +7,10 @@ import { Outlet } from 'react-router';
 import { CollapsibleMenus } from '@/app/layouts/components/CollapsibleMenus.tsx';
 import { Footer } from '@/app/layouts/components/Footer.tsx';
 import { MenuBar } from '@/app/layouts/components/MenuBar.tsx';
+// import { queryClient } from '@/app/querys/query-client.ts';
 import { GlobalLoadingFallback } from '@/app/routers/GlobalLoadingFallback.tsx';
 import { SidebarInset, SidebarProvider } from '@/shared/components/shadcn-ui/sidebar.tsx';
-import { useTranslation } from '@/shared/i18n/useTranslation.ts';
+import { useTranslationQuery } from '@/shared/i18n/useTranslationQuery.ts';
 
 import { Header } from '@app/layouts/components/Header.tsx';
 // import { FileTree } from '@/layouts/menu/FileTree.tsx';
@@ -22,7 +23,11 @@ export const iframeHeight = '800px';
 export const description = 'A sidebar with a header and a search form.';
 
 export default function RootLayout() {
-  const { isLoading } = useTranslation();
+  const { isLoading } = useTranslationQuery();
+
+  if (!isLoading) {
+    return <div>시스템 초기화 중...</div>;
+  }
 
   // 최초 다국어 데이터가 적재되기 전까지 화면에 번역 Key 값이 노출되는 현상 완전 방어
   if (isLoading) {
@@ -42,9 +47,11 @@ export default function RootLayout() {
           <Icons />
           <CollapsibleMenus />
           <SidebarInset>
-            <Suspense fallback={<GlobalLoadingFallback />}>
-              <Outlet />
-            </Suspense>
+            <main>
+              <Suspense fallback={<GlobalLoadingFallback />}>
+                <Outlet />
+              </Suspense>
+            </main>
           </SidebarInset>
           <Conditions />
           <Icons />

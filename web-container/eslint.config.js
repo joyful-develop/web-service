@@ -59,6 +59,7 @@ export default defineConfig(
       'import/prefer-default-export': 'off',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
+      'react-hooks/exhaustive-deps': 'off', // useEffect나 useCallback의 의존성 배열에 누락된 변수 경고 끄기
       'import/extensions': 'off',
       'import/order': [
         'error',

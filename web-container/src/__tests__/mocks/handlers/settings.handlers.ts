@@ -11,6 +11,9 @@ export const settingsHandlers = [
       success: !userId ? false : true,
       message: !userId ? '필수 조건인 userId 가 없습니다.' : '',
       data: !userId ? {} : { rawId: 1, themeColor: '#8b00ff' },
+      status: 0,
+      description: '',
+      error: null,
     };
     return HttpResponse.json(menu, { status: !userId ? 400 : 201 });
   }),

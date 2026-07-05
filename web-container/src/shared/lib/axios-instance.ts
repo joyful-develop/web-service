@@ -6,6 +6,8 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
+import i18n from '@/shared/lib/i18n.ts';
+
 // 대기 큐 인프라를 위한 상태 정의
 let isRefreshing = false; // 토큰 재발급 API가 현재 실행 중인지 여부
 let refreshSubscribers: ((token: string) => void)[] = []; // 토큰이 갱신되기를 기다리는 대기 중인 요청들의 콜백 큐
@@ -35,6 +37,10 @@ axiosInstance.interceptors.request.use(
     if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+
+    const currentLanguage = i18n.language || 'ko';
+    config.headers['Accept-Language'] = currentLanguage;
+
     return config;
   },
   (error: Error | AxiosError) => {

@@ -10,10 +10,10 @@ export const errorParser = (
   defaultDescription?: string | null
 ): ApiError => {
   let type: AlertType = 'error';
+  let status: number = 200;
+  let code: string = '';
   let message: string = '';
   let description: string = '';
-  let errorCode: string = '';
-  let status: number = 200;
 
   if (defaultMessage) {
     message = defaultMessage;
@@ -30,11 +30,12 @@ export const errorParser = (
     if (axios.isAxiosError<ApiResponse<null>>(error)) {
       const { request, response } = error;
 
+      console.log(response);
       if (response) {
-        const errorData = response.data;
-        type = errorData.errorType || 'error';
-        errorCode = errorData.errorCode || '';
-        status = response.status;
+        const apiError = response.data.error as ApiError;
+        type = apiError.type || 'error';
+        code = apiError.code || '';
+        status = apiError.status;
 
         switch (status) {
           case 401:
@@ -47,8 +48,10 @@ export const errorParser = (
             description = '이 작업을 수행할 권한이 없습니다.';
             break;
           default:
-            message = errorData.message ? `${errorData.message} (${status}, ${errorData.errorCode})` : error.message;
-            description = errorData.description || '알 수 없는 오류가 발생 했습니다.';
+            message = apiError.message
+              ? `${apiError.message} (${status}, ${error.code}, ${apiError.code})`
+              : error.message;
+            description = apiError.description || '알 수 없는 오류가 발생 했습니다.';
             break;
         }
       } else if (request) {
@@ -61,15 +64,15 @@ export const errorParser = (
     } else if (isRouteErrorResponse(error)) {
       const errorData = error.data as ApiError;
 
-      message = defaultMessage || errorData.message || 'Router Error';
-      description = defaultDescription || errorData.description || '요청하신 페이지에 문제가 있습니다.';
-      errorCode = errorData.errorCode || '';
+      message = errorData.message || 'Router Error';
+      description = errorData.description || '요청하신 페이지에 문제가 있습니다.';
+      code = errorData.code || '';
       status = errorData.status || error.status;
     } else if (error instanceof Error) {
-      message = defaultMessage || error?.message;
-      description = defaultDescription || error?.stack || '';
+      message = error?.message;
+      description = error?.stack || '';
     } else if (typeof error === 'string') {
-      message = defaultMessage || error;
+      message = error;
     }
   }
 
@@ -81,7 +84,7 @@ export const errorParser = (
     type: type,
     message: message,
     description: description,
-    errorCode: errorCode,
+    code: code,
     status: status,
   };
 };

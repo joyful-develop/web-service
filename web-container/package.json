@@ -7,7 +7,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "clean": "kill-port 7710",
+    "dev": "pnpm run clean && vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "dev:stg": "vite --mode stg",
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@module-federation/runtime": "^2.6.0",
     "@tanstack/react-query": "^5.100.10",
     "axios": "^1.16.0",
     "class-variance-authority": "^0.7.1",
@@ -53,6 +55,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@eslint/js": "^10.0.1",
+    "@module-federation/vite": "^1.16.12",
     "@playwright/test": "^1.60.0",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tailwindcss/vite": "^4.2.4",
@@ -81,6 +84,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
     "jsdom": "^29.1.1",
+    "kill-port": "^2.0.1",
     "lightningcss": "^1.32.0",
     "msw": "^2.14.6",
     "prettier": "^3.8.3",

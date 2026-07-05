@@ -9,7 +9,7 @@ import { useI18nStore } from '@/shared/i18n/useI18nStore.ts';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-export default function HomePage() {
+export default function Home() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const currentLang = useI18nStore((state) => state.currentLang);

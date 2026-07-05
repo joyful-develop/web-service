@@ -124,6 +124,9 @@ export const i18n = [
           updateAt: `${formattedDate}`,
         },
       ],
+      status: 0,
+      description: '',
+      error: null,
     };
     return HttpResponse.json(menu, { status: 200 });
   }),
@@ -137,10 +140,15 @@ export const i18n = [
       return acc;
     }, {});
 
+    const status = translationDbData.length > 0 ? 201 : 400;
+
     const response: ApiResponse<string> = {
       success: translationDbData.length > 0 ? true : false,
+      status: status,
       message: translationDbData.length > 0 ? '' : 'update 에 실패 했습니다.',
+      description: '',
       data: translationDbData.length > 0 ? JSON.stringify(groupCounts) : '',
+      error: null,
     };
 
     return HttpResponse.json(response, { status: translationDbData.length > 0 ? 201 : 400 });

@@ -15,7 +15,7 @@ export const CreatePost: React.FC = () => {
 
     // 💡 중앙 일괄 성공 알림을 발생시키는 핵심 트리거 코드
     meta: {
-      successMessage: `새로운 게시글이 안전하게 등록되었습니다.`,
+      customSuccessMessage: `새로운 게시글이 안전하게 등록되었습니다.`,
     },
 
     onSuccess: () => {

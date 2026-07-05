@@ -32,9 +32,6 @@ export const useMessageStore = create<MessageState>((set) => ({
 
     let iconName: IconName;
     switch (type) {
-      case 'success':
-        iconName = 'circleCheckBig';
-        break;
       case 'info':
         iconName = 'info';
         break;
@@ -47,19 +44,22 @@ export const useMessageStore = create<MessageState>((set) => ({
       case 'critical':
         iconName = 'circleX';
         break;
+      default:
+        iconName = 'circleCheckBig';
+        break;
     }
     if (type === 'critical') {
       toast(msg, {
         description: desc,
         position: 'top-center',
+        duration: Infinity,
+        action: {
+          label: '새로 고침',
+          onClick: () => window.location.reload(),
+        },
         icon: iconName ? (
           <LucideIcon name={iconName} size={32} strokeWidth={2} className='bg-blue-500 text-white' />
         ) : null,
-        duration: Infinity,
-        action: {
-          label: '새로코침',
-          onClick: () => window.location.reload(),
-        },
       });
     } else {
       toast(msg, {

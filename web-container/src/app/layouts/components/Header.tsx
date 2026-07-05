@@ -1,5 +1,5 @@
-import { MenuPopover } from '@/app/layouts/components/MenuPopover.tsx';
 import { UserProfile } from '@/app/layouts/components/UserProfile.tsx';
+import { MenuPopover } from '@/features/menu/MenuPopover.tsx';
 import { ModeToggle } from '@/features/theme/ModeToggle.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn-ui/tooltip.tsx';

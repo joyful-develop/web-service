@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 
 import { createWrapper } from '@/__tests__/test-utils.tsx';
-import { useTranslation } from '@/shared/i18n/useTranslation.ts';
+import { useTranslationQuery } from '@/shared/i18n/useTranslationQuery.ts';
 import i18n from '@/shared/lib/i18n.ts';
 
 import { renderHook, waitFor } from '@testing-library/react';
@@ -14,7 +14,7 @@ describe('TypeScript 기반 DB 다국어 연동 및 Vitest v4 테스트', () => 
   });
 
   test('React Query 성공 시 데이터가 반환되고 i18n 인스턴스에 타입 가이드대로 주입된다', async () => {
-    const { result } = renderHook(() => useTranslation(), {
+    const { result } = renderHook(() => useTranslationQuery(), {
       wrapper: createWrapper(),
     });
 
