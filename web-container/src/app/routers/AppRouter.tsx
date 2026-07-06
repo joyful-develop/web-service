@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
-import { createBrowserRouter, type LoaderFunction, type ActionFunction, RouterProvider } from 'react-router';
+import { createBrowserRouter, type LoaderFunction, type ActionFunction, RouterProvider, Outlet } from 'react-router';
 
 import RootLayout from '@/app/layouts/RootLayout.tsx';
 import CentralErrorBoundary from '@/app/routers/CentralErrorBoundary.tsx';
 import RootErrorBoundary from '@/app/routers/RootErrorBoundary.tsx';
-import { useMenuStore } from '@/features/menu/useMenuStore';
+import { useMenuQuery } from '@/features/menu/useMenuQuery.ts';
+import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import Forbidden from '@/pages/Forbidden.tsx';
 import Login from '@/pages/Login.tsx';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
@@ -20,20 +21,17 @@ interface Pages {
 }
 
 export default function AppRouter() {
-  const { menus } = useMenuStore();
-
-  useEffect(() => {
-    const request: ApiRequest = { userId: '123456' };
-    fetchMenus(request);
-  }, [fetchMenus]);
+  const request: ApiRequest = { userId: '123456' };
+  useMenuQuery(request);
+  const menus = useMenuStore((state) => state.menus);
 
   const router = useMemo(() => {
-    if (!isLoaded || menus.length === 0) return null;
+    if (menus.length === 0) return null;
 
     const pages: Pages = import.meta.glob('../../pages/**/*.tsx', { eager: true });
 
     const dynamicRoutes = menus.map((menu) => {
-      const path = `../../${menu.file}`;
+      const path = `../../${menu.localPath}.tsx`;
       if (path in pages) {
         const TargetComponent = pages[path].default;
         return {
@@ -57,6 +55,23 @@ export default function AppRouter() {
 
     return createBrowserRouter([
       {
+        path: '/',
+        element: <RootLayout />,
+        errorElement: <RootErrorBoundary />,
+        children: [
+          {
+            element: <Outlet />,
+            errorElement: <CentralErrorBoundary />,
+            children: [
+              {
+                errorElement: <CentralErrorBoundary />,
+                children: [...dynamicRoutes],
+              },
+            ],
+          },
+        ],
+      },
+      {
         path: '/login',
         element: <Login />,
       },
@@ -64,31 +79,10 @@ export default function AppRouter() {
         path: '/forbidden',
         element: <Forbidden />,
       },
-      {
-        path: '/',
-        element: <RootLayout />,
-        errorElement: <RootErrorBoundary />,
-        children: [
-          {
-            errorElement: <CentralErrorBoundary />,
-            children: [
-              ...dynamicRoutes,
-              {
-                path: '*',
-                element: (
-                  <React.Suspense fallback={null}>
-                    <div>Not Found</div>
-                  </React.Suspense>
-                ),
-              },
-            ],
-          },
-        ],
-      },
     ]);
-  }, [menus, isLoaded]);
+  }, [menus]);
 
-  if (!isLoaded || !router) {
+  if (!router) {
     return <div>URL 라우팅 테이블 구성 중 ...</div>;
   }
 

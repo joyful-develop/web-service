@@ -5,6 +5,7 @@ import type { ApiRequest, ApiResponse } from '@shared/types/api.types.ts';
 
 export const menuService = {
   getUserMenu: async (request: ApiRequest) => {
-    return await axiosInstance.post<ApiResponse<MenuItem[]>>('userMenus', request);
+    const response = await axiosInstance.post<ApiResponse<MenuItem[]>>('userMenus', request);
+    return response.data;
   },
 };

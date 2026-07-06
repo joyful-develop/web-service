@@ -139,7 +139,6 @@ export default ({ mode }: { mode: string }) => {
     },
     server: {
       host: env.VITE_APP_HOST,
-      allowedHosts: ['.joyful.com'],
       port: SERVER_PORT,
       strictPort: true,
       open: true,

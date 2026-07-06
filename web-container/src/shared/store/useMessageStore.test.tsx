@@ -33,8 +33,8 @@ describe('Message Store 통합 테스트', () => {
     useMessageStore.getState().notify(type, message, description);
 
     const updatedState = useMessageStore.getState();
-    expect(updatedState.lastType).toBe(type);
-    expect(updatedState.lastMessage).toBe(message);
+    expect(updatedState.lastType).toEqual(type);
+    expect(updatedState.lastMessage).toEqual(message);
 
     await waitFor(() => {
       expect(toast).toHaveBeenCalledTimes(1);
@@ -55,8 +55,8 @@ describe('Message Store 통합 테스트', () => {
     useMessageStore.getState().notify(type, message, description);
 
     const updatedState = useMessageStore.getState();
-    expect(updatedState.lastType).toBe(type);
-    expect(updatedState.lastMessage).toBe(message);
+    expect(updatedState.lastType).toEqual(type);
+    expect(updatedState.lastMessage).toEqual(message);
 
     await waitFor(() => {
       expect(toast).toHaveBeenCalledTimes(1);
@@ -77,8 +77,8 @@ describe('Message Store 통합 테스트', () => {
     useMessageStore.getState().notify(type, message, description);
 
     const updatedState = useMessageStore.getState();
-    expect(updatedState.lastType).toBe(type);
-    expect(updatedState.lastMessage).toBe(message);
+    expect(updatedState.lastType).toEqual(type);
+    expect(updatedState.lastMessage).toEqual(message);
 
     await waitFor(() => {
       expect(toast).toHaveBeenCalledTimes(1);
@@ -99,8 +99,8 @@ describe('Message Store 통합 테스트', () => {
     useMessageStore.getState().notify(type, message, description);
 
     const updatedState = useMessageStore.getState();
-    expect(updatedState.lastType).toBe(type);
-    expect(updatedState.lastMessage).toBe(message);
+    expect(updatedState.lastType).toEqual(type);
+    expect(updatedState.lastMessage).toEqual(message);
 
     await waitFor(() => {
       expect(toast).toHaveBeenCalledTimes(1);

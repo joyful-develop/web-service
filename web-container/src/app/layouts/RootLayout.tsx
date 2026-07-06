@@ -23,20 +23,7 @@ export const iframeHeight = '800px';
 export const description = 'A sidebar with a header and a search form.';
 
 export default function RootLayout() {
-  const { isLoading } = useTranslationQuery();
-
-  if (!isLoading) {
-    return <div>시스템 초기화 중...</div>;
-  }
-
-  // 최초 다국어 데이터가 적재되기 전까지 화면에 번역 Key 값이 노출되는 현상 완전 방어
-  if (isLoading) {
-    return (
-      <div className='bg-background text-foreground flex h-screen w-screen items-center justify-center'>
-        <p className='text-muted-foreground animate-pulse text-sm font-medium'>Initializing DB Translations...</p>
-      </div>
-    );
-  }
+  useTranslationQuery();
 
   return (
     <div className='[--footer-height:calc(--spacing(10))] [--header-height:calc(--spacing(14))] [--menuBar-height:calc(--spacing(14))]'>

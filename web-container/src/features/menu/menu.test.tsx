@@ -2,11 +2,14 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { createWrapper } from '@/__tests__/test-utils.tsx';
 import { MenuPopover } from '@/features/menu/MenuPopover.tsx';
+import { useMenuQuery } from '@/features/menu/useMenuQuery.ts';
 import { useMenuStore } from '@/features/menu/useMenuStore.ts';
+import type { ApiRequest } from '@/shared/types/api.types.ts';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // 확인용 스파이 메뉴 컴포넌트
@@ -32,7 +35,16 @@ describe('Menu 통합 테스트', () => {
     const user = userEvent.setup();
     const queryClient = createTestQueryClient();
 
-    // 1. Router, QueryClient를 모두 감싸서 렌더링
+    // 1.Menu 조회해서 store 에 저장 확인인
+    const request: ApiRequest = { userId: '123456' };
+    const { result } = renderHook(() => useMenuQuery(request), {
+      wrapper: createWrapper(),
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toEqual(true);
+    });
+
+    // 2. Router, QueryClient를 모두 감싸서 렌더링
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter initialEntries={['/']}>
@@ -45,11 +57,11 @@ describe('Menu 통합 테스트', () => {
       </QueryClientProvider>
     );
 
-    // 2. render 후 store 확인
+    // 3. render 후 store 확인
     await waitFor(() => {
       const state = useMenuStore.getState();
       expect(state.isMenuPanelOpen).toEqual(false);
-      expect(state.selectedMenuId).toBeNull();
+      expect(state.selectedMenuId).toEqual('1');
       expect(state.menus).toEqual([
         {
           rawId: 1,
@@ -86,37 +98,37 @@ describe('Menu 통합 테스트', () => {
       ]);
     });
 
-    // 3. PopoverTrigger 버튼 확인 및 클릭
+    // 4. PopoverTrigger 버튼 확인 및 클릭
     const triggerButton = await screen.findByTestId('menu-trigger');
     expect(triggerButton).toBeInTheDocument();
     await user.click(triggerButton);
 
-    // 4. PopoverContent 열림 검증
+    // 5. PopoverContent 열림 검증
     const popoverContent = await screen.findByTestId('menu-popover');
     expect(popoverContent).toBeInTheDocument();
 
-    // 5. PopoverContent 에 설정된 메뉴 아이템 확인
+    // 6. PopoverContent 에 설정된 메뉴 아이템 확인
     const aboutItem = await screen.findByTestId('menu-item-2');
     expect(aboutItem).toHaveTextContent('About');
 
-    // 6. store 의 Menu Panel 열림 검증
+    // 7. store 의 Menu Panel 열림 검증
     const state = useMenuStore.getState();
     expect(state.isMenuPanelOpen).toEqual(true);
 
-    // 7. 메뉴 클릭 수행
+    // 8. 메뉴 클릭 수행
     await user.click(aboutItem);
 
-    // 8. store 의 Menu Panel 열림 검증
+    // 9. store 의 Menu Panel 열림 검증
     await waitFor(() => {
       const state = useMenuStore.getState();
       expect(state.selectedMenuId).toEqual('2');
     });
 
-    // 9. 스파이 메뉴 컴포넌트 열림 검증
+    // 10. 스파이 메뉴 컴포넌트 열림 검증
     const locationDisplay = await screen.findByTestId('location-display');
     expect(locationDisplay).toHaveTextContent('about');
 
-    // 10. 메뉴 클릭 후 PopoverContent 닫힘 확인
+    // 11. 메뉴 클릭 후 PopoverContent 닫힘 확인
     await waitFor(() => {
       expect(screen.queryByTestId('menu-popover')).not.toBeInTheDocument();
 

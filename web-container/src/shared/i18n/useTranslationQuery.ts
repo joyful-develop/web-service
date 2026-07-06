@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { getAllTranslations } from '@/shared/i18n/translations.api.ts';
 import { useI18nStore } from '@/shared/i18n/useI18nStore.ts';
 
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function useTranslationQuery() {
   const syncTranslations = useI18nStore((state) => state.syncTranslations);
 
-  const queryResult = useQuery({
+  const queryResult = useSuspenseQuery({
     queryKey: ['globalTranslations'],
     queryFn: () => getAllTranslations(),
     staleTime: Infinity, // 최초 1회만 호출 후 캐싱

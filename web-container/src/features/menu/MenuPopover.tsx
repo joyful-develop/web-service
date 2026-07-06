@@ -2,33 +2,27 @@ import { useEffect } from 'react';
 
 import { Link } from 'react-router';
 
+import { useShallow } from 'zustand/react/shallow';
+
 import type { MenuItem } from '@/features/menu/menu.type.ts';
-// import { useMenuQuery } from '@/features/menu/useMenuQuery.ts';
 import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
 import { Button, buttonVariants } from '@/shared/components/shadcn-ui/button.tsx';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/shadcn-ui/popover.tsx';
 
 import { HeroIcon } from '@shared/icons/HeroIcon.tsx';
-import type { ApiRequest } from '@shared/types/api.types.ts';
 import { cn } from '@shared/utils/tw-utils.ts';
 
 export const MenuPopover = () => {
-  const { themeColor, fetchUiSettings } = useUiSettingsStore();
-
-  useEffect(() => {
-    if (!themeColor) {
-      const request: ApiRequest = { userId: '123456' };
-      fetchUiSettings(request);
-    }
-  }, [fetchUiSettings, themeColor]);
-
-  const { isMenuPanelOpen, setIsMenuPanelOpen, setSelectedMenuId } = useMenuStore();
-
-  // 💡 파라미터를 넘겨주면, 스토어의 값이 바뀔 때마다 useMenuQuery가 자동으로 반응합니다.
-  const reqeust: ApiRequest = { userId: '123456' };
-  const { getMenus, menus, isLoading } = useMenuStore();
-  getMenus(reqeust);
+  const themeColor = useUiSettingsStore((state) => state.themeColor);
+  const { isMenuPanelOpen, menus, setIsMenuPanelOpen, setSelectedMenuId } = useMenuStore(
+    useShallow((state) => ({
+      menus: state.menus,
+      isMenuPanelOpen: state.isMenuPanelOpen,
+      setIsMenuPanelOpen: state.setIsMenuPanelOpen,
+      setSelectedMenuId: state.setSelectedMenuId,
+    }))
+  );
 
   useEffect(() => {
     if (menus && menus.length > 0) {
@@ -36,14 +30,6 @@ export const MenuPopover = () => {
       setSelectedMenuId(currentMenu ? currentMenu.id : null);
     }
   }, [setSelectedMenuId]);
-
-  if (isLoading) {
-    return (
-      <div className='bg-background text-foreground flex h-screen w-screen items-center justify-center'>
-        <p className='text-muted-foreground animate-pulse text-sm font-medium'>Menu Loading...</p>
-      </div>
-    );
-  }
 
   const menuColClass = 'md:grid-cols-2';
   const menuItemClass = cn(
@@ -119,94 +105,91 @@ export const MenuPopover = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent data-testid='menu-popover' className='w-fit p-4' side='bottom' align='start' sideOffset={8}>
-        {isLoading && <div className='text-muted-foreground p-2 text-center text-sm'>로딩 중...</div>}
-        {menus && (
-          <div className='flex'>
-            <div className='mr-6 min-w-3xs border-r pr-6'>
-              <div>
-                <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                  최근 메뉴
-                </div>
-                <div className='flex flex-col'>
-                  <Link
-                    key='1'
-                    to='/'
-                    className={menuItemClass}
-                    onClick={() => handleMenuClick(menus2[0].id)}
-                    data-testid={`menu-item-${menus2[0].id}`}>
-                    <span>Home</span>
-                  </Link>
-                  <Link
-                    key='2'
-                    to='/about'
-                    className={menuItemClass}
-                    onClick={() => handleMenuClick(menus2[1].id)}
-                    data-testid={`menu-item-${menus2[1].id}`}>
-                    <span>About</span>
-                  </Link>
-                  <Link
-                    key='3'
-                    to='/error'
-                    className={menuItemClass}
-                    onClick={() => handleMenuClick(menus2[2].id)}
-                    data-testid={`menu-item-${menus2[2].id}`}>
-                    <span>Error</span>
-                  </Link>
-                </div>
+        <div className='flex'>
+          <div className='mr-6 min-w-3xs border-r pr-6'>
+            <div>
+              <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
+                최근 메뉴
               </div>
-            </div>
-            <div className={`grid min-w-3xs gap-2 md:min-w-md md:gap-6 ${menuColClass}`}>
-              <div>
-                <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                  최근 메뉴
-                </div>
-                <div className='flex flex-col'>
-                  <Link key='1' to='/' className={menuItemClass} onClick={() => handleMenuClick(menus2[0].id)}>
-                    <span>Home</span>
-                  </Link>
-                  <Link key='2' to='/about' className={menuItemClass} onClick={() => handleMenuClick(menus2[1].id)}>
-                    <span>About</span>
-                  </Link>
-                  <Link key='3' to='/error' className={menuItemClass} onClick={() => handleMenuClick(menus2[2].id)}>
-                    <span>Error</span>
-                  </Link>
-                </div>
-              </div>
-              <div>
-                <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                  최근 메뉴
-                </div>
-                <div className='flex flex-col'>
-                  <Link key='1' to='/' className={menuItemClass} onClick={() => handleMenuClick(menus2[0].id)}>
-                    <span>Home</span>
-                  </Link>
-                  <Link key='2' to='/about' className={menuItemClass} onClick={() => handleMenuClick(menus2[1].id)}>
-                    <span>About</span>
-                  </Link>
-                  <Link key='3' to='/error' className={menuItemClass} onClick={() => handleMenuClick(menus2[2].id)}>
-                    <span>Error</span>
-                  </Link>
-                </div>
-              </div>
-              <div>
-                <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
-                  최근 메뉴
-                </div>
-                <div className='flex flex-col'>
-                  <Link key='1' to='/' className={menuItemClass} onClick={() => handleMenuClick(menus2[0].id)}>
-                    <span>Home</span>
-                  </Link>
-                  <Link key='2' to='/about' className={menuItemClass} onClick={() => handleMenuClick(menus2[1].id)}>
-                    <span>About</span>
-                  </Link>
-                  <Link key='3' to='/error' className={menuItemClass} onClick={() => handleMenuClick(menus2[2].id)}>
-                    <span>Error</span>
-                  </Link>
-                </div>
+              <div className='flex flex-col'>
+                <Link
+                  key='1'
+                  to='/'
+                  className={menuItemClass}
+                  onClick={() => handleMenuClick(menus2[0].id)}
+                  data-testid={`menu-item-${menus2[0].id}`}>
+                  <span>Home</span>
+                </Link>
+                <Link
+                  key='2'
+                  to='/about'
+                  className={menuItemClass}
+                  onClick={() => handleMenuClick(menus2[1].id)}
+                  data-testid={`menu-item-${menus2[1].id}`}>
+                  <span>About</span>
+                </Link>
+                <Link
+                  key='3'
+                  to='/error'
+                  className={menuItemClass}
+                  onClick={() => handleMenuClick(menus2[2].id)}
+                  data-testid={`menu-item-${menus2[2].id}`}>
+                  <span>Error</span>
+                </Link>
               </div>
             </div>
           </div>
-        )}
+          <div className={`grid min-w-3xs gap-2 md:min-w-md md:gap-6 ${menuColClass}`}>
+            <div>
+              <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
+                최근 메뉴
+              </div>
+              <div className='flex flex-col'>
+                <Link key='1' to='/' className={menuItemClass} onClick={() => handleMenuClick(menus2[0].id)}>
+                  <span>Home</span>
+                </Link>
+                <Link key='2' to='/about' className={menuItemClass} onClick={() => handleMenuClick(menus2[1].id)}>
+                  <span>About</span>
+                </Link>
+                <Link key='3' to='/error' className={menuItemClass} onClick={() => handleMenuClick(menus2[2].id)}>
+                  <span>Error</span>
+                </Link>
+              </div>
+            </div>
+            <div>
+              <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
+                최근 메뉴
+              </div>
+              <div className='flex flex-col'>
+                <Link key='1' to='/' className={menuItemClass} onClick={() => handleMenuClick(menus2[0].id)}>
+                  <span>Home</span>
+                </Link>
+                <Link key='2' to='/about' className={menuItemClass} onClick={() => handleMenuClick(menus2[1].id)}>
+                  <span>About</span>
+                </Link>
+                <Link key='3' to='/error' className={menuItemClass} onClick={() => handleMenuClick(menus2[2].id)}>
+                  <span>Error</span>
+                </Link>
+              </div>
+            </div>
+            <div>
+              <div className='text-foreground border-foreground mb-1 border-b px-2 py-1.5 text-sm font-bold'>
+                최근 메뉴
+              </div>
+              <div className='flex flex-col'>
+                <Link key='1' to='/' className={menuItemClass} onClick={() => handleMenuClick(menus2[0].id)}>
+                  <span>Home</span>
+                </Link>
+                <Link key='2' to='/about' className={menuItemClass} onClick={() => handleMenuClick(menus2[1].id)}>
+                  <span>About</span>
+                </Link>
+                <Link key='3' to='/error' className={menuItemClass} onClick={() => handleMenuClick(menus2[2].id)}>
+                  <span>Error</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </PopoverContent>
     </Popover>
   );
