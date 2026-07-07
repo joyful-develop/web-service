@@ -43,8 +43,8 @@ describe('TodoForm 컴포넌트 테스트 (TypeScript)', () => {
     });
 
     // 5. 타입이 보장된 인풋 밸류 초기화 확인
-    expect(titleInput.value).toBe('');
-    expect(descInput.value).toBe('');
+    expect(titleInput.value).toEqual('');
+    expect(descInput.value).toEqual('');
 
     alertMock.mockRestore();
   });

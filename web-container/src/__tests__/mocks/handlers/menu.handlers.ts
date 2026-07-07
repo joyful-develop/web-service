@@ -41,7 +41,7 @@ export const menuHandlers = [
               localPath: 'pages/About/About',
               remoteUrl: null,
               icon: null,
-              isDefault: true,
+              isDefault: false,
               order: 1,
               parentId: null,
               children: null,

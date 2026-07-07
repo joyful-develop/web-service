@@ -1,56 +1,33 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { createBrowserRouter, type LoaderFunction, type ActionFunction, RouterProvider, Outlet } from 'react-router';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router';
 
 import RootLayout from '@/app/layouts/RootLayout.tsx';
 import CentralErrorBoundary from '@/app/routers/CentralErrorBoundary.tsx';
+import { createDynamicComponent } from '@/app/routers/lazy-loader.tsx';
 import RootErrorBoundary from '@/app/routers/RootErrorBoundary.tsx';
 import { useMenuQuery } from '@/features/menu/useMenuQuery.ts';
-import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import Forbidden from '@/pages/Forbidden.tsx';
 import Login from '@/pages/Login.tsx';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
 
-interface Pages {
-  [key: string]: {
-    default: React.ComponentType<object>;
-    loader?: LoaderFunction;
-    action?: ActionFunction;
-    ErrorBoundary?: React.ComponentType<object>;
-  };
-}
-
 export default function AppRouter() {
   const request: ApiRequest = { userId: '123456' };
-  useMenuQuery(request);
-  const menus = useMenuStore((state) => state.menus);
+  const { data: menus } = useMenuQuery(request);
 
   const router = useMemo(() => {
-    if (menus.length === 0) return null;
+    const safeMenus = menus || [];
 
-    const pages: Pages = import.meta.glob('../../pages/**/*.tsx', { eager: true });
-
-    const dynamicRoutes = menus.map((menu) => {
-      const path = `../../${menu.localPath}.tsx`;
-      if (path in pages) {
-        const TargetComponent = pages[path].default;
-        return {
-          index: menu.isDefault,
-          path: menu.path.toLowerCase(),
-          element: <TargetComponent />,
-          loader: pages[path]?.loader as LoaderFunction | undefined,
-          action: pages[path]?.action as ActionFunction | undefined,
-          ErrorBoundary: pages[path]?.ErrorBoundary,
-        };
-      } else {
-        return {
-          index: menu.isDefault,
-          path: menu.path.toLowerCase(),
-          element: <div>Not Found</div>,
-        };
-      }
+    const dynamicRoutes = safeMenus.map((menu) => {
+      const isDefault = !!menu.isDefault;
+      return {
+        // index 라우트는 path 속성을 가지면 안 됨 (React Router 규칙)
+        ...(isDefault ? { index: true } : { path: menu.path.toLowerCase() }),
+        // 라우터가 이 경로에 접근하는 순간 팩토리 함수가 실행되면서
+        // { Component, loader, action, ErrorBoundary } 객체를 통째로 받아와 세팅
+        lazy: createDynamicComponent(menu.type, menu.path, menu.localPath, menu.remoteUrl),
+      };
     });
-
     console.log('Generated routes', dynamicRoutes);
 
     return createBrowserRouter([
@@ -65,7 +42,7 @@ export default function AppRouter() {
             children: [
               {
                 errorElement: <CentralErrorBoundary />,
-                children: [...dynamicRoutes],
+                children: dynamicRoutes,
               },
             ],
           },
@@ -81,10 +58,6 @@ export default function AppRouter() {
       },
     ]);
   }, [menus]);
-
-  if (!router) {
-    return <div>URL 라우팅 테이블 구성 중 ...</div>;
-  }
 
   return <RouterProvider router={router} />;
 }

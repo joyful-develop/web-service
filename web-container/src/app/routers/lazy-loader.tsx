@@ -1,7 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
+
+import type { ActionFunction, LoaderFunction } from 'react-router';
+
+import NotFound from '@/pages/NotFound.tsx';
+
 import { init, loadRemote } from '@module-federation/runtime';
 
-const localModules = import.meta.glob('../../pages/**/*.tsx');
+interface Pages {
+  [key: string]: {
+    default: React.ComponentType<object>;
+    Component?: React.ComponentType<object>;
+    loader?: LoaderFunction;
+    action?: ActionFunction;
+    ErrorBoundary?: React.ComponentType<object>;
+  };
+}
+
+const localModules: Pages = import.meta.glob('../../pages/**/*.tsx', { eager: true });
+
+const initializedRemotes = new Set<string>();
 
 export function createDynamicComponent(
   type: 'local' | 'remote',
@@ -16,19 +33,15 @@ export function createDynamicComponent(
     if (type === 'local') {
       if (!localPath) throw new Error(`Path(${path})의 local path 가 누락 되었습니다.`);
 
-      const importFunc = localModules[`../../${localPath}.tsx`];
-      if (!importFunc) {
-        const notFound = (await import('../../pages/NotFound.tsx')) as any;
-        return { Component: notFound.Component || notFound.default };
+      const module = localModules[`../../${localPath}.tsx`];
+      if (!module) {
+        return { Component: NotFound }; // element가 아닌 Component 타입으로 반환
       }
 
-      const module = (await importFunc()) as any;
-
       return {
-        // export function Component가 없으면 기본 export(default)를 사용
-        Component: module?.Component || module.default,
-        loader: module?.loader,
-        action: module?.action,
+        Component: module.Component || module.default, // 규격 통일
+        loader: module?.loader as LoaderFunction | undefined,
+        action: module?.action as ActionFunction | undefined,
         ErrorBoundary: module?.ErrorBoundary,
       };
     }
@@ -38,17 +51,21 @@ export function createDynamicComponent(
     // ------------------------------------------
     if (!remoteUrl) throw new Error(`Path(${path})의 Remote URL 이 누락 되었습니다.`);
 
-    init({
-      name: 'hostApp',
-      remotes: [
-        {
-          name: 'remoteContainer', // 고유 네임스페이스
-          entry: remoteUrl,
-        },
-      ],
-    });
+    if (!initializedRemotes.has(remoteUrl)) {
+      init({
+        name: 'hostApp',
+        remotes: [
+          {
+            name: 'remoteContainer',
+            entry: remoteUrl,
+          },
+        ],
+      });
+      initializedRemotes.add(remoteUrl);
+    }
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const module = await loadRemote<any>(`remoteContainer/${localPath}`);
       if (!module) throw new Error(`모듈을 찾을 수 없습니다: ${localPath}`);
 

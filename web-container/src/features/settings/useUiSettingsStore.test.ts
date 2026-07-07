@@ -17,6 +17,6 @@ describe('UI Settings Store', () => {
     const request: ApiRequest = { userId: '123456' };
     await useUiSettingsStore.getState().fetchUiSettings(request);
 
-    expect(useUiSettingsStore.getState().themeColor).toBe('#8b00ff');
+    expect(useUiSettingsStore.getState().themeColor).toEqual('#8b00ff');
   });
 });

@@ -29,7 +29,7 @@ export const MenuPopover = () => {
       const currentMenu = menus.find((m) => m.path === location.pathname);
       setSelectedMenuId(currentMenu ? currentMenu.id : null);
     }
-  }, [setSelectedMenuId]);
+  }, [menus, setSelectedMenuId]);
 
   const menuColClass = 'md:grid-cols-2';
   const menuItemClass = cn(
