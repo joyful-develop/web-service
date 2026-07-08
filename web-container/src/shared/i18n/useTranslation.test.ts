@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 
-import { createWrapper } from '@/__tests__/test-utils.tsx';
+import { createWrapper } from '@/__tests__/query-client-wrapper.tsx';
 import { useTranslationQuery } from '@/shared/i18n/useTranslationQuery.ts';
 import i18n from '@/shared/lib/i18n.ts';
 

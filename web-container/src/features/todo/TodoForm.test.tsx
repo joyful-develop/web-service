@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
 
 import { server } from '@/__tests__/mocks/server.ts';
-import { globalErrorMock, renderWithClient } from '@/__tests__/test-utils.tsx';
+import { globalErrorMock, renderWithClient } from '@/__tests__/query-client-wrapper.tsx';
 import { TodoForm } from '@/features/todo/TodoForm.tsx';
 
 import { screen, waitFor } from '@testing-library/react';

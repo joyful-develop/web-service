@@ -2,7 +2,7 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { createWrapper } from '@/__tests__/test-utils.tsx';
+import { createWrapper } from '@/__tests__/query-client-wrapper.tsx';
 import { MenuPopover } from '@/features/menu/MenuPopover.tsx';
 import { useMenuQuery } from '@/features/menu/useMenuQuery.ts';
 import { useMenuStore } from '@/features/menu/useMenuStore.ts';
