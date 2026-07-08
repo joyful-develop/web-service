@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import RootLayout from '@/app/layouts/RootLayout.tsx';
-import CentralErrorBoundary from '@/app/routers/CentralErrorBoundary.tsx';
+import GlobalErrorBoundary from '@/app/routers/GlobalErrorBoundary.tsx';
 import { createDynamicComponent } from '@/app/routers/lazy-loader.tsx';
-import RootErrorBoundary from '@/app/routers/RootErrorBoundary.tsx';
 import { useMenuQuery } from '@/features/menu/useMenuQuery.ts';
 import Forbidden from '@/pages/Forbidden.tsx';
 import Login from '@/pages/Login.tsx';
+import NotFound from '@/pages/NotFound.tsx';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
 
 export default function AppRouter() {
@@ -34,15 +34,15 @@ export default function AppRouter() {
       {
         path: '/',
         element: <RootLayout />,
-        errorElement: <RootErrorBoundary />,
+        errorElement: <GlobalErrorBoundary />,
         children: [
           {
-            element: <Outlet />,
-            errorElement: <CentralErrorBoundary />,
+            errorElement: <GlobalErrorBoundary />,
             children: [
+              ...dynamicRoutes,
               {
-                errorElement: <CentralErrorBoundary />,
-                children: dynamicRoutes,
+                path: '*',
+                element: <NotFound />,
               },
             ],
           },

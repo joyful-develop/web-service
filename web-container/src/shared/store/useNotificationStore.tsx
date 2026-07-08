@@ -8,14 +8,14 @@ import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 import type { AlertType, ApiError } from '@/shared/types/api.types.ts';
 import { errorParser } from '@/shared/utils/error-parser.ts';
 
-interface MessageState {
+interface NotificationState {
   lastMessage: string | null;
   lastType: AlertType | null;
   notify: (type: AlertType, message?: string, description?: string | null, error?: Error | AxiosError | string) => void;
   reset: () => void;
 }
 
-export const useMessageStore = create<MessageState>((set) => ({
+export const useNotificationStore = create<NotificationState>((set) => ({
   lastMessage: null,
   lastType: null,
 
@@ -77,11 +77,12 @@ export const useMessageStore = create<MessageState>((set) => ({
 
 export const globalNotifier = {
   success: (message: string, description?: string) =>
-    useMessageStore.getState().notify('success', message, description),
-  info: (message: string, description?: string) => useMessageStore.getState().notify('info', message, description),
-  warn: (message: string, description?: string) => useMessageStore.getState().notify('warning', message, description),
+    useNotificationStore.getState().notify('success', message, description),
+  info: (message: string, description?: string) => useNotificationStore.getState().notify('info', message, description),
+  warn: (message: string, description?: string) =>
+    useNotificationStore.getState().notify('warning', message, description),
   error: (message?: string, description?: string, error?: Error | AxiosError | string) =>
-    useMessageStore.getState().notify('error', message, description, error),
+    useNotificationStore.getState().notify('error', message, description, error),
   critical: (message?: string, description?: string, error?: Error | AxiosError | string) =>
-    useMessageStore.getState().notify('critical', message, description, error),
+    useNotificationStore.getState().notify('critical', message, description, error),
 };

@@ -1,5 +1,3 @@
-// import { RouterProvider } from 'react-router';
-
 import { Suspense, useEffect } from 'react';
 
 import { Toaster } from 'sonner';

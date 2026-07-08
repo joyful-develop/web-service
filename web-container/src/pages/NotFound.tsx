@@ -1,29 +1,12 @@
-// import { AxiosError } from 'axios';
+import ErrorBoundary from '@/shared/components/ErrorBoundary.tsx';
 
 export default function NotFound() {
-  // throw new AxiosError(
-  //   '요청에 실패했습니다', // message
-  //   'ERR_BAD_REQUEST', // code
-  //   null, // request
-  //   {
-  //     // response
-  //     data: {
-  //       success: false,
-  //       status: 404,
-  //       message: '',
-  //       description: '',
-  //       data: null,
-  //       error: {},
-  //     },
-  //     status: 404,
-  //     statusText: 'Bad Request',
-  //     headers: {},
-  //     config: null,
-  //   }
-  // );
   return (
-    <>
-      <h1 className='text-red-500'>Not Found</h1>
-    </>
+    <ErrorBoundary
+      message={`Router Error (404, Not Found)`}
+      description={`요청하신 페이지를 찾을 수 없습니다.\n운영자에게 문의하시길 바랍니다.`}
+      isEnableRetry={true}
+      isEnableGoToHome={true}
+    />
   );
 }

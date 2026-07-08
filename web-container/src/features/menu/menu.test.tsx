@@ -89,7 +89,7 @@ describe('Menu 통합 테스트', () => {
           localPath: 'pages/About/About',
           remoteUrl: null,
           icon: null,
-          isDefault: true,
+          isDefault: false,
           order: 1,
           parentId: null,
           children: null,

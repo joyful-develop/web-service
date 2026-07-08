@@ -1,6 +1,6 @@
 import { redirect } from 'react-router';
 
-import { globalNotifier } from '@/shared/store/useMessageStore.tsx';
+import { globalNotifier } from '@/shared/store/useNotificationStore.tsx';
 import { errorParser } from '@/shared/utils/error-parser.ts';
 
 import { Query } from '@tanstack/react-query';

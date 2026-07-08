@@ -1,4 +1,4 @@
-import { globalNotifier } from '@/shared/store/useMessageStore.tsx';
+import { globalNotifier } from '@/shared/store/useNotificationStore.tsx';
 
 import { Mutation, QueryClient } from '@tanstack/react-query';
 

@@ -25,10 +25,8 @@ export const MenuPopover = () => {
   );
 
   useEffect(() => {
-    if (menus && menus.length > 0) {
-      const currentMenu = menus.find((m) => m.path === location.pathname);
-      setSelectedMenuId(currentMenu ? currentMenu.id : null);
-    }
+    const currentMenu = menus.find((m) => m.path === location.pathname);
+    setSelectedMenuId(currentMenu ? currentMenu.id : null);
   }, [menus, setSelectedMenuId]);
 
   const menuColClass = 'md:grid-cols-2';

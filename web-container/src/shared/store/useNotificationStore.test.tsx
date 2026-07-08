@@ -2,7 +2,7 @@ import { toast } from 'sonner';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
-import { useMessageStore } from '@/shared/store/useMessageStore.tsx';
+import { useNotificationStore } from '@/shared/store/useNotificationStore.tsx';
 
 import { waitFor } from '@testing-library/react';
 
@@ -15,12 +15,12 @@ vi.mock('sonner', () => {
 
 describe('Message Store 통합 테스트', () => {
   beforeEach(() => {
-    useMessageStore.getState().reset();
+    useNotificationStore.getState().reset();
     vi.clearAllMocks();
   });
 
   it('초기값은 모두 null 이어야 한다.', () => {
-    const state = useMessageStore.getState();
+    const state = useNotificationStore.getState();
     expect(state.lastMessage).toBeNull();
     expect(state.lastType).toBeNull();
   });
@@ -30,9 +30,9 @@ describe('Message Store 통합 테스트', () => {
     const message = '테스트 메시지';
     const description = '테스트 상세 정보';
 
-    useMessageStore.getState().notify(type, message, description);
+    useNotificationStore.getState().notify(type, message, description);
 
-    const updatedState = useMessageStore.getState();
+    const updatedState = useNotificationStore.getState();
     expect(updatedState.lastType).toEqual(type);
     expect(updatedState.lastMessage).toEqual(message);
 
@@ -52,9 +52,9 @@ describe('Message Store 통합 테스트', () => {
     const message = '테스트 메시지';
     const description = '테스트 상세 정보';
 
-    useMessageStore.getState().notify(type, message, description);
+    useNotificationStore.getState().notify(type, message, description);
 
-    const updatedState = useMessageStore.getState();
+    const updatedState = useNotificationStore.getState();
     expect(updatedState.lastType).toEqual(type);
     expect(updatedState.lastMessage).toEqual(message);
 
@@ -74,9 +74,9 @@ describe('Message Store 통합 테스트', () => {
     const message = '테스트 메시지';
     const description = '테스트 상세 정보';
 
-    useMessageStore.getState().notify(type, message, description);
+    useNotificationStore.getState().notify(type, message, description);
 
-    const updatedState = useMessageStore.getState();
+    const updatedState = useNotificationStore.getState();
     expect(updatedState.lastType).toEqual(type);
     expect(updatedState.lastMessage).toEqual(message);
 
@@ -96,9 +96,9 @@ describe('Message Store 통합 테스트', () => {
     const message = '테스트 메시지';
     const description = '테스트 상세 정보';
 
-    useMessageStore.getState().notify(type, message, description);
+    useNotificationStore.getState().notify(type, message, description);
 
-    const updatedState = useMessageStore.getState();
+    const updatedState = useNotificationStore.getState();
     expect(updatedState.lastType).toEqual(type);
     expect(updatedState.lastMessage).toEqual(message);
 
@@ -118,9 +118,9 @@ describe('Message Store 통합 테스트', () => {
     const message = '테스트 메시지';
     const description = '테스트 상세 정보';
 
-    useMessageStore.getState().notify(type, message, description);
+    useNotificationStore.getState().notify(type, message, description);
 
-    const updatedState = useMessageStore.getState();
+    const updatedState = useNotificationStore.getState();
     expect(updatedState.lastType).toEqual(type);
     expect(updatedState.lastMessage).toEqual(message);
 
@@ -145,10 +145,10 @@ describe('Message Store 통합 테스트', () => {
     const message = '테스트 메시지';
     const description = '테스트 상세 정보';
 
-    useMessageStore.getState().notify(type, message, description);
-    useMessageStore.getState().reset();
+    useNotificationStore.getState().notify(type, message, description);
+    useNotificationStore.getState().reset();
 
-    const state = useMessageStore.getState();
+    const state = useNotificationStore.getState();
     expect(state.lastType).toBeNull();
     expect(state.lastMessage).toBeNull();
   });
