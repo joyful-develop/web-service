@@ -8,9 +8,11 @@ export interface Post {
 
 export const postService = {
   getPosts: async (request: ApiRequest) => {
-    return axiosInstance.post<ApiResponse<Post[]>>('getPosts', request);
+    const { data } = await axiosInstance.post<ApiResponse<Post[]>>('getPosts', request);
+    return data;
   },
   updatePosts: async (request: ApiRequest) => {
-    return axiosInstance.post<ApiResponse<number>>('updatePosts', request);
+    const { data } = await axiosInstance.post<ApiResponse<number>>('updatePosts', request);
+    return data;
   },
 };
