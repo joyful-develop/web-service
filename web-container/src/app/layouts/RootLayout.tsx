@@ -2,13 +2,10 @@ import { Suspense } from 'react';
 
 import { Outlet } from 'react-router';
 
-// import { toast, Toaster } from 'sonner';
-
 import { CollapsibleMenus } from '@/app/layouts/components/CollapsibleMenus.tsx';
 import { Footer } from '@/app/layouts/components/Footer.tsx';
 import { MenuBar } from '@/app/layouts/components/MenuBar.tsx';
-// import { queryClient } from '@/app/querys/query-client.ts';
-import { GlobalLoadingFallback } from '@/app/routers/GlobalLoadingFallback.tsx';
+import { GlobalSuspenseFallback } from '@/app/layouts/GlobalSuspenseFallback.tsx';
 import { SidebarInset, SidebarProvider } from '@/shared/components/shadcn-ui/sidebar.tsx';
 import { useTranslationQuery } from '@/shared/i18n/useTranslationQuery.ts';
 
@@ -35,7 +32,7 @@ export default function RootLayout() {
           <CollapsibleMenus />
           <SidebarInset>
             <main>
-              <Suspense fallback={<GlobalLoadingFallback />}>
+              <Suspense fallback={<GlobalSuspenseFallback />}>
                 <Outlet />
               </Suspense>
             </main>

@@ -15,7 +15,6 @@ export const queryClient = new QueryClient({
     queries: {
       throwOnError: false,
       retry: false,
-      refetchOnWindowFocus: false, // 다른 창 갔다가 돌아와도 다국어 자동 재호출 차단
     },
     mutations: {
       throwOnError: false,
