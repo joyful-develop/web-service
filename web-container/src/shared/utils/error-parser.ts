@@ -56,10 +56,9 @@ export const errorParser = (
         }
       } else if (request) {
         message = 'Api 서버로부터 응답이 없습니다. 네트워크 연결을 확인해주세요.';
-        description = request;
+        description = JSON.stringify(request);
       } else {
         message = 'Api 요청을 설정하는 중에 에러가 발생했습니다.';
-        description = request;
       }
     } else if (isRouteErrorResponse(error)) {
       const errorData = error.data as ApiError;
