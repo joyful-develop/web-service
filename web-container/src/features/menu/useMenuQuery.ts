@@ -12,8 +12,10 @@ export function useMenuQuery(request: ApiRequest) {
   const queryResult = useSuspenseQuery({
     queryKey: ['menus', request],
     queryFn: () => menuService.getUserMenu(request),
-    staleTime: 10 * 60 * 1000, // 10분 동안 fresh 상태 유지
-    gcTime: 15 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false, // 브라우저 창을 다시 포커스해도 재요청 안 함
+    refetchOnReconnect: false, // 네트워크가 다시 연결되어도 재요청 안 함
   });
 
   useEffect(() => {

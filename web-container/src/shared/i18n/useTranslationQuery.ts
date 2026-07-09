@@ -11,8 +11,10 @@ export function useTranslationQuery() {
   const queryResult = useSuspenseQuery({
     queryKey: ['globalTranslations'],
     queryFn: () => getAllTranslations(),
-    staleTime: Infinity, // 최초 1회만 호출 후 캐싱
-    gcTime: Infinity, // 메모리 캐시 영구 보존
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnWindowFocus: false, // 브라우저 창을 다시 포커스해도 재요청 안 함
+    refetchOnReconnect: false, // 네트워크가 다시 연결되어도 재요청 안 함
   });
 
   useEffect(() => {
