@@ -1,3 +1,8 @@
+import { Suspense } from 'react';
+
+import { useLocation, type LoaderFunction } from 'react-router';
+
+import { GlobalSuspenseFallback } from '@/app/layouts/GlobalSuspenseFallback.tsx';
 import { postService } from '@/features/post/post-service.ts';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
 
@@ -11,18 +16,21 @@ export interface Post {
 }
 
 export default function Abort() {
-  // 💡useSuspenseQuery 덕분에 데이터 상태 분기문(?., isLoading)이 완전 제거된 동기식 코딩
+  const location = useLocation();
+
   const { data: posts } = useSuspenseQuery<Post[]>({
     queryKey: ['posts'],
     queryFn: async () => {
       const request: ApiRequest = { userId: '123456' };
       const response = await postService.getPosts(request);
-      return response.data;
+      return response || [];
     },
+    staleTime: 0,
+    gcTime: 0,
   });
 
   return (
-    <div>
+    <Suspense key={location.key} fallback={<GlobalSuspenseFallback />}>
       <div className='space-y-4'>
         <h1 className='text-xl font-bold tracking-tight text-slate-900'>피드 목록</h1>
         <div className='divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm'>
@@ -35,15 +43,13 @@ export default function Abort() {
       </div>
       <CreatePost />
       <TodoForm />
-    </div>
+    </Suspense>
   );
 }
 
-export async function aboutLoader() {
-  const response = await fetch('https://example.com');
-
-  if (!response.ok) {
-    throw new Response('데이터를 가져오지 못했습니다.', { status: response.status });
-  }
-  return response.json();
-}
+export const loader: LoaderFunction = async () => {
+  return {
+    message: '타입 안정성이 보장된 데이터 입니다.',
+    timestamp: Date.now(),
+  };
+};
