@@ -4,8 +4,8 @@ import { Toaster } from 'sonner';
 
 import { queryClient } from '@/app/querys/query-client.ts';
 import AppRouter from '@/app/routers/AppRouter.tsx';
+import { ThemeProvider } from '@/app/theme/ThemeProvider.tsx';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
-import { ThemeProvider } from '@/features/theme/ThemeProvider.tsx';
 import { TooltipProvider } from '@/shared/components/shadcn-ui/tooltip.tsx';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
 

@@ -1,6 +1,6 @@
 import { Moon, Sun } from 'lucide-react';
 
-import { useTheme } from '@/features/theme/ThemeProvider.tsx';
+import { useTheme } from '@/app/theme/ThemeProvider.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
   DropdownMenu,
