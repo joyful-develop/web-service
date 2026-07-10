@@ -11,6 +11,7 @@ export interface MenuItem {
   remoteUrl: string | null;
   icon: string | null;
   isDefault: boolean;
+  isLayout: boolean;
   order: number;
   parentId: string | null;
   children: MenuItem[] | null;
