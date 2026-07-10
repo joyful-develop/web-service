@@ -1,6 +1,6 @@
 import { UserProfile } from '@/app/layouts/components/UserProfile.tsx';
+import { ModeToggle } from '@/app/theme/ModeToggle.tsx';
 import { MenuPopover } from '@/features/menu/MenuPopover.tsx';
-import { ModeToggle } from '@/features/theme/ModeToggle.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn-ui/tooltip.tsx';
 import { useI18nStore } from '@/shared/i18n/useI18nStore.ts';

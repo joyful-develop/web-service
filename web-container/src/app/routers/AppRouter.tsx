@@ -1,10 +1,17 @@
 import { useMemo } from 'react';
 
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  type IndexRouteObject,
+  type NonIndexRouteObject,
+  type RouteObject,
+} from 'react-router';
 
 import RootLayout from '@/app/layouts/RootLayout.tsx';
 import GlobalErrorBoundary from '@/app/routers/GlobalErrorBoundary.tsx';
 import { createDynamicComponent } from '@/app/routers/lazy-loader.tsx';
+import type { MenuItem } from '@/features/menu/menu.type.ts';
 import { useMenuQuery } from '@/features/menu/useMenuQuery.ts';
 import Forbidden from '@/pages/Forbidden.tsx';
 import Login from '@/pages/Login.tsx';
@@ -18,16 +25,37 @@ export default function AppRouter() {
   const router = useMemo(() => {
     const safeMenus = menus || [];
 
-    const dynamicRoutes = safeMenus.map((menu) => {
-      const isDefault = !!menu.isDefault;
-      return {
-        // index 라우트는 path 속성을 가지면 안 됨 (React Router 규칙)
-        ...(isDefault ? { index: true } : { path: menu.path.toLowerCase() }),
-        // 라우터가 이 경로에 접근하는 순간 팩토리 함수가 실행되면서
-        // { Component, loader, action, ErrorBoundary } 객체를 통째로 받아와 세팅
-        lazy: createDynamicComponent(menu.type, menu.path, menu.localPath, menu.remoteUrl),
-      };
-    });
+    const formatRoutes = (menuList: MenuItem[]): RouteObject[] => {
+      return menuList.map((menu): RouteObject => {
+        const isDefault = !!menu.isDefault;
+        const hasChildren = menu.children && menu.children.length > 0;
+
+        // 공통 속성 정의
+        const commonProps = {
+          lazy: createDynamicComponent(menu.type, menu.path, menu.localPath, menu.remoteUrl),
+          ...(menu.isLayout ? { errorElement: <GlobalErrorBoundary /> } : {}),
+        };
+
+        if (isDefault) {
+          // 1. Index 라우트 타입 구조 명시 (path는 완전히 제외)
+          const indexRoute: IndexRouteObject = {
+            ...commonProps,
+            index: true,
+          };
+          return indexRoute;
+        } else {
+          // 2. Non-Index 라우트 타입 구조 명시 (index는 완전히 제외 또는 undefined)
+          const pathRoute: NonIndexRouteObject = {
+            ...commonProps,
+            path: menu.path.toLowerCase(),
+            ...(hasChildren ? { children: formatRoutes(menu.children!) } : {}),
+          };
+          return pathRoute;
+        }
+      });
+    };
+
+    const dynamicRoutes = formatRoutes(safeMenus);
     console.log('Generated routes', dynamicRoutes);
 
     return createBrowserRouter([
