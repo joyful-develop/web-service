@@ -7,7 +7,8 @@
 @import './twLayer/base.css';
 @import './twLayer/components.css';
 @import './twLayer/utility.css';
-@import './font.css';
+@import './pretendard-font.css';
+@import './noto-sans-kr-font.css';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
