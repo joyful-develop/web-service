@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 
 import { CollapsibleMenus } from '@/app/layouts/components/CollapsibleMenus.tsx';
 import { Footer } from '@/app/layouts/components/Footer.tsx';
@@ -22,6 +22,7 @@ export const description = 'A sidebar with a header and a search form.';
 
 export default function RootLayout() {
   useTranslationQuery();
+  const location = useLocation();
 
   return (
     <div className='[--footer-height:calc(--spacing(10))] [--header-height:calc(--spacing(14))] [--menuBar-height:calc(--spacing(14))]'>
@@ -34,7 +35,7 @@ export default function RootLayout() {
           <CollapsibleMenus />
           <SidebarInset>
             <main>
-              <Suspense fallback={<GlobalSuspenseFallback />}>
+              <Suspense key={location.key} fallback={<GlobalSuspenseFallback />}>
                 <Outlet />
               </Suspense>
             </main>

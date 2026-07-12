@@ -1,8 +1,7 @@
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Toaster } from 'sonner';
 
-import { GlobalSuspenseFallback } from '@/app/layouts/GlobalSuspenseFallback.tsx';
 import { queryClient } from '@/app/querys/query-client.ts';
 import AppRouter from '@/app/routers/AppRouter.tsx';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
@@ -27,9 +26,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <TooltipProvider>
-          <Suspense fallback={<GlobalSuspenseFallback />}>
-            <AppRouter />
-          </Suspense>
+          <AppRouter />
           <Toaster />
         </TooltipProvider>
       </ThemeProvider>

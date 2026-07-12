@@ -7,6 +7,7 @@ import { Menu, Settings, LogOut, User, Bell, ShieldCheck } from 'lucide-react';
 // import { SettingsDialog } from '@/features/settings/SettingsDialog.tsx';
 import { SettingsSheet } from '@/features/settings/SettingsSheet.tsx';
 import { ChromeUserPopup } from '@/features/user-config/UserAccountNav.tsx';
+import { UserProfile } from '@/features/user-profile/UserProfile.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn-ui/avatar.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
@@ -120,6 +121,11 @@ export function Header2() {
             <span className='bg-border hidden h-5 w-px sm:block' />
 
             <ChromeUserPopup />
+
+            {/* 세로 구분선 */}
+            <span className='bg-border hidden h-5 w-px sm:block' />
+
+            <UserProfile />
           </div>
         </div>
       </header>

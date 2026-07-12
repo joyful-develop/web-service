@@ -1,8 +1,5 @@
-import { Suspense } from 'react';
+import { type LoaderFunction } from 'react-router';
 
-import { useLocation, type LoaderFunction } from 'react-router';
-
-import { GlobalSuspenseFallback } from '@/app/layouts/GlobalSuspenseFallback.tsx';
 import { CreatePost } from '@/features/post/CreatePost.tsx';
 import { postService } from '@/features/post/post-service.ts';
 import { TodoForm } from '@/features/todo/TodoForm.tsx';
@@ -16,8 +13,6 @@ export interface Post {
 }
 
 export default function Abort() {
-  const location = useLocation();
-
   const { data: posts } = useSuspenseQuery<Post[]>({
     queryKey: ['posts'],
     queryFn: async () => {
@@ -30,7 +25,7 @@ export default function Abort() {
   });
 
   return (
-    <Suspense key={location.key} fallback={<GlobalSuspenseFallback />}>
+    <>
       <div className='space-y-4'>
         <h1 className='text-xl font-bold tracking-tight text-slate-900'>피드 목록</h1>
         <div className='divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm'>
@@ -43,7 +38,7 @@ export default function Abort() {
       </div>
       <CreatePost />
       <TodoForm />
-    </Suspense>
+    </>
   );
 }
 
