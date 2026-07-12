@@ -27,7 +27,6 @@ export default function AppRouter() {
 
     const formatRoutes = (menuList: MenuItem[]): RouteObject[] => {
       return menuList.map((menu): RouteObject => {
-        const isDefault = !!menu.isDefault;
         const hasChildren = menu.children && menu.children.length > 0;
 
         // 공통 속성 정의
@@ -36,15 +35,13 @@ export default function AppRouter() {
           ...(menu.isLayout ? { errorElement: <GlobalErrorBoundary /> } : {}),
         };
 
-        if (isDefault) {
-          // 1. Index 라우트 타입 구조 명시 (path는 완전히 제외)
+        if (menu.isDefault) {
           const indexRoute: IndexRouteObject = {
             ...commonProps,
             index: true,
           };
           return indexRoute;
         } else {
-          // 2. Non-Index 라우트 타입 구조 명시 (index는 완전히 제외 또는 undefined)
           const pathRoute: NonIndexRouteObject = {
             ...commonProps,
             path: menu.path.toLowerCase(),

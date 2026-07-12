@@ -46,6 +46,7 @@ export const MenuPopover = () => {
       localPath: 'pages/Home/Home',
       remoteUrl: null,
       icon: null,
+      isLayout: false,
       isDefault: true,
       order: 1,
       parentId: null,
@@ -62,7 +63,8 @@ export const MenuPopover = () => {
       localPath: 'pages/About/About',
       remoteUrl: null,
       icon: null,
-      isDefault: true,
+      isLayout: false,
+      isDefault: false,
       order: 1,
       parentId: null,
       children: null,
@@ -70,18 +72,88 @@ export const MenuPopover = () => {
     },
     {
       rawId: 3,
-      groupId: 'g3',
+      groupId: '사용자 및 권한 관리',
       id: '3',
-      label: 'Error',
-      path: '/error',
+      label: '사용자 및 권한 관리',
+      path: '/admin/users',
       type: 'local',
-      localPath: 'pages/Error/error',
+      localPath: 'pages/admin/UserManagement',
       remoteUrl: null,
       icon: null,
-      isDefault: true,
+      isLayout: false,
+      isDefault: false,
       order: 1,
       parentId: null,
       children: null,
+      desc: null,
+    },
+    {
+      rawId: 99,
+      groupId: 'g3',
+      id: '99',
+      label: 'Settings',
+      path: '/settings',
+      type: 'local',
+      localPath: 'pages/settings/Layout',
+      remoteUrl: null,
+      icon: null,
+      isLayout: true,
+      isDefault: false,
+      order: 1,
+      parentId: null,
+      children: [
+        {
+          rawId: 991,
+          groupId: 'g4',
+          id: '991',
+          label: 'Profile',
+          path: '/settings',
+          type: 'local',
+          localPath: 'pages/settings/Profile',
+          remoteUrl: null,
+          icon: null,
+          isLayout: false,
+          isDefault: true,
+          order: 1,
+          parentId: null,
+          children: null,
+          desc: null,
+        },
+        {
+          rawId: 992,
+          groupId: 'g5',
+          id: '992',
+          label: 'Appearance',
+          path: '/settings/appearance',
+          type: 'local',
+          localPath: 'pages/settings/Appearance',
+          remoteUrl: null,
+          icon: null,
+          isLayout: false,
+          isDefault: false,
+          order: 1,
+          parentId: null,
+          children: null,
+          desc: null,
+        },
+        {
+          rawId: 993,
+          groupId: 'g6',
+          id: '993',
+          label: 'Security',
+          path: '/settings/security',
+          type: 'local',
+          localPath: 'pages/settings/Security',
+          remoteUrl: null,
+          icon: null,
+          isLayout: false,
+          isDefault: false,
+          order: 1,
+          parentId: null,
+          children: null,
+          desc: null,
+        },
+      ],
       desc: null,
     },
   ];
@@ -128,10 +200,18 @@ export const MenuPopover = () => {
                 </Link>
                 <Link
                   key='3'
-                  to='/error'
+                  to='/admin/users'
                   className={menuItemClass}
                   onClick={() => handleMenuClick(menus2[2].id)}
                   data-testid={`menu-item-${menus2[2].id}`}>
+                  <span>사용자 관리</span>
+                </Link>
+                <Link
+                  key='4'
+                  to='/error'
+                  className={menuItemClass}
+                  onClick={() => handleMenuClick(menus2[3].id)}
+                  data-testid={`menu-item-${menus2[3].id}`}>
                   <span>Error</span>
                 </Link>
               </div>

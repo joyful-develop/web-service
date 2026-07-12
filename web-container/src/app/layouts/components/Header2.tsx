@@ -6,6 +6,7 @@ import { Menu, Settings, LogOut, User, Bell, ShieldCheck } from 'lucide-react';
 
 // import { SettingsDialog } from '@/features/settings/SettingsDialog.tsx';
 import { SettingsSheet } from '@/features/settings/SettingsSheet.tsx';
+import { ChromeUserPopup } from '@/features/user-account/UserAccountNav.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn-ui/avatar.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
@@ -18,7 +19,7 @@ import {
 } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
 import { useAuthStore } from '@/shared/store/useAuthStore.ts';
 
-export function Header() {
+export function Header2() {
   const { user, logout } = useAuthStore();
 
   // ⚙️ 설정 다이얼로그 열림/닫힘 상태 관리
@@ -114,6 +115,11 @@ export function Header() {
                 <Link to='/login'>로그인</Link>
               </Button>
             )}
+
+            {/* 세로 구분선 */}
+            <span className='bg-border hidden h-5 w-px sm:block' />
+
+            <ChromeUserPopup />
           </div>
         </div>
       </header>

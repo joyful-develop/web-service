@@ -8,7 +8,8 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
-// import { federation } from '@module-federation/vite';
+import { federation } from '@module-federation/vite';
+import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 
@@ -47,14 +48,16 @@ export default ({ mode }: { mode: string }) => {
         include: '**/*.svg?react',
       }),
       visualizer(),
-      // federation({
-      //   name: 'hostApp',
-      //   filename: '', //'remoteEntry.js',
-      //   exposes: {
-      //     // './Button': './src/components/Button',
-      //   },
-      //   shared: ['react', 'react-dom'],
-      // }),
+      reactRouter(),
+      federation({
+        name: 'host-admin',
+        remotes: {}, // 런타임에 DB 데이터로 동적 주입
+        shared: {
+          react: { singleton: true },
+          'react-dom': { singleton: true },
+          'react-router': { singleton: true },
+        },
+      }),
     ],
     resolve: {
       alias: [
@@ -118,10 +121,24 @@ export default ({ mode }: { mode: string }) => {
           chunkFileNames: 'assets/[name]-[hash].js',
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('react@') || id.includes('react-dom@') || id.includes('react-router@')) {
+              if (id.includes('@radix-ui') || id.includes('sonner')) {
+                return 'vendor/radix-ui';
+              } else if (id.includes('react-dom@')) {
+                return 'vendor/react-dom';
+              } else if (id.includes('react@') || id.includes('react-router@') || id.includes('react-hook-form@')) {
                 return 'vendor/react';
               } else if (id.includes('msw')) {
                 return 'vendor/msw';
+              } else if (id.includes('axios')) {
+                return 'vendor/axios';
+              } else if (id.includes('@tanstack')) {
+                return 'vendor/tanstack';
+              } else if (id.includes('zod')) {
+                return 'vendor/zod';
+              } else if (id.includes('i18next')) {
+                return 'vendor/i18next';
+              } else if (id.includes('module-federation')) {
+                return 'vendor/module-federation';
               } else if (id.includes('.pnpm')) {
                 return 'vendor/pnpm';
               }
