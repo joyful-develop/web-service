@@ -1,5 +1,5 @@
-import axiosInstance from '@shared/lib/axios-instance.ts';
-import type { ApiRequest, ApiResponse } from '@shared/types/api.types.ts';
+import axiosInstance from '@/shared/lib/axios-instance.ts';
+import type { ApiRequest, ApiResponse } from '@/shared/types/api.types.ts';
 
 export interface Post {
   id?: number;

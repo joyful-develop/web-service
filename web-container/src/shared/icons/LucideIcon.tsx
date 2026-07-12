@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import { icons } from '@shared/icons/lucide-icon-registry.ts';
-import type { IconProps } from '@shared/icons/lucide-icon.d.ts';
+import { icons } from '@/shared/icons/lucide-icon-registry.ts';
+import type { IconProps } from '@/shared/icons/lucide-icon.d.ts';
 
 export function LucideIcon({ name, size = 24, strokeWidth = 2, label, className, ...rest }: IconProps) {
   const Icon = icons[name];

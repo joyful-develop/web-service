@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '@shared/utils/tw-utils.ts';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   return (

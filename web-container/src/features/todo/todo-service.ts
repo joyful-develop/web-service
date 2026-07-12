@@ -1,5 +1,5 @@
-import axiosInstance from '@shared/lib/axios-instance.ts';
-import type { ApiResponse } from '@shared/types/api.types.ts';
+import axiosInstance from '@/shared/lib/axios-instance.ts';
+import type { ApiResponse } from '@/shared/types/api.types.ts';
 
 export interface TodoRequest {
   title: string;
@@ -14,6 +14,13 @@ export interface TodoResponse {
 }
 
 export const todoService = async (todoData: TodoRequest): Promise<TodoResponse> => {
-  const { data } = await axiosInstance.post<ApiResponse<TodoResponse>>('/todos', todoData);
-  return data;
+  const response = await axiosInstance.post<ApiResponse<TodoResponse>>('/todos', todoData);
+  return (
+    response.data || {
+      id: -1,
+      title: '',
+      description: '',
+      createdAt: '',
+    }
+  );
 };

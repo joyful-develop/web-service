@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react';
 
-import type { IconName } from '#components/icons/lucide-icon-registry.ts';
+import type { IconName } from '@/shared/icons/lucide-icon-registry.ts';
+
 import type { Calendar } from 'lucide-react';
 
 /** Lucide 아이콘 공통 props */

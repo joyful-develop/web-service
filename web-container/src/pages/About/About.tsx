@@ -3,11 +3,11 @@ import { Suspense } from 'react';
 import { useLocation, type LoaderFunction } from 'react-router';
 
 import { GlobalSuspenseFallback } from '@/app/layouts/GlobalSuspenseFallback.tsx';
+import { CreatePost } from '@/features/post/CreatePost.tsx';
 import { postService } from '@/features/post/post-service.ts';
+import { TodoForm } from '@/features/todo/TodoForm.tsx';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
 
-import { CreatePost } from '@features/post/CreatePost.tsx';
-import { TodoForm } from '@features/todo/TodoForm.tsx';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export interface Post {

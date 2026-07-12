@@ -1,4 +1,4 @@
-import type { Role, User } from '@/features/user-account/user.ts';
+import type { Role, User } from '@/features/user-auth/user';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 

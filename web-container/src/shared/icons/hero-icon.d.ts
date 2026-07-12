@@ -1,4 +1,4 @@
-import type { IconName } from '#components/icons/hero-icon-registry.ts';
+import type { IconName } from '@/shared/icons/hero-icon-registry.ts';
 
 /**
  * 공통 Icon 컴포넌트 Props

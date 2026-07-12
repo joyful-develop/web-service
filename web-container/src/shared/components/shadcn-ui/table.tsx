@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '#utils/tw-utils.ts';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (

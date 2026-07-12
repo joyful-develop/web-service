@@ -5,9 +5,8 @@ import * as React from 'react';
 import { XIcon } from 'lucide-react';
 import { Dialog as SheetPrimitive } from 'radix-ui';
 
-import { Button } from '#components/shadcn-ui/button.tsx';
-
-import { cn } from '@shared/utils/tw-utils.ts';
+import { Button } from '@/shared/components/shadcn-ui/button.tsx';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot='sheet' {...props} />;

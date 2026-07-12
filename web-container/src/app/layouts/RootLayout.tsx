@@ -5,16 +5,16 @@ import { Outlet } from 'react-router';
 import { CollapsibleMenus } from '@/app/layouts/components/CollapsibleMenus.tsx';
 import { Footer } from '@/app/layouts/components/Footer.tsx';
 import { Header } from '@/app/layouts/components/Header.tsx';
+import { Header2 } from '@/app/layouts/components/Header2.tsx';
 import { MenuBar } from '@/app/layouts/components/MenuBar.tsx';
+import { Conditions } from '@/app/layouts/components/side/Conditions.tsx';
+import { Icons } from '@/app/layouts/components/side/Icons.tsx';
 import { GlobalSuspenseFallback } from '@/app/layouts/GlobalSuspenseFallback.tsx';
+import { useTranslationQuery } from '@/features/user-config/i18n/useTranslationQuery.ts';
 import { SidebarInset, SidebarProvider } from '@/shared/components/shadcn-ui/sidebar.tsx';
-import { useTranslationQuery } from '@/shared/i18n/useTranslationQuery.ts';
 
-import { Header2 } from '@app/layouts/components/Header2.tsx';
 // import { FileTree } from '@/layouts/menu/FileTree.tsx';
 // import { Cards } from '@/layouts/side/Cards.tsx';
-import { Conditions } from '@app/layouts/components/side/Conditions.tsx';
-import { Icons } from '@app/layouts/components/side/Icons.tsx';
 
 export const iframeHeight = '800px';
 

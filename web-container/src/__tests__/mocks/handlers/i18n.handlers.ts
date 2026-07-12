@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
-import type { TranslationDbData } from '@/shared/i18n/i18n.types.ts';
+import type { TranslationDbData } from '@/features/user-config/i18n/i18n.types';
 import type { ApiResponse } from '@/shared/types/api.types.ts';
 
 export const i18n = [

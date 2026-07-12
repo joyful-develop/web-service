@@ -8,8 +8,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
-import { federation } from '@module-federation/vite';
-import { reactRouter } from '@react-router/dev/vite';
+// import { federation } from '@module-federation/vite';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 
@@ -48,16 +47,15 @@ export default ({ mode }: { mode: string }) => {
         include: '**/*.svg?react',
       }),
       visualizer(),
-      reactRouter(),
-      federation({
-        name: 'host-admin',
-        remotes: {}, // 런타임에 DB 데이터로 동적 주입
-        shared: {
-          react: { singleton: true },
-          'react-dom': { singleton: true },
-          'react-router': { singleton: true },
-        },
-      }),
+      // federation({
+      //   name: 'host-admin',
+      //   remotes: {}, // 런타임에 DB 데이터로 동적 주입
+      //   shared: {
+      //     react: { singleton: true },
+      //     'react-dom': { singleton: true },
+      //     'react-router': { singleton: true },
+      //   },
+      // }),
     ],
     resolve: {
       alias: [

@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import { GalleryVerticalEnd, ChevronRight } from 'lucide-react';
 
+import { SearchForm } from '@/app/layouts/components/side/SearchForm.tsx';
+import { VersionSwitcher } from '@/app/layouts/components/side/VersionSwitcher.tsx';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shared/components/shadcn-ui/collapsible.tsx';
 import {
   Sidebar,
@@ -16,9 +18,6 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from '@/shared/components/shadcn-ui/sidebar.tsx';
-
-import { SearchForm } from '@app/layouts/components/side/SearchForm.tsx';
-import { VersionSwitcher } from '@app/layouts/components/side/VersionSwitcher.tsx';
 
 // This is sample data.
 const data = {

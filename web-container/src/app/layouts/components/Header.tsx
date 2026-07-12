@@ -1,15 +1,10 @@
 import { UserProfile } from '@/app/layouts/components/UserProfile.tsx';
-import { ModeToggle } from '@/app/theme/ModeToggle.tsx';
 import { MenuPopover } from '@/features/menu/MenuPopover.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn-ui/tooltip.tsx';
-import { useI18nStore } from '@/shared/i18n/useI18nStore.ts';
-
-import { LucideIcon } from '@shared/icons/LucideIcon.tsx';
+import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 
 export function Header() {
-  const { currentLang, setLanguage } = useI18nStore();
-
   return (
     <header className='bg-background sticky top-0 z-50 flex w-full items-center border-b'>
       <div className='flex h-(--header-height) w-full items-center gap-2 px-4'>
@@ -33,17 +28,14 @@ export function Header() {
         <div className='flex w-full basis-2/6 flex-row flex-wrap items-center justify-end gap-2'>
           <div className='bg-muted flex gap-1.5 rounded-lg border p-1'>
             <button
-              onClick={() => setLanguage('ko')}
-              className={`rounded-md px-3 py-1 text-xs font-semibold transition-all ${currentLang === 'ko' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}>
+              className={`text-muted-foreground hover:text-foreground rounded-md px-3 py-1 text-xs font-semibold transition-all`}>
               KO
             </button>
             <button
-              onClick={() => setLanguage('en')}
-              className={`rounded-md px-3 py-1 text-xs font-semibold transition-all ${currentLang === 'en' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}>
+              className={`bg-background text-foreground rounded-md px-3 py-1 text-xs font-semibold shadow-sm transition-all`}>
               EN
             </button>
           </div>
-          <ModeToggle />
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant='outline' size='icon'>

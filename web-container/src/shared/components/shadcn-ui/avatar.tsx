@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Avatar as AvatarPrimitive } from 'radix-ui';
 
-import { cn } from '@shared/utils/tw-utils.ts';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Avatar({
   className,

@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { Separator as SeparatorPrimitive } from 'radix-ui';
 
-import { cn } from '@shared/utils/tw-utils.ts';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Separator({
   className,

@@ -1,6 +1,6 @@
-import { useAuthStore } from '@/features/user-account/authStore.ts';
-import type { Role } from '@/features/user-account/user.ts';
-import { useUpdateUserRole, useUsers } from '@/features/user-account/useUserQuery.ts';
+import { useAuthStore } from '@/features/user-auth/authStore.ts';
+import type { Role } from '@/features/user-auth/user.ts';
+import { useUpdateUserRole, useUsers } from '@/features/user-auth/useUserQuery.ts';
 import { Badge } from '@/shared/components/shadcn-ui/badge.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {

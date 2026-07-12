@@ -2,10 +2,11 @@ import { Suspense, useEffect } from 'react';
 
 import { Toaster } from 'sonner';
 
+import { GlobalSuspenseFallback } from '@/app/layouts/GlobalSuspenseFallback.tsx';
 import { queryClient } from '@/app/querys/query-client.ts';
 import AppRouter from '@/app/routers/AppRouter.tsx';
-import { ThemeProvider } from '@/app/theme/ThemeProvider.tsx';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
+import { ThemeProvider } from '@/features/user-config/theme/ThemeProvider.tsx';
 import { TooltipProvider } from '@/shared/components/shadcn-ui/tooltip.tsx';
 import type { ApiRequest } from '@/shared/types/api.types.ts';
 
@@ -24,9 +25,9 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <ThemeProvider>
         <TooltipProvider>
-          <Suspense fallback={<div>로딩 중...</div>}>
+          <Suspense fallback={<GlobalSuspenseFallback />}>
             <AppRouter />
           </Suspense>
           <Toaster />

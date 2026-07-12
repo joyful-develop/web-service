@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader } from '#components/shadcn-ui/card.tsx';
-import { Skeleton } from '#components/shadcn-ui/skeleton.tsx';
+import { Card, CardContent, CardHeader } from '@/shared/components/shadcn-ui/card.tsx';
+import { Skeleton } from '@/shared/components/shadcn-ui/skeleton.tsx';
 
 export const GlobalSuspenseFallback = () => {
   return (

@@ -1,4 +1,4 @@
-import type { TranslationData, TranslationDbData } from '@/shared/i18n/i18n.types.ts';
+import type { TranslationData, TranslationDbData } from '@/features/user-config/i18n/i18n.types';
 import axiosInstance from '@/shared/lib/axios-instance.ts';
 import type { ApiResponse } from '@/shared/types/api.types.ts';
 

@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { RefreshCw } from 'lucide-react';
 
 // import { updateMockDbData } from '@/services/translation.ts';
-import { useI18nStore } from '@/shared/i18n/useI18nStore.ts';
+import { useUserConfigStore } from '@/features/user-config/useUserConfigStore.ts';
 
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function Home() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const currentLang = useI18nStore((state) => state.currentLang);
+  const currentLang = useUserConfigStore((state) => state.language);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleRefresh = async () => {

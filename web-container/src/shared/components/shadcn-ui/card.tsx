@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '#utils/tw-utils.ts';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Card({ className, size = 'default', ...props }: React.ComponentProps<'div'> & { size?: 'default' | 'sm' }) {
   return (

@@ -2,10 +2,8 @@ import { Link } from 'react-router';
 
 import { LogOut, Settings, Check } from 'lucide-react';
 
-import { cn } from '#utils/tw-utils.ts';
-
-import { useLogout } from '@/features/user-account/useUserAuthQuery.ts';
-import { useUserConfigStore, type LocaleLanguage, type ThemeMode } from '@/features/user-account/useUserConfigStore.ts';
+import { useLogout } from '@/features/user-auth/useUserAuthQuery.ts';
+import { useUserConfigStore, type LocaleLanguage, type ThemeMode } from '@/features/user-config/useUserConfigStore.ts';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn-ui/avatar.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
@@ -16,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 export function ChromeUserPopup() {
   const { theme, setTheme, language, setLanguage } = useUserConfigStore();

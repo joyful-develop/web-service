@@ -9,9 +9,8 @@ import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
 import { Button, buttonVariants } from '@/shared/components/shadcn-ui/button.tsx';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/shadcn-ui/popover.tsx';
-
-import { HeroIcon } from '@shared/icons/HeroIcon.tsx';
-import { cn } from '@shared/utils/tw-utils.ts';
+import { HeroIcon } from '@/shared/icons/HeroIcon.tsx';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 export const MenuPopover = () => {
   const themeColor = useUiSettingsStore((state) => state.themeColor);

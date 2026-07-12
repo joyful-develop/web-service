@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 
 import { createWrapper } from '@/__tests__/query-client-wrapper.tsx';
-import { useTranslationQuery } from '@/shared/i18n/useTranslationQuery.ts';
+import { useTranslationQuery } from '@/features/user-config/i18n/useTranslationQuery';
 import i18n from '@/shared/lib/i18n.ts';
 
 import { renderHook, waitFor } from '@testing-library/react';

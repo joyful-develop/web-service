@@ -9,8 +9,6 @@
 @import './twLayer/utility.css';
 @import './pretendard-font.css';
 @import './noto-sans-kr-font.css';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
 
 /* 다크 모드 활성화 */
 @custom-variant dark (&:where(.dark, .dark *));

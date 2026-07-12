@@ -6,7 +6,7 @@ import { Menu, Settings, LogOut, User, Bell, ShieldCheck } from 'lucide-react';
 
 // import { SettingsDialog } from '@/features/settings/SettingsDialog.tsx';
 import { SettingsSheet } from '@/features/settings/SettingsSheet.tsx';
-import { ChromeUserPopup } from '@/features/user-account/UserAccountNav.tsx';
+import { ChromeUserPopup } from '@/features/user-config/UserAccountNav.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn-ui/avatar.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {

@@ -3,8 +3,8 @@ import * as React from 'react';
 import { XIcon } from 'lucide-react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 
-import { Button } from '#components/shadcn-ui/button.tsx';
-import { cn } from '#utils/tw-utils.ts';
+import { Button } from '@/shared/components/shadcn-ui/button.tsx';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot='dialog' {...props} />;

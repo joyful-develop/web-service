@@ -13,11 +13,11 @@
   "iconLibrary": "lucide",
   "rtl": false,
   "aliases": {
-    "components": "#components/shadcn",
-    "utils": "#utils/shadcn",
-    "ui": "#components/shadcn-ui",
-    "lib": "#lib/shadcn",
-    "hooks": "#hooks/shadcn"
+    "components": "@/shared/components/shadcn",
+    "utils": "@/shared/utils/shadcn",
+    "ui": "@/shared/components/shadcn-ui",
+    "lib": "@/shared/lib/shadcn",
+    "hooks": "@/shared/hooks/shadcn"
   },
   "menuColor": "default",
   "menuAccent": "subtle",

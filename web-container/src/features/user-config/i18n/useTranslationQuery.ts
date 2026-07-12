@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 
-import { getAllTranslations } from '@/shared/i18n/translations.api.ts';
-import { useI18nStore } from '@/shared/i18n/useI18nStore.ts';
+import { getAllTranslations } from '@/features/user-config/i18n/translations.api.ts';
+import { useUserConfigStore } from '@/features/user-config/useUserConfigStore.ts';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function useTranslationQuery() {
-  const syncTranslations = useI18nStore((state) => state.syncTranslations);
+  const syncTranslations = useUserConfigStore((state) => state.syncTranslations);
 
   const queryResult = useSuspenseQuery({
     queryKey: ['globalTranslations'],

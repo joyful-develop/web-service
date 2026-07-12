@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 import { postService } from '@/features/post/post-service.ts';
+import { Button } from '@/shared/components/shadcn-ui/button.tsx';
+import type { ApiRequest } from '@/shared/types/api.types.ts';
 
-import { Button } from '@shared/components/shadcn-ui/button.tsx';
-import type { ApiRequest } from '@shared/types/api.types.ts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const CreatePost: React.FC = () => {

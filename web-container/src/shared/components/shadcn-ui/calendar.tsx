@@ -5,8 +5,7 @@ import { DayPicker, getDefaultClassNames, type DayButton, type Locale } from 're
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from 'lucide-react';
 
 import { Button, buttonVariants } from '@/shared/components/shadcn-ui/button.tsx';
-
-import { cn } from '@shared/utils/tw-utils.ts';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 function Calendar({
   className,

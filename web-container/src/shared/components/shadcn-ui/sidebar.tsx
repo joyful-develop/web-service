@@ -17,8 +17,7 @@ import {
 import { Skeleton } from '@/shared/components/shadcn-ui/skeleton.tsx';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn-ui/tooltip.tsx';
 import { useIsMobile } from '@/shared/hooks/shadcn/use-mobile.ts';
-
-import { cn } from '@shared/utils/tw-utils.ts';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

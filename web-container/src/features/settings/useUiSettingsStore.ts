@@ -22,7 +22,7 @@ export const useUiSettingsStore = create<UiSettingsState>((set) => ({
     const response = await uiSettingsService.getUserUiSettings(request);
     console.log('성공', response.data);
     set({
-      themeColor: response.data.themeColor,
+      themeColor: response.data?.themeColor,
     });
   },
 
