@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()(
         hasPermission: (permission) => {
           const user = get().user;
           if (!user) return false;
-          if (user.role === 'ADMIN') return true; // ADMIN은 모든 권한 통과
+          if (user.role === 'Admin') return true; // ADMIN은 모든 권한 통과
           return user.permissions.includes(permission);
         },
       }),

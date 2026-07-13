@@ -17,15 +17,15 @@ import {
  * - key는 프로젝트에서 사용할 이름 (camelCase)
  */
 export const icons = {
-  bellIcon: Bell,
+  bell: Bell,
   circleCheckBig: CircleCheckBig,
   circleX: CircleX,
-  ellipsisVerticalIcon: EllipsisVertical,
+  ellipsisVertical: EllipsisVertical,
   info: Info,
-  menuIcon: Menu,
-  panelLeftIcon: PanelLeft,
-  refreshCwIcon: RefreshCw,
-  squareIcon: Square,
+  menu: Menu,
+  panelLeft: PanelLeft,
+  refreshCw: RefreshCw,
+  square: Square,
   triangleAlert: TriangleAlert,
 } as const;
 

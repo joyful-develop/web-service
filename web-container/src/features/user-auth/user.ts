@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // 1. 역할 및 상세 권한 정의
-export const RoleSchema = z.enum(['ADMIN', 'MANAGER', 'USER']);
+export const RoleSchema = z.enum(['Admin', 'Manager', 'User']);
 export const PermissionSchema = z.enum(['read:users', 'write:users', 'delete:users']);
 
 // 권한별 가능 업무 구조 정의 (예: 메뉴명, 읽기 권한, 쓰기 권한)

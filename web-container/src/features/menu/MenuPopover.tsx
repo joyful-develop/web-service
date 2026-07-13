@@ -170,7 +170,7 @@ export const MenuPopover = () => {
     <Popover open={isMenuPanelOpen} onOpenChange={setIsMenuPanelOpen}>
       <PopoverTrigger data-testid='menu-trigger' asChild>
         <Button variant='ghost' size='icon-lg' className='data-[state=open]:bg-accent h-8 w-8'>
-          <HeroIcon name='bars4Icon' className='text-muted-foreground size-6' data-testid='bars4-icon' />
+          <HeroIcon name='bars4' className='text-muted-foreground size-6' data-testid='bars4-icon' />
         </Button>
       </PopoverTrigger>
       <PopoverContent data-testid='menu-popover' className='w-fit p-4' side='bottom' align='start' sideOffset={8}>

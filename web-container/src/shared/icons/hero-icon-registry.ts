@@ -6,7 +6,7 @@ import { Bars4Icon } from '@heroicons/react/24/outline';
  * - key는 프로젝트에서 사용할 이름 (camelCase)
  */
 export const icons = {
-  bars4Icon: Bars4Icon,
+  bars4: Bars4Icon,
 } as const;
 
 /** 아이콘 이름 타입 */

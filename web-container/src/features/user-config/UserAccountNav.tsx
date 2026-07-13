@@ -4,7 +4,7 @@ import { LogOut, Settings, Check } from 'lucide-react';
 
 import { useLogout } from '@/features/user-auth/useUserAuthQuery.ts';
 import { useUserConfigStore, type LocaleLanguage, type ThemeMode } from '@/features/user-config/useUserConfigStore.ts';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn-ui/avatar.tsx';
+import { Avatar, AvatarFallback } from '@/shared/components/shadcn-ui/avatar.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
   DropdownMenu,
@@ -14,28 +14,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn-ui/tooltip.tsx';
+import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
-export function ChromeUserPopup() {
+export function UserAccountNav() {
   const { theme, setTheme, language, setLanguage } = useUserConfigStore();
   const { mutate: logout } = useLogout();
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='relative h-10 w-10 rounded-full p-0 hover:bg-slate-100'>
-          <Avatar className='h-8 w-8 border border-slate-200'>
-            <AvatarImage src='/user-avatar.png' alt='User' />
-            <AvatarFallback className='bg-blue-600 text-xs text-white'>SY</AvatarFallback>
-          </Avatar>
-          {/* <div className='grid flex-1 text-left text-sm leading-tight'>
-            <span className='truncate text-center font-medium'>
-              {user.name} ({user.employeeId})
-            </span>
-            <span className='truncate text-center font-medium'>({user.authority})</span>
-          </div> */}
-        </Button>
-      </DropdownMenuTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <Button variant='outline' size='icon'>
+              <LucideIcon
+                name='ellipsisVertical'
+                size={48}
+                strokeWidth={2}
+                className='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
+              />
+              <span className='sr-only'>Settings</span>
+            </Button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Settings</p>
+        </TooltipContent>
+      </Tooltip>
 
       <DropdownMenuContent className='w-[350px] rounded-2xl p-3 shadow-2xl' align='end'>
         {/* 프로필 헤더 */}

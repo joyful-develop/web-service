@@ -5,7 +5,6 @@ import { Outlet, useLocation } from 'react-router';
 import { CollapsibleMenus } from '@/app/layouts/components/CollapsibleMenus.tsx';
 import { Footer } from '@/app/layouts/components/Footer.tsx';
 import { Header } from '@/app/layouts/components/Header.tsx';
-import { Header2 } from '@/app/layouts/components/Header2.tsx';
 import { MenuBar } from '@/app/layouts/components/MenuBar.tsx';
 import { Conditions } from '@/app/layouts/components/side/Conditions.tsx';
 import { Icons } from '@/app/layouts/components/side/Icons.tsx';
@@ -28,7 +27,6 @@ export default function RootLayout() {
     <div className='[--footer-height:calc(--spacing(10))] [--header-height:calc(--spacing(14))] [--menuBar-height:calc(--spacing(14))]'>
       <SidebarProvider className='flex max-h-svh flex-col overflow-y-hidden'>
         <Header />
-        <Header2 />
         <MenuBar />
         <div className='flex flex-1'>
           <Icons />
