@@ -4,15 +4,16 @@ import { z } from 'zod';
 export const RoleSchema = z.enum(['ADMIN', 'MANAGER', 'USER']);
 export const PermissionSchema = z.enum(['read:users', 'write:users', 'delete:users']);
 
-export type Role = z.infer<typeof RoleSchema>;
-export type Permission = z.infer<typeof PermissionSchema>;
-
 // 권한별 가능 업무 구조 정의 (예: 메뉴명, 읽기 권한, 쓰기 권한)
 export const TaskPermissionSchema = z.object({
   menuName: z.string({ error: '메뉴명은 필수입니다.' }),
   canRead: z.boolean({ error: '읽기 권한 여부가 필요합니다.' }),
   canWrite: z.boolean({ error: '쓰기 권한 여부가 필요합니다.' }),
 });
+
+export type Role = z.infer<typeof RoleSchema>;
+export type Permission = z.infer<typeof PermissionSchema>;
+export type TaskPermission = z.infer<typeof TaskPermissionSchema>;
 
 // 2. 사용자 관리 정보 스키마 (Zod v4.4 스펙 적용)
 export const UserSchema = z.object({
@@ -31,7 +32,7 @@ export const UserSchema = z.object({
   role: RoleSchema,
   permissions: z.array(PermissionSchema),
 
-  // allowedTasks: z.array(TaskPermissionSchema), // 클릭 시 표에 보일 업무 목록
+  allowedTasks: z.array(TaskPermissionSchema), // 클릭 시 표에 보일 업무 목록
 
   // [v4.4 변경] 날짜 시간 포맷 역시 탑레벨 iso 객체 또는 전용 포맷 검증 함수 적용
   createdAt: z.string().datetime(),

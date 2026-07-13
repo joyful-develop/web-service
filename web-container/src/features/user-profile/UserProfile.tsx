@@ -1,7 +1,7 @@
 import { ShieldCheck, Check, X } from 'lucide-react';
 
-import { useUsers } from '@/features/user-auth/useUserQuery.ts';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn-ui/avatar.tsx';
+import type { TaskPermission } from '@/features/user-auth/user.ts';
+import { useUser } from '@/features/user-auth/useUserQuery.ts';
 import { Badge } from '@/shared/components/shadcn-ui/badge.tsx';
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ import { ScrollArea } from '@/shared/components/shadcn-ui/scroll-area.tsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/shadcn-ui/table.tsx';
 
 export function UserProfile() {
-  const { data: user, isLoading, error } = useUsers();
+  const { data: user, isLoading, error } = useUser();
 
   if (isLoading) return <div className='bg-muted h-10 w-48 animate-pulse rounded-md' />;
   if (error || !user) return <div className='text-destructive text-xs'>Error</div>;
@@ -65,7 +65,7 @@ export function UserProfile() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {user.allowedTasks.map((task) => (
+                {user.allowedTasks.map((task: TaskPermission) => (
                   <TableRow key={task.menuName} className='hover:bg-muted/30'>
                     <TableCell className='py-2 text-xs font-medium'>{task.menuName}</TableCell>
                     <TableCell className='py-2 text-center'>

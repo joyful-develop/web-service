@@ -7,7 +7,7 @@ interface UpdateUserRolePayload {
   role: Role; // any 대신 정확한 Role 타입 명시
 }
 
-const fetchUsers = (): User => {
+const fetchUser = (): User => {
   // let res = await fetch('/api/users');
   // if (!res.ok) throw new Error('사용자 목록을 불러오지 못했습니다.');
 
@@ -18,9 +18,30 @@ const fetchUsers = (): User => {
     avatarUrl: '',
     role: 'MANAGER',
     permissions: ['read:users', 'write:users', 'delete:users'],
-    // allowedTasks: ['read:users', 'write:users', 'delete:users'],
+    allowedTasks: [],
     createdAt: '20260712121212',
   };
+
+  // 백엔드 응답 데이터가 실제 구조와 맞는지 검증하고 싶다면 가볍게 파싱을 추가해도 좋습니다.
+  // return res.json() as Promise<User>;
+};
+
+const fetchUsers = (): User[] => {
+  // let res = await fetch('/api/users');
+  // if (!res.ok) throw new Error('사용자 목록을 불러오지 못했습니다.');
+
+  return [
+    {
+      id: '123456',
+      email: 'joyful0158@gamil.com',
+      name: '송영진',
+      avatarUrl: '',
+      role: 'MANAGER',
+      permissions: ['read:users', 'write:users', 'delete:users'],
+      allowedTasks: [],
+      createdAt: '20260712121212',
+    },
+  ];
 
   // 백엔드 응답 데이터가 실제 구조와 맞는지 검증하고 싶다면 가볍게 파싱을 추가해도 좋습니다.
   // return res.json() as Promise<User>;
@@ -36,8 +57,16 @@ const updateUserRole = async ({ userId, role }: UpdateUserRolePayload): Promise<
   return res.json() as Promise<User>;
 };
 
-export const useUsers = () => {
+export const useUser = () => {
   return useQuery<User, Error>({
+    queryKey: ['user'],
+    queryFn: fetchUser,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useUsers = () => {
+  return useQuery<User[], Error>({
     queryKey: ['users'],
     queryFn: fetchUsers,
     staleTime: 1000 * 60 * 5,
