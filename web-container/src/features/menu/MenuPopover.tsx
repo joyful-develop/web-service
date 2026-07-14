@@ -8,8 +8,12 @@ import type { MenuItem } from '@/features/menu/menu.type.ts';
 import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
 import { Button, buttonVariants } from '@/shared/components/shadcn-ui/button.tsx';
-import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/shadcn-ui/popover.tsx';
-import { HeroIcon } from '@/shared/icons/HeroIcon.tsx';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
+import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 export const MenuPopover = () => {
@@ -167,13 +171,13 @@ export const MenuPopover = () => {
   // data-testid={`menu-item-${menu.id}`}
 
   return (
-    <Popover open={isMenuPanelOpen} onOpenChange={setIsMenuPanelOpen}>
-      <PopoverTrigger data-testid='menu-trigger' asChild>
+    <DropdownMenu open={isMenuPanelOpen} onOpenChange={setIsMenuPanelOpen}>
+      <DropdownMenuTrigger data-testid='menu-trigger' asChild>
         <Button variant='ghost' size='icon-lg' className='data-[state=open]:bg-accent h-8 w-8'>
-          <HeroIcon name='bars4' className='text-muted-foreground size-6' data-testid='bars4-icon' />
+          <LucideIcon name='menu' size={48} strokeWidth={1} className='size-5' data-testid='bars4-icon' />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent data-testid='menu-popover' className='w-fit p-4' side='bottom' align='start' sideOffset={8}>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent data-testid='menu-popover' className='w-fit p-4' side='bottom' align='start' sideOffset={8}>
         <div className='flex'>
           <div className='mr-6 min-w-3xs border-r pr-6'>
             <div>
@@ -267,7 +271,7 @@ export const MenuPopover = () => {
             </div>
           </div>
         </div>
-      </PopoverContent>
-    </Popover>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

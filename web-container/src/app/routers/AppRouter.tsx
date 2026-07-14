@@ -8,6 +8,7 @@ import {
   type RouteObject,
 } from 'react-router';
 
+import { GlobalLoadingFallback } from '@/app/layouts/GlobalLoadingFallback.tsx';
 import RootLayout from '@/app/layouts/RootLayout.tsx';
 import GlobalErrorBoundary from '@/app/routers/GlobalErrorBoundary.tsx';
 import { createDynamicComponent } from '@/app/routers/lazy-loader.tsx';
@@ -60,6 +61,7 @@ export default function AppRouter() {
         path: '/',
         element: <RootLayout />,
         errorElement: <GlobalErrorBoundary />,
+        hydrateFallbackElement: <GlobalLoadingFallback />,
         children: [
           {
             errorElement: <GlobalErrorBoundary />,

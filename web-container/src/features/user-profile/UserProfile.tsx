@@ -30,11 +30,9 @@ export function UserProfile() {
               <AvatarFallback className='rounded-lg'>{fallbackText}</AvatarFallback>
             </Avatar>
             <div className='flex hidden flex-col sm:flex'>
-              <div className='flex items-center gap-1.5'>
-                <span className='text-center text-sm leading-tight font-semibold'>
-                  {user.name} ({user.id})
-                </span>
-              </div>
+              <span className='text-center text-sm leading-tight font-semibold'>
+                {user.name} ({user.id})
+              </span>
               <span className='mt-0.5 text-center text-xs leading-none'>({user.role})</span>
             </div>
           </button>

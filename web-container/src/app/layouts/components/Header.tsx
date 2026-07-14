@@ -10,7 +10,7 @@ import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 export function Header() {
   return (
     <header className='bg-background sticky top-0 z-50 flex w-full items-center border-b'>
-      <div className='flex h-(--header-height) w-full items-center gap-2 px-4'>
+      <div className='flex h-(--header-height) w-full items-center gap-2 px-2'>
         <div className='flex w-full basis-3/6 flex-row flex-wrap items-center justify-start gap-2'>
           <MenuPopover />
           <Link to='/' className='flex items-center gap-2 text-xl font-bold tracking-tight'>
@@ -33,14 +33,15 @@ export function Header() {
         </div>
         <div className='flex w-full basis-1/6 flex-row flex-wrap items-center justify-center gap-2'></div>
         <div className='flex w-full basis-2/6 flex-row flex-wrap items-center justify-end gap-2'>
+          <span className='bg-border hidden h-5 w-px sm:block' />
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant='outline' size='icon'>
+              <Button variant='ghost' size='icon-lg'>
                 <LucideIcon
                   name='refreshCw'
                   size={48}
                   strokeWidth={2}
-                  className='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
+                  className='size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
                 />
                 <span className='sr-only'>Refresh</span>
               </Button>
@@ -51,12 +52,12 @@ export function Header() {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant='outline' size='icon'>
+              <Button variant='ghost' size='icon-lg'>
                 <LucideIcon
                   name='bell'
                   size={48}
                   strokeWidth={2}
-                  className='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
+                  className='size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
                 />
                 <span className='sr-only'>Notification</span>
               </Button>
@@ -67,6 +68,7 @@ export function Header() {
           </Tooltip>
           <span className='bg-border hidden h-5 w-px sm:block' />
           <UserProfile />
+          <span className='bg-border hidden h-5 w-px sm:block' />
           <UserAccountNav />
         </div>
       </div>

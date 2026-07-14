@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Link } from 'react-router';
 
 import { LogOut, Settings, Check } from 'lucide-react';
@@ -19,20 +21,21 @@ import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 export function UserAccountNav() {
+  const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme, language, setLanguage } = useUserConfigStore();
   const { mutate: logout } = useLogout();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' size='icon'>
+            <Button variant='ghost' size='icon-lg'>
               <LucideIcon
                 name='ellipsisVertical'
                 size={48}
-                strokeWidth={2}
-                className='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
+                strokeWidth={1}
+                className='size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
               />
               <span className='sr-only'>Settings</span>
             </Button>
@@ -123,7 +126,7 @@ export function UserAccountNav() {
         {/* 하단 링크 및 액션 */}
         <DropdownMenuGroup className='p-1'>
           <DropdownMenuItem asChild className='h-10 cursor-pointer rounded-lg px-3 focus:bg-slate-100'>
-            <Link to='/settings' className='flex w-full items-center'>
+            <Link to='/settings' className='flex w-full items-center' onClick={() => setIsOpen(false)}>
               <Settings className='mr-3 h-4 w-4 text-slate-500' />
               <span className='text-sm font-medium'>환경 설정</span>
             </Link>
