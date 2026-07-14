@@ -6,6 +6,7 @@ import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
+import check from 'vite-plugin-checker';
 import svgr from 'vite-plugin-svgr';
 
 // import { federation } from '@module-federation/vite';
@@ -15,38 +16,22 @@ import react from '@vitejs/plugin-react';
 export default ({ mode }: { mode: string }) => {
   const env = {
     ...process.env,
-    ...loadEnv(mode, path.resolve(process.cwd(), './config'), ''),
+    ...loadEnv(mode, path.resolve(process.cwd(), './'), ''),
   };
   const SERVER_PORT: number = env.VITE_APP_PORT as unknown as number;
 
   return defineConfig({
-    envDir: './config/',
-    envPrefix: ['VITE_'],
     plugins: [
       react(),
       tailwindcss(),
       svgr({
-        svgrOptions: {
-          svgo: true,
-          svgoConfig: {
-            plugins: [
-              {
-                name: 'preset-default',
-                params: {
-                  overrides: {
-                    removeViewBox: false,
-                  },
-                },
-              },
-              'cleanupIDs',
-              'removeStyleElement',
-              'removeScriptElement',
-            ],
-          },
-        },
         include: '**/*.svg?react',
       }),
       visualizer(),
+      env.VITE_APP_MODE !== 'production' &&
+        check({
+          typescript: true,
+        }),
       // federation({
       //   name: 'host-admin',
       //   remotes: {}, // 런타임에 DB 데이터로 동적 주입
@@ -56,7 +41,7 @@ export default ({ mode }: { mode: string }) => {
       //     'react-router': { singleton: true },
       //   },
       // }),
-    ],
+    ].filter(Boolean),
     resolve: {
       alias: [
         {
@@ -98,12 +83,15 @@ export default ({ mode }: { mode: string }) => {
       'import.meta.env.ENV_VARIABLE': JSON.stringify(process.env.ENV_VARIABLE),
     },
     build: {
-      outDir: path.resolve(__dirname, './dist'),
-      emptyOutDir: true,
-      cssMinify: 'lightningcss',
-      sourcemap: true,
-      rollupOptions: {
+      target: 'esnext',
+      rolldownOptions: {
         output: {
+          minify: {
+            compress: {
+              dropConsole: true,
+              dropDebugger: true,
+            },
+          },
           entryFileNames: 'assets/[name]-[hash].js',
           assetFileNames: (assetInfo) => {
             const fileName = assetInfo.names?.[0] ?? '';
