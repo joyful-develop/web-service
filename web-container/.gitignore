@@ -3,7 +3,7 @@ node_modules
 /.pnpm-debug.log
 
 # 추천: 프로젝트 환경 공유를 위해 커밋
-# pnpm-lock.yaml
+pnpm-lock.yaml
 
 # production
 dist
@@ -13,7 +13,7 @@ build
 
 # build output (Vite)
 .vite
-stats.html
+./stats.html
 
 # environment variables
 # .env
