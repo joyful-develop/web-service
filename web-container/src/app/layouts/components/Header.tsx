@@ -40,7 +40,7 @@ export function Header() {
                 <LucideIcon
                   name='refreshCw'
                   size={48}
-                  strokeWidth={2}
+                  strokeWidth={1}
                   className='size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
                 />
                 <span className='sr-only'>Refresh</span>
@@ -56,7 +56,7 @@ export function Header() {
                 <LucideIcon
                   name='bell'
                   size={48}
-                  strokeWidth={2}
+                  strokeWidth={1}
                   className='size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
                 />
                 <span className='sr-only'>Notification</span>
