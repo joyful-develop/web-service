@@ -1,9 +1,9 @@
-export type MenuType = 'folder' | 'local' | 'remote';
+export type MenuType = 'group' | 'local' | 'remote';
 
 export interface MenuItem {
   rawId: number;
   label: string;
-  path: string;
+  path: string | null;
   type: MenuType;
   component: string | null;
   isDefault: boolean;
@@ -12,5 +12,5 @@ export interface MenuItem {
   icon: string | null;
   desc: string | null;
   parentRawId: number | null;
-  childrenRawId: MenuItem[] | null;
+  children: MenuItem[] | null;
 }

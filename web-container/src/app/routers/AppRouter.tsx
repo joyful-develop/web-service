@@ -31,10 +31,13 @@ export default function AppRouter() {
         const hasChildren = menu.children && menu.children.length > 0;
 
         // 공통 속성 정의
-        const commonProps = {
-          lazy: createDynamicComponent(menu.type, menu.path, menu.localPath, menu.remoteUrl),
-          ...(menu.isLayout ? { errorElement: <GlobalErrorBoundary /> } : {}),
-        };
+        const commonProps =
+          menu.type !== 'group'
+            ? {
+                lazy: createDynamicComponent(menu.type, menu.path, menu.component),
+                ...(menu.isLayout ? { errorElement: <GlobalErrorBoundary /> } : {}),
+              }
+            : {};
 
         if (menu.isDefault) {
           const indexRoute: IndexRouteObject = {
@@ -43,11 +46,14 @@ export default function AppRouter() {
           };
           return indexRoute;
         } else {
-          const pathRoute: NonIndexRouteObject = {
-            ...commonProps,
-            path: menu.path.toLowerCase(),
-            ...(hasChildren ? { children: formatRoutes(menu.children!) } : {}),
-          };
+          const pathRoute: NonIndexRouteObject =
+            menu.type !== 'group'
+              ? {
+                  ...commonProps,
+                  path: menu.path?.toLowerCase(),
+                  ...(hasChildren ? { children: formatRoutes(menu.children!) } : {}),
+                }
+              : { ...(hasChildren ? { children: formatRoutes(menu.children!) } : {}) };
           return pathRoute;
         }
       });
