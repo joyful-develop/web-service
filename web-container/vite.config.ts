@@ -6,7 +6,7 @@ import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, loadEnv } from 'vite';
-import check from 'vite-plugin-checker';
+import checker from 'vite-plugin-checker';
 import svgr from 'vite-plugin-svgr';
 
 // import { federation } from '@module-federation/vite';
@@ -29,7 +29,7 @@ export default ({ mode }: { mode: string }) => {
       }),
       visualizer(),
       env.VITE_APP_MODE !== 'production' &&
-        check({
+        checker({
           typescript: true,
         }),
       // federation({
@@ -83,6 +83,7 @@ export default ({ mode }: { mode: string }) => {
       'import.meta.env.ENV_VARIABLE': JSON.stringify(process.env.ENV_VARIABLE),
     },
     build: {
+      emptyOutDir: true,
       target: 'esnext',
       rolldownOptions: {
         output: {
@@ -145,6 +146,10 @@ export default ({ mode }: { mode: string }) => {
       port: SERVER_PORT,
       strictPort: true,
       open: true,
+      watch: {
+        usePolling: true, // 파일 시스템 잠금 충동 방지
+        interval: 100, // 0.1 초마다 검사
+      },
       hmr: {
         host: env.VITE_APP_HOST,
         port: SERVER_PORT,

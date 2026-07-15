@@ -89,9 +89,6 @@ importers:
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      vite-plugin-checker:
-        specifier: ^0.14.4
-        version: 0.14.4(eslint@9.39.4(jiti@2.7.0))(optionator@0.9.4)(typescript@6.0.3)(vite@8.0.11(@types/node@24.12.3)(jiti@2.7.0))
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -210,6 +207,9 @@ importers:
       vite:
         specifier: ^8.0.10
         version: 8.0.11(@types/node@24.12.3)(jiti@2.7.0)
+      vite-plugin-checker:
+        specifier: ^0.14.4
+        version: 0.14.4(eslint@9.39.4(jiti@2.7.0))(optionator@0.9.4)(typescript@6.0.3)(vite@8.0.11(@types/node@24.12.3)(jiti@2.7.0))
       vite-plugin-svgr:
         specifier: ^5.2.0
         version: 5.2.0(typescript@6.0.3)(vite@8.0.11(@types/node@24.12.3)(jiti@2.7.0))
