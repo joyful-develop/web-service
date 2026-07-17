@@ -12,3 +12,8 @@
 
 /* 다크 모드 활성화 */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* shadcn ui 팝업/드롭다운이 닫힐 때 끝 프레임에서 번쩍이는 버그 수정 */
+[data-state='closed'] {
+  --tw-animation-fill-mode: forwards !important;
+}

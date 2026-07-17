@@ -33,9 +33,9 @@ export function createDynamicComponent(type: MenuType, path: string | null, comp
 
       const module = localModules[`../../${component}.tsx`];
       if (!module) {
-        if (component === 'TestLayout') {
+        if (component === '__tests__/TestLayout') {
           return { Component: TestLayout };
-        } else if (component === 'TestPage') {
+        } else if (component === '__tests__/TestPage') {
           return { Component: TestPage };
         }
         return { Component: NotFound }; // element가 아닌 Component 타입으로 반환

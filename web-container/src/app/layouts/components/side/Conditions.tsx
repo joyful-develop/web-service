@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PlusIcon } from 'lucide-react';
 
 // import { UserProfile } from '@/app/layouts/components/UserProfile.tsx';
+import { CustomColorPicker } from '@/app/provider/CustomColorPicker.tsx';
 import { Calendars } from '@/shared/components/shadcn/calendars.tsx';
 import { DatePicker } from '@/shared/components/shadcn/date-picker.tsx';
 import {
@@ -46,7 +47,8 @@ export function Conditions({ ...props }: React.ComponentProps<typeof Sidebar>) {
       collapsible='none'
       className='top-[calc(var(--header-height)+var(--menuBar-height)+2px)] h-[calc(100svh-var(--header-height)-var(--menuBar-height)-var(--footer-height)-3px)]! border-l lg:flex'
       {...props}>
-      <SidebarHeader className='border-sidebar-border h-16 border-b'>
+      <SidebarHeader className='border-sidebar-border h-56 border-b'>
+        <CustomColorPicker />
         {/* <UserProfile user={data.user} /> */}
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>

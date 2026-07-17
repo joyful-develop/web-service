@@ -43,6 +43,7 @@ export default function AppRouter() {
           const indexRoute: IndexRouteObject = {
             ...commonProps,
             index: true,
+            path: menu.path?.toLowerCase(),
           };
           return indexRoute;
         } else {

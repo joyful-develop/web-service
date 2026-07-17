@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { Toaster } from 'sonner';
 
+import { UserThemeProvider } from '@/app/provider/UserThemeProvider.tsx';
 import { queryClient } from '@/app/querys/query-client.ts';
 import AppRouter from '@/app/routers/AppRouter.tsx';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
@@ -26,8 +27,10 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <TooltipProvider>
-          <AppRouter />
-          <Toaster />
+          <UserThemeProvider>
+            <AppRouter />
+            <Toaster />
+          </UserThemeProvider>
         </TooltipProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
