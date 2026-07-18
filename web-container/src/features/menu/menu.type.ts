@@ -11,6 +11,7 @@ export interface MenuItem {
   order: number;
   icon: string | null;
   desc: string | null;
+  specialUse: string | null;
   parentRawId: number | null;
   children: MenuItem[] | null;
 }

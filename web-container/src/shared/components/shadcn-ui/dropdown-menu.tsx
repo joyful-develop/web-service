@@ -58,7 +58,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "group/dropdown-menu-item not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:*:[svg]:text-destructive relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "group/dropdown-menu-item not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:*:[svg]:text-destructive relative flex cursor-default items-center text-sm outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:rounded-md not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 data-disabled:pointer-events-none data-disabled:opacity-50 not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
@@ -178,16 +178,19 @@ function DropdownMenuSubTrigger({
   className,
   inset,
   children,
+  variant = 'default',
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & {
   inset?: boolean;
+  variant?: 'default' | 'destructive' | 'custom';
 }) {
   return (
     <DropdownMenuPrimitive.SubTrigger
       data-slot='dropdown-menu-sub-trigger'
       data-inset={inset}
+      data-variant={variant}
       className={cn(
-        "focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground not-data-[variant=custom]:data-open:bg-accent not-data-[variant=custom]:data-open:text-accent-foreground flex cursor-default items-center rounded-md text-sm outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}>

@@ -1,35 +1,57 @@
 import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
 import type { MenuItem } from '@/features/menu/menu.type.ts';
 
 export interface MenuState {
   menus: MenuItem[];
   subMenus: MenuItem[];
-  selectedMenuRawId: number | null;
-  isMenuPanelOpen: boolean;
+  selectedMenu: string | null;
+  recentMenus: MenuItem[];
 
   setMenus: (menus: MenuItem[] | null) => void;
   setSubMenus: (subMenus: MenuItem[] | null) => void;
-  setSelectedMenuRawId: (menuRawId: number | null) => void;
-  setIsMenuPanelOpen: (isMenuPanelOpen: boolean) => void;
-  toggleMenuPanel: () => void;
+  setSelectedMenu: (path: string | null) => void;
+  setRecentMenu: (menu: MenuItem) => void;
   reset: () => void;
 }
 
 const initialState = {
   menus: [],
   subMenus: [],
-  selectedMenuRawId: null,
-  isMenuPanelOpen: false,
+  selectedMenu: null,
+  recentMenus: [],
 };
 
-export const useMenuStore = create<MenuState>((set) => ({
-  ...initialState,
+export const useMenuStore = create<MenuState>()(
+  devtools(
+    persist(
+      (set) => ({
+        ...initialState,
 
-  setMenus: (menus: MenuItem[] | null) => set({ menus: menus || [] }),
-  setSubMenus: (subMenus: MenuItem[] | null) => set({ subMenus: subMenus || [] }),
-  setSelectedMenuRawId: (menuRawId: number | null) => set({ selectedMenuRawId: menuRawId }),
-  setIsMenuPanelOpen: (isMenuPanelOpen: boolean) => set({ isMenuPanelOpen: isMenuPanelOpen }),
-  toggleMenuPanel: () => set((state) => ({ isMenuPanelOpen: !state.isMenuPanelOpen })),
-  reset: () => set(initialState),
-}));
+        setMenus: (menus: MenuItem[] | null) => set({ menus: menus || [] }),
+
+        setSubMenus: (subMenus: MenuItem[] | null) => set({ subMenus: subMenus || [] }),
+
+        setSelectedMenu: (path: string | null) => set({ selectedMenu: path }),
+
+        setRecentMenu: (menu: MenuItem) =>
+          set((state) => {
+            const filtered = state.recentMenus.filter((item) => item.path !== menu.path);
+            const updated = [menu, ...filtered].slice(0, 10);
+            return { recentMenus: updated };
+          }),
+
+        reset: () => set(initialState),
+      }),
+      {
+        name: 'recent-menu', // 저장소에 저장될 키
+        // 저장소에 저장될 상태
+        partialize: (state) => ({
+          recentMenus: state.recentMenus,
+        }),
+        storage: createJSONStorage(() => localStorage), // 저장소
+      }
+    )
+  )
+);

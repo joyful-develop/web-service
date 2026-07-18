@@ -9,6 +9,7 @@ import {
   RefreshCw,
   Square,
   TriangleAlert,
+  X,
 } from 'lucide-react';
 
 /**
@@ -27,6 +28,7 @@ export const icons = {
   refreshCw: RefreshCw,
   square: Square,
   triangleAlert: TriangleAlert,
+  x: X,
 } as const;
 
 /** 아이콘 이름 타입 */

@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import { MenuPopover } from '@/features/menu/MenuPopover.tsx';
+import { MenuPopover } from '@/features/menu/MenuPanel.tsx';
 import { UserAccountNav } from '@/features/user-config/UserAccountNav.tsx';
 import { UserProfile } from '@/features/user-profile/UserProfile.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';

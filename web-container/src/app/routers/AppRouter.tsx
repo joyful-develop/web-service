@@ -30,7 +30,6 @@ export default function AppRouter() {
       return menuList.map((menu): RouteObject => {
         const hasChildren = menu.children && menu.children.length > 0;
 
-        // 공통 속성 정의
         const commonProps =
           menu.type !== 'group'
             ? {
