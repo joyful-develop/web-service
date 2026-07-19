@@ -9,7 +9,7 @@ import {
 } from 'react-router';
 
 import { GlobalLoadingFallback } from '@/app/layouts/GlobalLoadingFallback.tsx';
-import RootLayout from '@/app/layouts/RootLayout.tsx';
+import { RootLayout } from '@/app/layouts/RootLayout.tsx';
 import GlobalErrorBoundary from '@/app/routers/GlobalErrorBoundary.tsx';
 import { createDynamicComponent } from '@/app/routers/lazy-loader.tsx';
 import type { MenuItem } from '@/features/menu/menu.type.ts';
