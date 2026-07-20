@@ -5,6 +5,7 @@ import { Bell, RotateCw } from 'lucide-react';
 import { HeaderCenterNavbar } from '@/app/layouts/components/HeaderCenterNavbar.tsx';
 import { HeaderLeftMenu } from '@/app/layouts/components/HeaderLeftMenu.tsx';
 import { HeaderSettingsMenu } from '@/app/layouts/components/HeaderSettingsMenu.tsx';
+import { MenuPopover } from '@/features/menu/MenuPanel.tsx';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -14,6 +15,7 @@ export function Header() {
       {/* ================= 좌측 세션: 브랜드 및 시스템 정보 ================= */}
       <div className='flex items-center gap-4'>
         <HeaderLeftMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+        <MenuPopover />
 
         {/* 로고 & 시스템명 & 설명 */}
         <div className='flex items-center gap-3'>

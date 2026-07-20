@@ -21,16 +21,20 @@ function DropdownMenuContent({
   className,
   align = 'start',
   sideOffset = 4,
+  variant = 'default',
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+  variant?: 'default' | 'custom';
+}) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
         data-slot='dropdown-menu-content'
         sideOffset={sideOffset}
         align={align}
+        data-variant={variant}
         className={cn(
-          'bg-popover text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-lg p-1 shadow-md ring-1 duration-100 data-[state=closed]:overflow-hidden',
+          'bg-popover not-data-[variant=custom]:text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-lg p-1 shadow-md ring-1 duration-100 data-[state=closed]:overflow-hidden',
           className
         )}
         {...props}
@@ -58,7 +62,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "group/dropdown-menu-item not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:*:[svg]:text-destructive relative flex cursor-default items-center text-sm outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:rounded-md not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 data-disabled:pointer-events-none data-disabled:opacity-50 not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "group/dropdown-menu-item not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:*:[svg]:text-destructive relative flex cursor-default items-center outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:rounded-md not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 not-data-[variant=custom]:text-sm data-disabled:pointer-events-none data-disabled:opacity-50 not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
@@ -190,7 +194,7 @@ function DropdownMenuSubTrigger({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground not-data-[variant=custom]:data-open:bg-accent not-data-[variant=custom]:data-open:text-accent-foreground flex cursor-default items-center rounded-md text-sm outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground not-data-[variant=custom]:data-open:bg-accent not-data-[variant=custom]:data-open:text-accent-foreground flex cursor-default items-center rounded-md outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 not-data-[variant=custom]:text-sm not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}>
@@ -202,13 +206,17 @@ function DropdownMenuSubTrigger({
 
 function DropdownMenuSubContent({
   className,
+  variant = 'default',
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent> & {
+  variant?: 'default' | 'custom';
+}) {
   return (
     <DropdownMenuPrimitive.SubContent
       data-slot='dropdown-menu-sub-content'
+      data-variant={variant}
       className={cn(
-        'bg-popover text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 min-w-[96px] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-lg p-1 shadow-lg ring-1 duration-100',
+        'bg-popover not-data-[variant=custom]:text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 min-w-[96px] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-lg p-1 shadow-lg ring-1 duration-100',
         className
       )}
       {...props}

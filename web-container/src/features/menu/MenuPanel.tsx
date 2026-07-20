@@ -55,8 +55,14 @@ export function MenuPopover() {
     <>
       <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
         <DropdownMenuTrigger data-testid='menu-trigger' asChild>
-          <Button variant='ghost' size='icon-lg' className='h-8 w-8'>
-            <LucideIcon name='menu' size={48} strokeWidth={1} className='size-5' data-testid='bars4-icon' />
+          <Button variant='ghost' size='icon-lg' className='h-9 w-9'>
+            <LucideIcon
+              name='menu'
+              size={24}
+              strokeWidth={1}
+              className={`size-5 transition-transform duration-100 ${open ? 'text-user-theme rotate-90' : ''}`}
+              data-testid='menu-icon'
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -73,13 +79,15 @@ export function MenuPopover() {
           </div>
           <div className='flex flex-col gap-6 sm:flex-row sm:items-stretch'>
             {/* 최근 방문 메뉴 */}
-            <div className='flex min-w-[160px] shrink-0 flex-col gap-1.5 border-b pb-4 sm:border-r sm:border-b-0 sm:pr-6 sm:pb-0'>
-              <div className='border-foreground mb-1 border-b py-1.5 text-sm font-bold opacity-80'>최근 메뉴</div>
-              <div className='grid grid-cols-1 gap-4'>
+            <div className='flex min-w-[160px] shrink-0 flex-col gap-1 border-r-0 pr-0 sm:border-r sm:pr-6'>
+              <div className='mb-1 border-b border-gray-300 px-1 pb-1.5 text-xs font-semibold tracking-wider opacity-80'>
+                최근 메뉴
+              </div>
+              <div className='grid grid-cols-1 gap-2'>
                 {recentMenus?.map((rec) => {
                   const isRecentActive = rec.path === selectedMenu ? true : false;
                   const linkCss = cn(
-                    'hover:text-user-theme focus:text-user-theme text-sm hover:font-semibold focus:font-semibold',
+                    'px-2 font-medium transition-colors opacity-80 hover:text-user-theme focus:text-user-theme text-sm hover:font-semibold focus:font-semibold',
                     isRecentActive ? 'text-user-theme' : ''
                   );
 

@@ -44,7 +44,7 @@ export const MenuPanelMap = React.memo(function MenuPanelMap({
           const isActive = menu.path === selectedMenu;
 
           const linkCss = cn(
-            'hover:text-user-theme focus:text-user-theme text-sm hover:font-semibold focus:font-semibold',
+            'px-2 font-medium transition-colors opacity-80 hover:text-user-theme focus:text-user-theme text-sm hover:font-semibold focus:font-semibold',
             isActive ? 'text-user-theme' : ''
           );
 
@@ -55,7 +55,7 @@ export const MenuPanelMap = React.memo(function MenuPanelMap({
                   /* =================================================================== */
                   /* [자식이 있는 노드 처리] depth에 따라 고정 레이아웃 또는는 드롭 다운 분기 */
                   /* =================================================================== */
-                  <div className='flex min-w-[140px] flex-col gap-1.5 transition-all duration-200'>
+                  <div className='flex min-w-[160px] flex-col gap-1 transition-colors duration-100'>
                     <MenuPanelMapLink
                       key={menu.rawId}
                       menu={menu}
@@ -66,7 +66,7 @@ export const MenuPanelMap = React.memo(function MenuPanelMap({
                     />
 
                     {/* 하위 자식 노드들을 담는 그리드 컨테이너: 재귀적으로 연속 호출전개 */}
-                    <div className={cn('grid grid-cols-1 gap-4 pt-2')}>
+                    <div className={cn('grid grid-cols-1 gap-2')}>
                       <MenuPanelMap
                         menus={menu.children!}
                         onMenuClick={onMenuClick}
@@ -80,7 +80,7 @@ export const MenuPanelMap = React.memo(function MenuPanelMap({
                   /* [2 Depth 이상] 여기서부터는 자식이 있으면 무조건 드롭다운 팝업 */
                   /* ========================================================== */
                   <DropdownMenuSub>
-                    <DropdownMenuSubTrigger variant='custom' className={linkCss}>
+                    <DropdownMenuSubTrigger variant='custom' className={cn(linkCss, depth > 2 ? '-px-2' : '')}>
                       <MenuPanelMapLink
                         key={menu.rawId}
                         menu={menu}
@@ -92,7 +92,7 @@ export const MenuPanelMap = React.memo(function MenuPanelMap({
                     </DropdownMenuSubTrigger>
 
                     {/* 오른쪽으로 새로 펼쳐지는 서브 컨텐츠 박스 */}
-                    <DropdownMenuSubContent className='grid min-w-[160px] grid-cols-1 gap-4 px-5 py-3'>
+                    <DropdownMenuSubContent variant='custom' className='grid min-w-[160px] grid-cols-1 gap-2 px-5 py-3'>
                       <MenuPanelMap
                         menus={menu.children!}
                         onMenuClick={onMenuClick}
@@ -154,7 +154,7 @@ export function MenuPanelMapLink({ menu, hasActiveChild, isMenuItem, linkCss, on
     return (
       <div
         className={cn(
-          'border-foreground mb-1 border-b py-1.5 text-sm font-bold opacity-80 transition-colors',
+          'mb-1 border-b border-gray-300 px-1 pb-1.5 text-xs font-semibold tracking-wider opacity-80 transition-colors',
           hasActiveChild ? 'text-user-theme' : ''
         )}>
         {menu.label}
@@ -163,7 +163,7 @@ export function MenuPanelMapLink({ menu, hasActiveChild, isMenuItem, linkCss, on
   }
 
   return (
-    <div className={cn('text-sm opacity-80 transition-colors', hasActiveChild ? 'text-user-theme' : '')}>
+    <div className={cn('text-sm font-medium transition-colors', hasActiveChild ? 'text-user-theme' : '')}>
       {menu.label}
     </div>
   );
