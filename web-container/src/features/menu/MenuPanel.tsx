@@ -70,6 +70,7 @@ export function MenuPopover() {
           data-testid='menu-popover'
           className='data-[state=closed]:fade-out-0 w-fit max-w-[95vw] p-4 data-[state=closed]:animate-none'
           side='bottom'
+          variant='custom'
           align='start'
           sideOffset={8}>
           <div className='mb-2 grid w-full grid-flow-col justify-items-end'>
