@@ -1,31 +1,25 @@
-import { useState } from 'react';
-
 import { Bell, RotateCw } from 'lucide-react';
 
 import { HeaderCenterNavbar } from '@/app/layouts/components/HeaderCenterNavbar.tsx';
-import { HeaderLeftMenu } from '@/app/layouts/components/HeaderLeftMenu.tsx';
 import { HeaderSettingsMenu } from '@/app/layouts/components/HeaderSettingsMenu.tsx';
 import { MenuPopover } from '@/features/menu/MenuPanel.tsx';
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-
   return (
-    <header className='bg-background z-40 flex h-16 shrink-0 items-center justify-between border-b border-gray-200 px-6 shadow-sm select-none'>
+    <header className='bg-background text-foreground border-border z-40 flex h-16 shrink-0 items-center justify-between border-b px-6 shadow-sm select-none'>
       {/* ================= 좌측 세션: 브랜드 및 시스템 정보 ================= */}
       <div className='flex items-center gap-4'>
-        <HeaderLeftMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <MenuPopover />
 
         {/* 로고 & 시스템명 & 설명 */}
         <div className='flex items-center gap-3'>
-          <div className='flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 text-sm font-black shadow-md shadow-blue-200'>
+          <div className='bg-primary text-primary-foreground shadow-bg-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black shadow-md'>
             FO
           </div>
           <div className='flex flex-col'>
             <div className='flex items-center gap-2'>
               <span className='text-sm font-bold tracking-tight'>FlexOps</span>
-              <span className='rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-semibold text-blue-600'>
+              <span className='bg-primary/50 text-primary-foreground rounded-md px-1.5 py-0.5 text-[10px] font-semibold'>
                 Core v1
               </span>
             </div>
@@ -41,17 +35,12 @@ export function Header() {
 
       {/* ================= 우측 세션: 유틸리티 및 사용자 프로필 ================= */}
       <div className='flex items-center gap-4'>
-        {/* 🔄 Refresh 아이콘 (Lucide Icon 적용 및 호버 회전 이펙트) */}
-        <button
-          onClick={() => window.location.reload()}
-          title='화면 새로고침'
-          className='group/refresh text-foreground rounded-lg p-2 transition-all hover:bg-gray-100 hover:text-gray-800 active:scale-95'>
-          <RotateCw className='h-4 w-4 transition-transform duration-300 group-hover/refresh:rotate-45' />
+        <button onClick={() => window.location.reload()} title='화면 새로고침' className='group/refresh icon-button'>
+          <RotateCw className='h-4 w-4 transition-transform duration-100 group-hover/refresh:rotate-45' />
         </button>
 
-        {/* 🔔 알림 아이콘 (Lucide Icon 적용 및 팝오버) */}
         <div className='group/noti relative'>
-          <button className='text-foreground relative rounded-lg p-2 transition-colors hover:bg-gray-100 hover:text-gray-800'>
+          <button className='icon-button'>
             <Bell className='h-4 w-4' />
             {/* 알림 배지 인디케이터 */}
             <span className='absolute top-1.5 right-1.5 h-1.5 w-1.5 animate-pulse rounded-full bg-red-500 ring-2 ring-white' />
@@ -74,7 +63,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className='h-4 w-[1px] bg-gray-200' />
+        <div className='bg-border h-5 w-[1px]' />
 
         {/* 3. 사용자 프로필 (사진, 이름, 권한 라벨 및 클릭 드롭다운 연동) */}
         <div className='group/profile relative'>
@@ -83,7 +72,7 @@ export function Header() {
               김U
             </div>
             <div className='flex hidden flex-col text-left sm:flex'>
-              <span className='text-foreground text-xs leading-tight font-semibold'>김유저 책임</span>
+              <span className='text-xs leading-tight font-semibold'>김유저 책임</span>
               <span className='text-muted-foreground text-[10px] font-medium tracking-wide'>Workspace Admin</span>
             </div>
           </div>
@@ -114,7 +103,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className='h-4 w-[1px] bg-gray-200' />
+        <div className='bg-border h-5 w-[1px]' />
 
         <HeaderSettingsMenu />
       </div>

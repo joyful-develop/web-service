@@ -2,17 +2,17 @@ import { useEffect, useState, useRef } from 'react';
 
 import { useLocation } from 'react-router';
 
+import { Menu, X } from 'lucide-react';
+
 import type { MenuItem } from '@/features/menu/menu.type.ts';
 import { MenuPanelMap, MenuPanelMapLink } from '@/features/menu/MenuPanelMap.tsx';
 import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import { useUiSettingsStore } from '@/features/settings/useUiSettingsStore.ts';
-import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
-import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 export function MenuPopover() {
@@ -55,40 +55,34 @@ export function MenuPopover() {
     <>
       <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
         <DropdownMenuTrigger data-testid='menu-trigger' asChild>
-          <Button variant='ghost' size='icon-lg' className='h-9 w-9'>
-            <LucideIcon
-              name='menu'
-              size={24}
-              strokeWidth={1}
-              className={`size-5 transition-transform duration-100 ${open ? 'text-user-theme rotate-90' : ''}`}
-              data-testid='menu-icon'
-            />
-          </Button>
+          <button className='group/menu-panel icon-button'>
+            <Menu className={cn('h-4 w-4 transition-transform duration-100', open ? 'rotate-90' : '')} />
+          </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           ref={contentRef}
           data-testid='menu-popover'
-          className='data-[state=closed]:fade-out-0 w-fit max-w-[95vw] p-4 data-[state=closed]:animate-none'
+          className='text-foreground data-[state=closed]:fade-out-0 w-fit max-w-[95vw] p-4 data-[state=closed]:animate-none'
           side='bottom'
           variant='custom'
           align='start'
           sideOffset={8}>
-          <div className='mb-2 grid w-full grid-flow-col justify-items-end'>
-            <Button variant='ghost' size='icon-lg' className='h-8 w-8' onClick={() => setOpen(false)}>
-              <LucideIcon name='x' size={48} strokeWidth={1} className='size-5' data-testid='x-icon' />
-            </Button>
+          <div className='grid w-full grid-flow-col justify-items-end'>
+            <button className='icon-button' onClick={() => setOpen(false)}>
+              <X className={cn('h-4 w-4 transition-transform duration-100', open ? 'rotate-90' : '')} />
+            </button>
           </div>
           <div className='flex flex-col gap-6 sm:flex-row sm:items-stretch'>
             {/* 최근 방문 메뉴 */}
             <div className='flex min-w-[160px] shrink-0 flex-col gap-1 border-r-0 pr-0 sm:border-r sm:pr-6'>
-              <div className='mb-1 border-b border-gray-300 px-1 pb-1.5 text-xs font-semibold tracking-wider opacity-80'>
+              <div className='border-border mb-1 border-b px-1 pb-1.5 text-xs font-bold tracking-wider opacity-80'>
                 최근 메뉴
               </div>
               <div className='grid grid-cols-1 gap-2'>
                 {recentMenus?.map((rec) => {
                   const isRecentActive = rec.path === selectedMenu ? true : false;
                   const linkCss = cn(
-                    'px-2 font-medium transition-colors opacity-80 hover:text-user-theme focus:text-user-theme text-sm hover:font-semibold focus:font-semibold',
+                    'px-2 transition-colors opacity-80 hover:text-user-theme focus:text-user-theme text-sm hover:font-bold focus:font-bold',
                     isRecentActive ? 'text-user-theme' : ''
                   );
 
