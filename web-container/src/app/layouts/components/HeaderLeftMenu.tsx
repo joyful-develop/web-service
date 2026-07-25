@@ -163,17 +163,17 @@ export function HeaderLeftMenu({
 
           {/* ➡️ [우측 구역] 카테고리 메뉴 그룹 (그룹 개수가 늘어나 2줄 이상이 되어도 좌측 단 높이가 함께 확장됨) */}
           <div
-            className={`grid max-h-[520px] gap-x-6 gap-y-8 overflow-y-auto p-5 transition-all duration-200 ${
+            className={`grid max-h-130 gap-x-6 gap-y-8 overflow-y-auto p-5 transition-all duration-200 ${
               menuCategories.length === 1
-                ? 'w-[260px] grid-cols-1'
+                ? 'w-65 grid-cols-1'
                 : menuCategories.length === 2
-                  ? 'w-[500px] grid-cols-2'
+                  ? 'w-125 grid-cols-2'
                   : menuCategories.length === 3
-                    ? 'w-[740px] grid-cols-3'
-                    : 'w-[980px] grid-cols-4'
+                    ? 'w-185 grid-cols-3'
+                    : 'w-245 grid-cols-4'
             }`}>
             {menuCategories.map((category, catIdx) => (
-              <div key={catIdx} className='flex min-w-[210px] flex-col gap-2'>
+              <div key={catIdx} className='flex min-w-52.5 flex-col gap-2'>
                 <div className='mb-1 flex items-center justify-between border-b border-blue-50 pb-1.5 text-[11px] font-bold tracking-wider text-blue-600 uppercase'>
                   <span>{category.header}</span>
                   <span className='py-0.2 rounded bg-gray-100 px-1 font-mono text-[9px] text-gray-400'>

@@ -114,9 +114,33 @@ export function RightSideBarComponent({ rightPanel, rightTab }: RightProps) {
               <Info className='h-4 w-4 text-blue-500' />
               <span>Node Properties</span>
             </div>
-            <div className='rounded-xl border border-gray-100 bg-gray-50 p-3 leading-relaxed text-gray-500'>
+            <div className='border-border bg-background text-foreground rounded-xl border p-3 leading-relaxed'>
               <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
-              LayoutContainer.tsx
+              background
+            </div>
+            <div className='text-secondary-foreground border-border bg-secondary rounded-xl border p-3 leading-relaxed'>
+              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
+              secondary secondary-foreground
+            </div>
+            <div className='text-accent-foreground border-border bg-accent rounded-xl border p-3 leading-relaxed'>
+              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
+              accent accent-foreground
+            </div>
+            <div className='text-foreground border-sub-border bg-sub-background rounded-xl border p-3 leading-relaxed'>
+              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
+              sub-background
+            </div>
+            <div className='text-secondary-foreground border-sub-border bg-sub-secondary rounded-xl border p-3 leading-relaxed'>
+              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
+              sub-secondary secondary-foreground
+            </div>
+            <div className='text-accent-foreground border-sub-border bg-sub-accent rounded-xl border p-3 leading-relaxed'>
+              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
+              sub-accent accent-foreground
+            </div>
+            <div className='text-muted-foreground border-sub-border bg-muted rounded-xl border p-3 leading-relaxed'>
+              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
+              muted muted-foreground
             </div>
           </div>
         ) : (

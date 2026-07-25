@@ -24,16 +24,16 @@ export function UserProfile() {
     <>
       <Popover>
         <PopoverTrigger asChild>
-          <button className='hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring flex items-center gap-3 rounded-lg px-3 py-1.5 text-left transition-colors outline-none focus-visible:ring-2'>
-            <Avatar className='h-8 w-8 rounded-lg'>
+          <button className='hover:text-accent-foreground hover:bg-accent flex items-center gap-2 rounded-lg border border-transparent p-2 transition-all'>
+            <Avatar className='after:text-foreground after:bg-background after:border-border h-8 w-8'>
               <AvatarImage src={user.avatarUrl} alt={user.name} />
-              <AvatarFallback className='rounded-lg'>{fallbackText}</AvatarFallback>
+              <AvatarFallback className='after:rounder-lg'>{fallbackText}</AvatarFallback>
             </Avatar>
-            <div className='flex hidden flex-col sm:flex'>
-              <span className='text-center text-sm leading-tight font-semibold'>
+            <div className='flex flex-col sm:flex'>
+              <span className='text-xs font-medium tracking-tight'>
                 {user.name} ({user.id})
               </span>
-              <span className='mt-0.5 text-center text-xs leading-none'>({user.role})</span>
+              <span className='text-muted-foreground text-xs font-light'>Auth. {user.role}</span>
             </div>
           </button>
         </PopoverTrigger>
@@ -41,8 +41,21 @@ export function UserProfile() {
         <PopoverContent align='end'>
           <PopoverHeader>
             <PopoverTitle>부여된 권한별 가능 업무 목록</PopoverTitle>
-            {/* <PopoverDescription>부여된 권한별 가능 업무 목록</PopoverDescription> */}
           </PopoverHeader>
+          <div className='mb-3 rounded-lg border border-gray-100 bg-gray-50 p-2.5'>
+            <span className='block text-[10px] font-bold tracking-wider text-gray-400 uppercase'>
+              보유 접근 상세 권한
+            </span>
+            <div className='mt-1.5 flex flex-wrap gap-1'>
+              <span className='rounded border border-blue-100 bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-700'>
+                인프라 제어
+              </span>
+              <span className='rounded border border-purple-100 bg-purple-50 px-1.5 py-0.5 text-[10px] font-medium text-purple-700'>
+                프로젝트 승인권
+              </span>
+            </div>
+          </div>
+
           <div className='p-2'>
             <ScrollArea className='bg-background/50 h-48 w-full rounded-md border'>
               <Table>

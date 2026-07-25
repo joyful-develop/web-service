@@ -5,7 +5,7 @@
     "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**", "**/node_modules/.vite-temp/**"]
   },
   "tailwindCSS.suggestions": true,
-  "tailwindCSS.experimental.configFile": "./src/styles/index.css",
+  "tailwindCSS.experimental.configFile": "./src/app/styles/global.css",
 
   "typescript.suggest.autoImports": true,
   "typescript.preferences.importModuleSpecifier": "non-relative",

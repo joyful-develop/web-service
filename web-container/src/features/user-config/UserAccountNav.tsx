@@ -2,12 +2,11 @@ import { useState } from 'react';
 
 import { Link } from 'react-router';
 
-import { LogOut, Settings, Check } from 'lucide-react';
+import { LogOut, Settings, Check, EllipsisVertical } from 'lucide-react';
 
 import { useLogout } from '@/features/user-auth/useUserAuthQuery.ts';
 import { useUserConfigStore, type LocaleLanguage, type ThemeMode } from '@/features/user-config/useUserConfigStore.ts';
 import { Avatar, AvatarFallback } from '@/shared/components/shadcn-ui/avatar.tsx';
-import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,8 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn-ui/tooltip.tsx';
-import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 export function UserAccountNav() {
@@ -27,24 +24,12 @@ export function UserAccountNav() {
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' size='icon-lg'>
-              <LucideIcon
-                name='ellipsisVertical'
-                size={48}
-                strokeWidth={1}
-                className='size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90'
-              />
-              <span className='sr-only'>Settings</span>
-            </Button>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Settings</p>
-        </TooltipContent>
-      </Tooltip>
+      <DropdownMenuTrigger asChild>
+        <button className='group/menu-panel icon-button'>
+          <EllipsisVertical className={cn('h-4 w-4 transition-transform duration-100', isOpen ? 'rotate-90' : '')} />
+          <span className='sr-only'>Settings</span>
+        </button>
+      </DropdownMenuTrigger>
 
       <DropdownMenuContent className='w-[350px] rounded-2xl p-3 shadow-2xl' align='end'>
         {/* 프로필 헤더 */}

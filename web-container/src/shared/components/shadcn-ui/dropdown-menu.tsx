@@ -34,7 +34,8 @@ function DropdownMenuContent({
         align={align}
         data-variant={variant}
         className={cn(
-          'bg-popover not-data-[variant=custom]:text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) min-w-32 origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-lg p-1 shadow-md ring-1 duration-100 data-[state=closed]:overflow-hidden',
+          variant !== 'custom' ? 'bg-popover text-popover-foreground ring-foreground/10' : '',
+          'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--radix-dropdown-menu-content-available-height) w-(--radix-dropdown-menu-trigger-width) origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-lg p-2.5 shadow-2xl ring-1 duration-100 data-[state=closed]:overflow-hidden',
           className
         )}
         {...props}
@@ -62,7 +63,13 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "group/dropdown-menu-item not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:*:[svg]:text-destructive relative flex cursor-default items-center outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:rounded-md not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 not-data-[variant=custom]:text-sm data-disabled:pointer-events-none data-disabled:opacity-50 not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        variant !== 'custom'
+          ? 'focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground gap-1.5 rounded-md px-1.5 py-1 text-sm data-inset:pl-7'
+          : '',
+        variant === 'destructive'
+          ? 'text-destructive focus:bg-destructive/10 focus:text-destructive dark:focus:bg-destructive/20 *:[svg]:text-destructive'
+          : '',
+        "group/dropdown-menu-item relative flex cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
@@ -194,7 +201,11 @@ function DropdownMenuSubTrigger({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "not-data-[variant=custom]:focus:bg-accent not-data-[variant=custom]:focus:text-accent-foreground data-[variant=default]:focus:**:text-accent-foreground not-data-[variant=custom]:data-open:bg-accent not-data-[variant=custom]:data-open:text-accent-foreground flex cursor-default items-center rounded-md outline-hidden select-none not-data-[variant=custom]:gap-1.5 not-data-[variant=custom]:px-1.5 not-data-[variant=custom]:py-1 not-data-[variant=custom]:text-sm not-data-[variant=custom]:data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        variant !== 'custom'
+          ? 'focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground gap-1.5 px-1.5 py-1 text-sm data-inset:pl-7'
+          : '',
+        variant === 'default' ? 'focus:**:text-accent-foreground' : '',
+        "flex cursor-default items-center rounded-md outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}>

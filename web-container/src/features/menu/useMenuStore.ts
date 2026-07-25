@@ -37,7 +37,7 @@ export const useMenuStore = create<MenuState>()(
 
         setRecentMenu: (menu: MenuItem) =>
           set((state) => {
-            const filtered = state.recentMenus.filter((item) => item.path !== menu.path);
+            const filtered = state.recentMenus.filter((item) => item.path !== menu?.path);
             const updated = [menu, ...filtered].slice(0, 10);
             return { recentMenus: updated };
           }),
@@ -45,12 +45,11 @@ export const useMenuStore = create<MenuState>()(
         reset: () => set(initialState),
       }),
       {
-        name: 'recent-menu', // 저장소에 저장될 키
-        // 저장소에 저장될 상태
+        name: 'recent-menu',
         partialize: (state) => ({
           recentMenus: state.recentMenus,
         }),
-        storage: createJSONStorage(() => localStorage), // 저장소
+        storage: createJSONStorage(() => localStorage),
       }
     )
   )

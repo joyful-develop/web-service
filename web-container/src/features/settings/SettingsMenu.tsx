@@ -27,7 +27,7 @@ interface LanguageOption {
   label: string;
 }
 
-export function HeaderSettingsMenu() {
+export function SettingsMenu() {
   // --- 2. 상태 관리 (명확한 타입 지정) ---
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showLangMenu, setShowLangMenu] = useState<boolean>(false);
