@@ -2,7 +2,7 @@ import { Bell, RotateCw } from 'lucide-react';
 
 import { HeaderCenterNavbar } from '@/app/layouts/components/HeaderCenterNavbar.tsx';
 import { MenuPanel } from '@/features/menu/MenuPanel.tsx';
-import { SettingsMenu } from '@/features/settings/SettingsMenu.tsx';
+import { UserAccountNav } from '@/features/user-config/UserAccountNav.tsx';
 import { UserProfile } from '@/features/user-profile/UserProfile.tsx';
 
 export function Header() {
@@ -70,7 +70,7 @@ export function Header() {
 
         <div className='bg-border h-5 w-px' />
 
-        <SettingsMenu />
+        <UserAccountNav />
       </div>
     </header>
   );

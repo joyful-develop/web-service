@@ -24,7 +24,7 @@ export function UserProfile() {
     <>
       <Popover>
         <PopoverTrigger asChild>
-          <button className='hover:text-accent-foreground hover:bg-accent flex items-center gap-2 rounded-lg border border-transparent p-2 transition-all'>
+          <button className='hover:text-accent-foreground hover:bg-accent flex items-center gap-2 rounded-lg border border-transparent p-2 transition-all hover:cursor-pointer'>
             <Avatar className='after:text-foreground after:bg-background after:border-border h-8 w-8'>
               <AvatarImage src={user.avatarUrl} alt={user.name} />
               <AvatarFallback className='after:rounder-lg'>{fallbackText}</AvatarFallback>

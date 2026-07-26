@@ -2,128 +2,166 @@ import { useState } from 'react';
 
 import { Link } from 'react-router';
 
-import { LogOut, Settings, Check, EllipsisVertical } from 'lucide-react';
+import { Check, EllipsisVertical, ChevronRight, Languages, Palette, Settings, LogOut } from 'lucide-react';
 
 import { useLogout } from '@/features/user-auth/useUserAuthQuery.ts';
-import { useUserConfigStore, type LocaleLanguage, type ThemeMode } from '@/features/user-config/useUserConfigStore.ts';
-import { Avatar, AvatarFallback } from '@/shared/components/shadcn-ui/avatar.tsx';
+import { GradientSliderPicker } from '@/features/user-config/GradientSliderPicker.tsx';
+import { LocaleLanguages, useUserConfigStore, type ThemeMode } from '@/features/user-config/useUserConfigStore.ts';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 export function UserAccountNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, setTheme, language, setLanguage } = useUserConfigStore();
+  const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
+  const [isOpenLanguage, setIsOpenLanguage] = useState<boolean>(false);
+  const { theme, setTheme, language, setLanguage, getLanguageLabel } = useUserConfigStore();
   const { mutate: logout } = useLogout();
 
+  const baseCss =
+    'hover:bg-sub-accent hover:text-accent-foreground flex h-12 justify-between px-3 items-center hover:cursor-pointer';
+
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen} modal={false}>
       <DropdownMenuTrigger asChild>
-        <button className='group/menu-panel icon-button'>
-          <EllipsisVertical className={cn('h-4 w-4 transition-transform duration-100', isOpen ? 'rotate-90' : '')} />
+        <button className='group/user-account-nav icon-button'>
+          <EllipsisVertical className={cn('h-4 w-4 transition-transform duration-100', isOpen && 'rotate-90')} />
           <span className='sr-only'>Settings</span>
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className='w-[350px] rounded-2xl p-3 shadow-2xl' align='end'>
-        {/* 프로필 헤더 */}
-        <div className='mb-2 flex items-center gap-3 p-2'>
-          <Avatar className='h-12 w-12 shadow-sm'>
-            <AvatarFallback className='bg-blue-600 font-bold text-white'>SY</AvatarFallback>
-          </Avatar>
-          <div className='flex flex-col'>
-            <span className='text-sm font-semibold text-slate-900 dark:text-slate-100'>Song Young Jin</span>
-            <span className='text-xs text-slate-500'>user@example.com</span>
+      <DropdownMenuContent
+        className='ring-background border-border text-sub-foreground bg-background w-60'
+        side='bottom'
+        align='end'
+        sideOffset={8}
+        variant='custom'
+        role='setting menu'>
+        <div className='border-border sub-background rounded-lg text-sm font-light dark:shadow-lg'>
+          {/* 테마 변경 */}
+          <div className='flex w-full flex-col'>
+            <button
+              id='theme-menu-button'
+              onClick={() => {
+                setIsOpenTheme(!isOpenTheme);
+                setIsOpenLanguage(false);
+              }}
+              className={cn(baseCss)}
+              aria-haspopup='true'
+              aria-expanded={isOpenTheme}
+              aria-controls='theme-menu-list'
+              role='menuitem'>
+              <div className='flex items-center gap-3'>
+                <Palette className='h-4 w-4' />
+                <span aria-hidden='true'>테마</span>
+                <span className='sr-only'>테마 변경</span>
+              </div>
+              <div className='flex items-center gap-1'>
+                <span className='text-xs first-letter:uppercase'>{theme}</span>
+                <ChevronRight className={`h-3 w-3 transition-transform ${isOpenTheme && 'rotate-90'}`} />
+              </div>
+            </button>
+
+            {isOpenTheme && (
+              <div
+                id='theme-menu-list'
+                className='bg-sub-background border-t py-1'
+                role='menu'
+                aria-labelledby='theme-menu-button'>
+                {(['light', 'dark', 'system'] as ThemeMode[]).map((mode) => (
+                  <button
+                    key={mode}
+                    onClick={() => {
+                      setTheme(mode);
+                      setIsOpenTheme(false);
+                    }}
+                    className='hover:bg-sub-accent hover:text-accent-foreground flex w-full items-center justify-between px-11 py-2 text-xs'
+                    role='menuitemradio'
+                    aria-checked={theme === mode}>
+                    <span className='first-letter:uppercase'>{mode}</span>
+                    {theme === mode && <Check className='text-user-theme h-3 w-3' aria-hidden='true' />}
+                  </button>
+                ))}
+                <GradientSliderPicker />
+              </div>
+            )}
           </div>
-        </div>
 
-        <DropdownMenuSeparator className='-mx-3' />
+          {/* 다국어 변경 */}
+          <div className='flex w-full flex-col'>
+            <button
+              id='lang-menu-button'
+              onClick={() => {
+                setIsOpenTheme(false);
+                setIsOpenLanguage(!isOpenLanguage);
+              }}
+              className={cn('border-t', baseCss)}
+              aria-haspopup='true'
+              aria-expanded={isOpenLanguage}
+              aria-controls='lang-menu-list'
+              role='menuitem'>
+              <div className='flex items-center gap-3'>
+                <Languages className='h-4 w-4' />
+                <span aria-hidden='true'>언어</span>
+                <span className='sr-only'>언어 변경</span>
+              </div>
+              <div className='flex items-center gap-1'>
+                <span className='text-xs'>{getLanguageLabel()}</span>
+                <ChevronRight className={`h-3 w-3 transition-transform ${isOpenLanguage && 'rotate-90'}`} />
+              </div>
+            </button>
 
-        {/* 다크 모드 카드 섹션 */}
-        <div className='py-3'>
-          <div className='mb-2 px-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase'>Appearance</div>
-          <div className='grid grid-cols-3 gap-2 px-1'>
-            {(['light', 'dark', 'system'] as ThemeMode[]).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setTheme(mode)}
-                className={cn(
-                  'flex flex-col items-center justify-center gap-1.5 rounded-xl border py-3 transition-all',
-                  theme === mode
-                    ? 'border-blue-500 bg-blue-50/50 ring-1 ring-blue-500 dark:bg-blue-900/20'
-                    : 'border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950'
-                )}>
-                <div
-                  className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-full',
-                    theme === mode ? 'text-blue-600' : 'text-slate-400'
-                  )}>
-                  {mode === 'light' && <span className='text-lg'>☀️</span>}
-                  {mode === 'dark' && <span className='text-lg'>🌙</span>}
-                  {mode === 'system' && <span className='text-lg'>💻</span>}
-                </div>
-                <span className={cn('text-[11px] font-medium', theme === mode ? 'text-blue-700' : 'text-slate-500')}>
-                  {mode.toUpperCase()}
-                </span>
-              </button>
-            ))}
+            {isOpenLanguage && (
+              <div className='bg-sub-background border-t py-1' role='menu' aria-labelledby='lang-menu-button'>
+                {LocaleLanguages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang.code);
+                      setIsOpenLanguage(false);
+                    }}
+                    className='hover:bg-sub-accent hover:text-accent-foreground flex w-full items-center justify-between px-11 py-2 text-xs'
+                    role='menuitemradio'
+                    aria-checked={language === lang.code}>
+                    <span>{lang.label}</span>
+                    {language === lang.code && <Check className='text-user-theme h-3 w-3' aria-hidden='true' />}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* 다국어 카드 섹션 */}
-        <div className='py-3'>
-          <div className='mb-2 px-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase'>Language</div>
-          <div className='grid grid-cols-2 gap-2 px-1'>
-            {[
-              { code: 'ko', label: '한국어', flag: '🇰🇷' },
-              { code: 'en', label: 'English', flag: '🇺🇸' },
-              { code: 'zh', label: '中文', flag: '🇨🇳' },
-              { code: 'hu', label: 'Magyar', flag: '🇭🇺' },
-            ].map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => setLanguage(lang.code as LocaleLanguage)}
-                className={cn(
-                  'relative flex items-center gap-2 rounded-xl border p-2.5 text-left transition-all',
-                  language === lang.code
-                    ? 'border-blue-500 bg-blue-50/50 ring-1 ring-blue-500 dark:bg-blue-900/20'
-                    : 'border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950'
-                )}>
-                <span className='text-base'>{lang.flag}</span>
-                <span
-                  className={cn('text-xs font-medium', language === lang.code ? 'text-blue-700' : 'text-slate-600')}>
-                  {lang.label}
-                </span>
-                {language === lang.code && <Check className='absolute right-2 h-3 w-3 text-blue-600' />}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <DropdownMenuSeparator className='-mx-3' />
-
-        {/* 하단 링크 및 액션 */}
-        <DropdownMenuGroup className='p-1'>
-          <DropdownMenuItem asChild className='h-10 cursor-pointer rounded-lg px-3 focus:bg-slate-100'>
-            <Link to='/settings' className='flex w-full items-center' onClick={() => setIsOpen(false)}>
-              <Settings className='mr-3 h-4 w-4 text-slate-500' />
-              <span className='text-sm font-medium'>환경 설정</span>
+          {/* 설정 메뉴 */}
+          <div role='none'>
+            <Link
+              to='/settings'
+              onClick={() => setIsOpen(false)}
+              className={cn('border-t no-underline decoration-0', baseCss)}
+              role='menuitem'>
+              <div className='flex items-center gap-3'>
+                <Settings className='h-4 w-4' />
+                <span aria-hidden='true'>설정</span>
+                <span className='sr-only'>설정 메뉴</span>
+              </div>
+              <ChevronRight className='h-3 w-3' aria-hidden='true' />
             </Link>
-          </DropdownMenuItem>
+          </div>
 
-          <DropdownMenuItem
-            onClick={() => logout()}
-            className='h-10 cursor-pointer rounded-lg px-3 text-red-600 focus:bg-red-50 focus:text-red-600 dark:focus:bg-red-950/30'>
-            <LogOut className='mr-3 h-4 w-4' />
-            <span className='text-sm font-medium'>로그아웃</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+          {/* 로그 아웃 메뉴 */}
+          <div role='none'>
+            <button onClick={() => logout()} className={cn('group w-full border-t', baseCss)}>
+              <div className='flex items-center gap-3'>
+                <LogOut className='h-4 w-4' />
+                <span aria-hidden='true'>로그 아웃</span>
+                <span className='sr-only'>로그 아웃 메뉴</span>
+              </div>
+              <ChevronRight className='h-3 w-3' aria-hidden='true' />
+            </button>
+          </div>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
