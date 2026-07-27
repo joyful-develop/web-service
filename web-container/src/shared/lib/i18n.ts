@@ -13,6 +13,9 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+    detection: {
+      caches: [],
+    },
   });
 
 export default i18n;
