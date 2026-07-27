@@ -1,10 +1,9 @@
 import type { AxiosError } from 'axios';
 
+import { CircleCheckBig, CircleX, Info, TriangleAlert, type LucideIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { create } from 'zustand';
 
-import type { IconName } from '@/shared/icons/lucide-icon-registry.ts';
-import { LucideIcon } from '@/shared/icons/LucideIcon.tsx';
 import type { AlertType, ApiError } from '@/shared/types/api.types.ts';
 import { errorParser } from '@/shared/utils/error-parser.ts';
 
@@ -30,22 +29,22 @@ export const useNotificationStore = create<NotificationState>((set) => ({
 
     set({ lastType: type, lastMessage: msg });
 
-    let iconName: IconName;
+    let Icon: LucideIcon;
     switch (type) {
       case 'info':
-        iconName = 'info';
+        Icon = Info;
         break;
       case 'warning':
-        iconName = 'triangleAlert';
+        Icon = TriangleAlert;
         break;
       case 'error':
-        iconName = 'circleX';
+        Icon = CircleX;
         break;
       case 'critical':
-        iconName = 'circleX';
+        Icon = CircleX;
         break;
       default:
-        iconName = 'circleCheckBig';
+        Icon = CircleCheckBig;
         break;
     }
     if (type === 'critical') {
@@ -57,17 +56,13 @@ export const useNotificationStore = create<NotificationState>((set) => ({
           label: '새로 고침',
           onClick: () => window.location.reload(),
         },
-        icon: iconName ? (
-          <LucideIcon name={iconName} size={32} strokeWidth={2} className='bg-blue-500 text-white' />
-        ) : null,
+        icon: Icon ? <Icon size={32} strokeWidth={2} className='bg-blue-500 text-white' /> : null,
       });
     } else {
       toast(msg, {
         description: desc,
         position: 'top-center',
-        icon: iconName ? (
-          <LucideIcon name={iconName} size={32} strokeWidth={2} className='bg-blue-500 text-white' />
-        ) : null,
+        icon: Icon ? <Icon size={32} strokeWidth={2} className='bg-blue-500 text-white' /> : null,
       });
     }
   },

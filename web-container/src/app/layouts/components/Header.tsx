@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 import { Bell, RotateCw } from 'lucide-react';
 
 import { HeaderCenterNavbar } from '@/app/layouts/components/HeaderCenterNavbar.tsx';
@@ -14,22 +16,24 @@ export function Header() {
         <MenuPanel />
 
         {/* 로고 & 시스템명 & 설명 */}
-        <div className='flex items-center gap-3'>
-          <div className='bg-primary text-primary-foreground shadow-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black shadow-md'>
-            FO
-          </div>
-          <div className='flex flex-col'>
-            <div className='flex items-center gap-2'>
-              <span className='text-sm font-bold tracking-tight'>FlexOps</span>
-              <span className='bg-primary/70 text-primary-foreground rounded-md px-1.5 pt-0.5 text-[9px] font-light tracking-tight'>
-                Ver. 1.0.0.1
+        <Link to='/' className='no-underline decoration-0'>
+          <div className='flex items-center gap-3'>
+            <div className='bg-primary text-primary-foreground shadow-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black shadow-md'>
+              FO
+            </div>
+            <div className='flex flex-col'>
+              <div className='flex items-center gap-2'>
+                <span className='text-sm font-bold tracking-tight'>FlexOps</span>
+                <span className='bg-primary/70 text-primary-foreground rounded-md px-1.5 pt-0.5 text-[9px] font-light tracking-tight'>
+                  Ver. 1.0.0.1
+                </span>
+              </div>
+              <span className='text-muted-foreground -mt-0.5 text-xs font-medium'>
+                모듈의 추가와 삭제가 자유로운 아키텍처
               </span>
             </div>
-            <span className='text-muted-foreground -mt-0.5 text-xs font-medium'>
-              모듈의 추가와 삭제가 자유로운 아키텍처
-            </span>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* ================= 중앙 세션: 메뉴 네비게이션 ================= */}

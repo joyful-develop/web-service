@@ -2,8 +2,6 @@ import { Panel, usePanelRef } from 'react-resizable-panels';
 
 import { LayoutDashboard, Files, Settings, Info, History, ChevronLeft, ChevronRight, FolderOpen } from 'lucide-react';
 
-import { CustomColorPicker } from '@/app/provider/CustomColorPicker.tsx';
-
 import type { LeftTabType, RightTabType } from './RootLayout.tsx';
 
 // --- [좌측 서브 패널 컴포넌트] ---
@@ -30,7 +28,7 @@ export function LeftSideBarComponent({ leftPanel, leftTab }: LeftProps) {
           ) : (
             <Files className='h-3.5 w-3.5 text-blue-600' />
           )}
-          <span className='font-bold tracking-widest text-[px] text-gray-500 uppercase'>
+          <span className='font-bold tracking-widest text-[px] uppercase'>
             {leftTab === 'nav' ? 'Navigation' : 'Explorer'}
           </span>
         </div>
@@ -116,8 +114,6 @@ export function RightSideBarComponent({ rightPanel, rightTab }: RightProps) {
               <Info className='h-4 w-4 text-blue-500' />
               <span>Node Properties</span>
             </div>
-
-            <CustomColorPicker />
 
             <div className='border-border bg-background text-foreground rounded-xl border p-3 leading-relaxed'>
               <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
