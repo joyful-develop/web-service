@@ -6,7 +6,7 @@
   --font-serif: ui-serif, Georgia, 'Times New Roman', Times, serif;
   --font-mono: ui-monospace, 'Liberation Mono', 'Courier New', monospace;
 
-  --user-theme: oklch(0.36 0.19 291.68 / 1);
+  --user-theme-color: oklch(0.36 0.19 291.68 / 1);
 
   --foreground: oklch(0.04 0.02 29.23 / 1);
   --sub-foreground: oklch(0.11 0 0 / 1);
@@ -16,7 +16,7 @@
   --card-foreground: oklch(0.04 0.02 29.23 / 1);
   --popover: oklch(1 0 0 / 1);
   --popover-foreground: oklch(0.04 0.02 29.23 / 1);
-  --primary: var(--user-theme);
+  --primary: var(--user-theme-color);
   --primary-foreground: oklch(1 0 0 / 1);
   --secondary: oklch(0.97 0 0 / 1);
   --sub-secondary: oklch(0.97 0 0 / 1);
@@ -50,7 +50,7 @@
 }
 
 .dark {
-  --user-theme: oklch(0.29 0.15 293.2 / 1);
+  --user-theme-color: oklch(0.29 0.15 293.2 / 1);
 
   --foreground: oklch(1 0 0 / 1);
   --sub-foreground: oklch(0.92 0 0 / 1);
@@ -60,7 +60,7 @@
   --card-foreground: oklch(1 0 0 / 1);
   --popover: oklch(0.25 0.01 271.18 / 1);
   --popover-foreground: oklch(1 0 0 / 1);
-  --primary: var(--user-theme);
+  --primary: var(--user-theme-color);
   --primary-foreground: oklch(1 0 0 / 1);
   --secondary: oklch(0.29 0.01 271.22 / 1);
   --sub-secondary: oklch(0.36 0 0 / 1);
@@ -98,7 +98,8 @@
   --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);
   --font-heading: var(--font-display);
-  --color-user-theme: var(--user-theme);
+
+  --color-user-theme: var(--user-theme-color);
 
   --color-foreground: var(--foreground);
   --color-sub-foreground: var(--sub-foreground);

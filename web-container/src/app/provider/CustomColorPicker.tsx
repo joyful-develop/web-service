@@ -1,6 +1,6 @@
 'use client';
 
-import { useUserTheme } from './UserThemeProvider.tsx';
+import { useUserTheme } from '../../features/user-config/theme/ThemeColorProviderContext.tsx';
 
 export function CustomColorPicker() {
   const { userThemeColor, setUserThemeColor } = useUserTheme();

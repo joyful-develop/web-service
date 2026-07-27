@@ -19,8 +19,10 @@ export const LocaleLanguages: LocaleLanguage[] = [
 
 interface UserConfigState {
   theme: ThemeMode;
+  themeColor: string;
   language: LocaleLanguageCode;
   setTheme: (theme: ThemeMode) => void;
+  setThemeColor: (themeColor: string) => void;
   setLanguage: (language: LocaleLanguageCode) => void;
   getLanguageLabel: () => string;
   syncTranslations: (data: TranslationData) => void;
@@ -31,8 +33,10 @@ export const useUserConfigStore = create<UserConfigState>()(
     persist(
       (set, get) => ({
         theme: 'system',
+        themeColor: '#0055ff',
         language: (i18n.language as LocaleLanguageCode) || 'ko',
         setTheme: (theme) => set({ theme: theme }),
+        setThemeColor: (themeColor) => set({ themeColor: themeColor }),
         setLanguage: (language) => {
           i18n.changeLanguage(language);
           set({ language: language });
@@ -61,6 +65,7 @@ export const useUserConfigStore = create<UserConfigState>()(
         name: 'user-config',
         partialize: (state) => ({
           theme: state.theme,
+          themeColor: state.themeColor,
           language: state.language,
         }),
         storage: createJSONStorage(() => localStorage),

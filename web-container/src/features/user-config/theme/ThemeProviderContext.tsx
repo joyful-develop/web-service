@@ -1,14 +1,23 @@
-import React, { useEffect } from 'react';
+'use client';
 
-import type { Theme } from '@/features/user-config/theme/theme.types.ts';
-import { ThemeProviderContext } from '@/features/user-config/theme/ThemeProviderContext.ts';
+import React, { useEffect, createContext, useContext } from 'react';
+
+import type { Theme } from '@/features/user-config/theme/theme.types';
 import { useUserConfigStore } from '@/features/user-config/useUserConfigStore.ts';
 
-type ThemeProviderProps = {
-  children: React.ReactNode;
+type ThemeProviderState = {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
 };
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+const initialState: ThemeProviderState = {
+  theme: 'system',
+  setTheme: () => null,
+};
+
+export const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme = useUserConfigStore((state) => state.theme);
   const setTheme = useUserConfigStore((state) => state.setTheme);
 
@@ -32,9 +41,9 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
     },
   };
 
-  return (
-    <ThemeProviderContext.Provider {...props} value={value}>
-      {children}
-    </ThemeProviderContext.Provider>
-  );
+  return <ThemeProviderContext.Provider value={value}>{children}</ThemeProviderContext.Provider>;
 }
+
+export const useTheme = () => {
+  return useContext(ThemeProviderContext);
+};
