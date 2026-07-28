@@ -49,12 +49,15 @@ const navigationMenuTriggerStyle = cva(
 function NavigationMenuTrigger({
   className,
   children,
+  variant = 'default',
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger> & {
+  variant?: 'default' | 'custom';
+}) {
   return (
     <NavigationMenuPrimitive.Trigger
       data-slot='navigation-menu-trigger'
-      className={cn(navigationMenuTriggerStyle(), 'group', className)}
+      className={cn(variant !== 'custom' && navigationMenuTriggerStyle(), variant !== 'custom' && 'group', className)}
       {...props}>
       {children}{' '}
       <ChevronDownIcon
@@ -96,12 +99,20 @@ function NavigationMenuViewport({
   );
 }
 
-function NavigationMenuLink({ className, ...props }: React.ComponentProps<typeof NavigationMenuPrimitive.Link>) {
+function NavigationMenuLink({
+  className,
+  variant = 'default',
+  ...props
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Link> & {
+  variant?: 'default' | 'custom';
+}) {
   return (
     <NavigationMenuPrimitive.Link
       data-slot='navigation-menu-link'
       className={cn(
-        "hover:bg-muted focus:bg-muted focus-visible:ring-ring/50 data-active:bg-muted/50 data-active:hover:bg-muted data-active:focus:bg-muted flex items-center gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&_svg:not([class*='size-'])]:size-4",
+        "flex items-center [&_svg:not([class*='size-'])]:size-4",
+        variant !== 'custom' &&
+          'hover:bg-muted focus:bg-muted data-active:focus:bg-muted focus-visible:ring-ring/50 data-active:bg-muted/50 data-active:hover:bg-muted gap-2 rounded-lg p-2 text-sm transition-all outline-none focus-visible:ring-3 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md',
         className
       )}
       {...props}

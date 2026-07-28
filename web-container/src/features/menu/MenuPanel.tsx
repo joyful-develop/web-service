@@ -27,7 +27,7 @@ export function MenuPanel() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selectedMenu !== location.pathname) {
+    if (location.pathname && selectedMenu !== location.pathname) {
       setSelectedMenu(location.pathname);
     }
   }, [location.pathname, selectedMenu, setSelectedMenu]);
@@ -37,7 +37,7 @@ export function MenuPanel() {
       (menu: MenuItem): void => {
         setSelectedMenu(menu.path);
         setIsOpen(false);
-        setRecentMenu(menu);
+        setRecentMenu({ ...menu, children: [] });
       },
     [setSelectedMenu, setRecentMenu]
   );
@@ -61,7 +61,7 @@ export function MenuPanel() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className='ring-background text-sub-foreground bg-background flex w-fit max-w-[95vw] gap-1'
+        className='ring-background bg-background flex w-fit max-w-[95vw] select-none'
         side='bottom'
         sideOffset={8}
         align='start'
@@ -70,16 +70,14 @@ export function MenuPanel() {
         aria-label='메인 메뉴 팝업'>
         {/* 최근 메뉴 섹션  */}
         <section
-          className='border-sub-border bg-sub-secondary flex min-w-45 shrink-0 flex-col rounded-lg p-1'
+          className='border-sub-border flex min-w-45 shrink-0 flex-col px-2 pt-2 text-sm font-light'
           role='region'
           aria-labelledby='recent-menu-heading'>
-          <div
-            id='recent-menu-heading'
-            className='mb-1 flex items-center gap-2 px-2 pt-1 text-xs font-medium tracking-tight'>
+          <div id='recent-menu-heading' className='border-sub-border border-b p-2'>
             <span>최근 메뉴</span>
           </div>
-          <div className='border-sub-border bg-sub-background flex-1 rounded-lg p-1.5'>
-            <div className='flex flex-col gap-1.5' aria-label='최근 방문한 메뉴 링크 목록'>
+          <div className='flex-1 p-1.5'>
+            <div className='flex flex-col' aria-label='최근 방문한 메뉴 링크 목록'>
               {recentMenus?.map((rec) => (
                 <MenuPanelMapLink
                   key={rec.rawId}
@@ -93,8 +91,11 @@ export function MenuPanel() {
         </section>
 
         {/* 일반 메뉴 섹션 */}
-        <section className='bg-background ml-2 flex min-w-45 flex-col' role='region' aria-label='전체 메뉴 사이트맵'>
-          <div className={cn('grid h-full items-start gap-2', menuGridColsClass)}>
+        <section
+          className='border-sub-border bg-sub-background flex min-w-45 flex-row gap-2 rounded-lg p-2 text-sm font-light shadow-lg'
+          role='region'
+          aria-label='전체 메뉴 사이트맵'>
+          <div className={cn('grid h-full items-start gap-3', menuGridColsClass)}>
             <MenuPanelMap menus={menus} onMenuClick={handleMenuClick} selectedMenu={selectedMenu} depth={1} />
           </div>
         </section>

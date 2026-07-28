@@ -21,8 +21,7 @@ export function UserAccountNav() {
   const { theme, setTheme, language, setLanguage, getLanguageLabel } = useUserConfigStore();
   const { mutate: logout } = useLogout();
 
-  const baseCss =
-    'hover:bg-sub-accent hover:text-accent-foreground flex h-12 justify-between px-3 items-center hover:cursor-pointer';
+  const baseCss = 'hover:bg-sub-accent hover:text-accent-foreground flex h-12 justify-between px-3 items-center';
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen} modal={false}>
@@ -34,7 +33,7 @@ export function UserAccountNav() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className='ring-background border-border text-sub-foreground bg-background w-60 select-none'
+        className='ring-background bg-background w-60 select-none'
         side='bottom'
         align='end'
         sideOffset={8}

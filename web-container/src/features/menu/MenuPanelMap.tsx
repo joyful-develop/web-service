@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Link } from 'react-router';
 
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import type { MenuItem } from '@/features/menu/menu.type.ts';
 import { DropdownMenuItem } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
@@ -39,12 +39,15 @@ export const MenuPanelMap = React.memo(function MenuPanelMap({
           <React.Fragment key={menu.rawId}>
             {hasChildren ? (
               depth === 1 ? (
-                <div className='border-sub-border bg-sub-secondary flex h-full min-w-45 shrink-0 flex-col rounded-lg p-1'>
-                  <div className='mb-1 flex items-center gap-2 px-2 pt-1 text-xs font-medium tracking-tight'>
+                <section
+                  className='flex h-full min-w-45 shrink-0 flex-col px-2'
+                  role='region'
+                  aria-labelledby='menu-heading'>
+                  <div id='menu-heading' className='border-sub-border border-b p-2'>
                     {menu.label}
                   </div>
-                  <div className='border-sub-border bg-sub-background flex-1 rounded-lg p-1.5'>
-                    <div className='flex flex-col gap-1.5'>
+                  <div className='flex-1 p-1.5'>
+                    <div className='flex flex-col'>
                       <MenuPanelMap
                         menus={menu.children!}
                         onMenuClick={onMenuClick}
@@ -53,7 +56,7 @@ export const MenuPanelMap = React.memo(function MenuPanelMap({
                       />
                     </div>
                   </div>
-                </div>
+                </section>
               ) : (
                 <MenuAccordionItem
                   menu={menu}
@@ -88,7 +91,7 @@ function MenuAccordionItem({
 }) {
   return (
     <div className='group flex w-full flex-col'>
-      <button className='text-sub-foreground hover:text-accent-foreground flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm font-light transition-all hover:font-semibold focus:outline-none'>
+      <button className='hover:text-accent-foreground transition-color flex items-center justify-between p-2'>
         <span className='truncate'>{menu.label}</span>
         <ChevronDown
           className={cn(
@@ -97,11 +100,7 @@ function MenuAccordionItem({
           )}
         />
       </button>
-      <div
-        className={cn(
-          'bg-sub-background mt-1.5 ml-1.5 flex-col gap-1.5',
-          isActive ? 'flex' : 'hidden group-hover:flex'
-        )}>
+      <div className={cn('flex-col gap-1 pl-3', isActive ? 'flex' : 'hidden group-hover:flex')}>
         <MenuPanelMap menus={menu.children!} onMenuClick={onMenuClick} selectedMenu={selectedMenu} depth={depth + 1} />
       </div>
     </div>
@@ -119,16 +118,15 @@ export function MenuPanelMapLink({
 }) {
   return (
     <DropdownMenuItem variant='custom' asChild>
-      <button
+      <Link
+        to={menu.path || '#'}
+        onClick={() => onMenuClick(menu)}
         className={cn(
-          'bg-sub-secondary text-sub-foreground hover:bg-sub-accent hover:text-accent-foreground flex h-7 justify-between rounded-lg px-3 py-4 text-sm font-light',
-          isActive ? 'text-user-theme' : ''
+          'hover:bg-sub-accent hover:text-accent-foreground transition-color h-8 cursor-default p-2 text-left',
+          isActive && 'text-user-theme'
         )}>
-        <Link to={menu.path || '#'} onClick={() => onMenuClick(menu)} className='flex-1 text-left'>
-          <span className='truncate'>{menu.label}</span>
-        </Link>
-        <ChevronRight className='h-3 w-3 shrink-0' />
-      </button>
+        <span className='truncate'>{menu.label}</span>
+      </Link>
     </DropdownMenuItem>
   );
 }

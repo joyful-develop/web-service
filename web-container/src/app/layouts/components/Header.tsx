@@ -2,14 +2,15 @@ import { Link } from 'react-router';
 
 import { Bell, RotateCw } from 'lucide-react';
 
-import { HeaderCenterNavbar } from '@/app/layouts/components/HeaderCenterNavbar.tsx';
+// import { HeaderCenterNavbar } from '@/app/layouts/components/HeaderCenterNavbar.tsx';
+import { MenuNavigation } from '@/features/menu/MenuNavigation.tsx';
 import { MenuPanel } from '@/features/menu/MenuPanel.tsx';
 import { UserAccountNav } from '@/features/user-config/UserAccountNav.tsx';
 import { UserProfile } from '@/features/user-profile/UserProfile.tsx';
 
 export function Header() {
   return (
-    <header className='bg-background text-foreground border-border z-40 flex h-16 shrink-0 items-center justify-between border-b px-1 shadow-sm select-none'>
+    <header className='bg-background text-foreground border-border z-40 flex h-14 shrink-0 items-center justify-between border-b px-1 shadow-sm select-none'>
       {/* ================= 좌측 세션: 메뉴 및 시스템 정보 ================= */}
       <div className='flex items-center gap-4'>
         {/* 메뉴 */}
@@ -37,7 +38,7 @@ export function Header() {
       </div>
 
       {/* ================= 중앙 세션: 메뉴 네비게이션 ================= */}
-      <HeaderCenterNavbar />
+      <MenuNavigation />
 
       {/* ================= 우측 세션: 유틸리티 및 사용자 프로필 ================= */}
       <div className='flex items-center gap-4'>
