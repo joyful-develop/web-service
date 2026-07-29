@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Link } from 'react-router';
 
 import { ChevronDown } from 'lucide-react';
 
 import type { MenuItem } from '@/features/menu/menu.type.ts';
+import { useMenuStore } from '@/features/menu/useMenuStore.ts';
 import { DropdownMenuItem } from '@/shared/components/shadcn-ui/dropdown-menu.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
@@ -89,18 +90,35 @@ function MenuAccordionItem({
   depth: number;
   isActive: boolean;
 }) {
+  const { setSelectedParentMenu } = useMenuStore();
+  const [isOpen, setIsOpen] = useState(isActive);
+  const [prevIsActive, setPrevIsActive] = useState(isActive);
+
+  if (isActive !== prevIsActive) {
+    setPrevIsActive(isActive);
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }
+
+  function handleToggle() {
+    setIsOpen((prev) => !prev);
+  }
+
   return (
-    <div className='group flex w-full flex-col'>
-      <button className='hover:text-accent-foreground transition-color flex items-center justify-between p-2'>
+    <div className='flex w-full flex-col'>
+      <button
+        onClick={() => {
+          setSelectedParentMenu(menu.rawId.toString());
+          handleToggle();
+        }}
+        className='hover:text-accent-foreground transition-color flex items-center justify-between p-2'>
         <span className='truncate'>{menu.label}</span>
         <ChevronDown
-          className={cn(
-            'h-3 w-3 -rotate-90 transform transition-transform duration-100',
-            isActive ? 'rotate-0' : 'group-hover:rotate-0'
-          )}
+          className={cn('h-3 w-3 -rotate-90 transform transition-transform duration-100', isOpen && 'rotate-0')}
         />
       </button>
-      <div className={cn('flex-col gap-1 pl-3', isActive ? 'flex' : 'hidden group-hover:flex')}>
+      <div className={cn('flex-col gap-1 pl-3', isOpen ? 'flex' : 'hidden')}>
         <MenuPanelMap menus={menu.children!} onMenuClick={onMenuClick} selectedMenu={selectedMenu} depth={depth + 1} />
       </div>
     </div>

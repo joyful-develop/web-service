@@ -56,12 +56,12 @@ export function RootLayout() {
     }
   };
 
-  const currentParentId = 'board_parent';
+  const currentParentId = 11;
 
   return (
     <div className='flex h-screen w-screen flex-col overflow-hidden bg-gray-50 text-gray-800 select-none'>
       <Header />
-      <PageFilterBar parentMenuId={currentParentId} key={currentParentId} />
+      <PageFilterBar parentRawId={currentParentId} key={currentParentId} />
 
       {/* 메인 작업 영역: [좌측 바] + [가로 분할 패널 그룹] + [우측 바] */}
       <div className='relative flex w-full flex-1 overflow-hidden'>

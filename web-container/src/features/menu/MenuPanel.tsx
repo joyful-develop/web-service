@@ -77,15 +77,19 @@ export function MenuPanel() {
             <span>최근 메뉴</span>
           </div>
           <div className='flex-1 p-1.5'>
-            <div className='flex flex-col' aria-label='최근 방문한 메뉴 링크 목록'>
-              {recentMenus?.map((rec) => (
-                <MenuPanelMapLink
-                  key={rec.rawId}
-                  menu={rec}
-                  isActive={rec.path === selectedMenu}
-                  onMenuClick={handleMenuClick}
-                />
-              ))}
+            <div className='flex flex-col' aria-label='최근 메뉴 목록'>
+              {recentMenus.length === 0 ? (
+                <div className='text-muted-foreground p-2 text-center'>최근 메뉴 목록이 없습니다.</div>
+              ) : (
+                recentMenus.map((rec) => (
+                  <MenuPanelMapLink
+                    key={rec.rawId}
+                    menu={rec}
+                    isActive={rec.path === selectedMenu}
+                    onMenuClick={handleMenuClick}
+                  />
+                ))
+              )}
             </div>
           </div>
         </section>
@@ -95,9 +99,13 @@ export function MenuPanel() {
           className='border-sub-border bg-sub-background flex min-w-45 flex-row gap-2 rounded-lg p-2 text-sm font-light shadow-lg'
           role='region'
           aria-label='전체 메뉴 사이트맵'>
-          <div className={cn('grid h-full items-start gap-3', menuGridColsClass)}>
-            <MenuPanelMap menus={menus} onMenuClick={handleMenuClick} selectedMenu={selectedMenu} depth={1} />
-          </div>
+          {menus.length === 0 ? (
+            <div className='text-muted-foreground p-2 text-center'>메뉴 목록이 없습니다.</div>
+          ) : (
+            <div className={cn('grid h-full items-start gap-3', menuGridColsClass)}>
+              <MenuPanelMap menus={menus} onMenuClick={handleMenuClick} selectedMenu={selectedMenu} depth={1} />
+            </div>
+          )}
         </section>
 
         {/* 닫기 버튼 영역 */}

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { Link } from 'react-router';
 
@@ -76,25 +76,34 @@ function MenuNavigationAccordionItem({
   selectedMenu: string | null;
   isActive: boolean;
 }) {
-  console.log(selectedMenu);
+  const [isOpen, setIsOpen] = useState(isActive);
+  const [prevIsActive, setPrevIsActive] = useState(isActive);
+
+  if (isActive !== prevIsActive) {
+    setPrevIsActive(isActive);
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <li className='group/menu-nav-accordion flex w-full flex-col' role='none'>
+    <li className='flex w-full flex-col' role='none'>
       <button
+        onClick={handleToggle}
         className='hover:text-accent-foreground transition-color flex items-center justify-between p-2'
-        aria-expanded={isActive}
+        aria-expanded={isOpen}
         aria-haspopup='true'
         aria-controls={`submenu-${menu.rawId}`}>
         <span className='truncate'>{menu.label}</span>
         <ChevronDown
-          className={cn(
-            'h-3 w-3 -rotate-90 transform transition-transform duration-100',
-            isActive ? 'rotate-0' : 'group-hover/menu-nav-accordion:rotate-0'
-          )}
+          className={cn('h-3 w-3 -rotate-90 transform transition-transform duration-100', isOpen && 'rotate-0')}
         />
       </button>
-      <ul
-        className={cn('flex-col gap-1 pl-3', isActive ? 'flex' : 'hidden group-hover/menu-nav-accordion:flex')}
-        aria-label={`${menu.label} 하위 메뉴`}>
+      <ul className={cn('flex-col gap-1 pl-3', isOpen ? 'flex' : 'hidden')} aria-label={`${menu.label} 하위 메뉴`}>
         <MenuNavigationMap menus={menu.children!} onMenuClick={onMenuClick} selectedMenu={selectedMenu} />
       </ul>
     </li>

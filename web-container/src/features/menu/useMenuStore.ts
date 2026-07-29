@@ -7,11 +7,13 @@ export interface MenuState {
   menus: MenuItem[];
   subMenus: MenuItem[];
   selectedMenu: string | null;
+  selectedParentMenu: string | number | null;
   recentMenus: MenuItem[];
 
   setMenus: (menus: MenuItem[] | null) => void;
   setSubMenus: (subMenus: MenuItem[] | null) => void;
   setSelectedMenu: (path: string | null) => void;
+  setSelectedParentMenu: (rawId: string | number | null) => void;
   setRecentMenu: (menu: MenuItem) => void;
   reset: () => void;
 }
@@ -20,6 +22,7 @@ const initialState = {
   menus: [],
   subMenus: [],
   selectedMenu: null,
+  selectedParentMenu: null,
   recentMenus: [],
 };
 
@@ -34,6 +37,8 @@ export const useMenuStore = create<MenuState>()(
         setSubMenus: (subMenus: MenuItem[] | null) => set({ subMenus: subMenus || [] }),
 
         setSelectedMenu: (path: string | null) => set({ selectedMenu: path }),
+
+        setSelectedParentMenu: (rawId: string | number | null) => set({ selectedParentMenu: rawId }),
 
         setRecentMenu: (menu: MenuItem) =>
           set((state) => {

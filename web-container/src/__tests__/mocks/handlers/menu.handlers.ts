@@ -75,7 +75,7 @@ export const menuHandlers = [
                         {
                           rawId: 1121,
                           label: 'page 1-1-2-1',
-                          path: '/page-1-1-2-1',
+                          path: '',
                           type: 'local',
                           component: '__tests__/TestPage',
                           isLayout: false,
