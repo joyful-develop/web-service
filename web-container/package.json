@@ -25,6 +25,7 @@
     "format": "prettier --write --cache ."
   },
   "dependencies": {
+    "@base-ui/react": "^1.6.0",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.4.0",
     "@module-federation/runtime": "^2.6.0",

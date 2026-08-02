@@ -92,39 +92,45 @@ export function MenuSelect() {
   };
 
   return (
-    <nav
-      className='flex w-full flex-row items-center justify-center gap-1 select-none sm:w-auto'
-      aria-label='서브 네비게이션'>
-      <span id={selectLabelId} className='text-sm font-medium'>
-        {currentParentMenu ? currentParentMenu.label : selectedParentMenu}
-      </span>
-      <ChevronRight className='h-4 w-4' aria-hidden='true' />
+    <>
+      {selectedParentMenu ? (
+        <nav
+          className='flex w-full flex-row items-center justify-center gap-1 select-none sm:w-auto'
+          aria-label='서브 네비게이션'>
+          <span id={selectLabelId} className='text-sm font-medium'>
+            {currentParentMenu ? currentParentMenu.label : selectedParentMenu}
+          </span>
+          <ChevronRight className='h-4 w-4' aria-hidden='true' />
 
-      <div className='flex-1 sm:flex-initial'>
-        <Select value={currentValue} onValueChange={handleMenuChange}>
-          <SelectTrigger
-            variant='custom'
-            className='w-full min-w-20 font-medium sm:w-40'
-            aria-labelledby={selectLabelId}>
-            <SelectValue placeholder={subMenuItems.length === 0 ? '하위 메뉴 없음' : '서브 메뉴 선택'} />
-          </SelectTrigger>
-          <SelectContent
-            position='popper'
-            className='ring-background border-sub-border bg-sub-background flex w-fit min-w-45 flex-col p-2 text-sm font-light select-none'>
-            {subMenuItems.length === 0 ? (
-              <div className='text-muted-foreground p-2 text-center text-xs' role='status' aria-live='polite'>
-                하위 메뉴가 없습니다.
-              </div>
-            ) : (
-              subMenuItems.map((menu) => (
-                <SelectItem key={menu.rawId} value={menu.rawId.toString()}>
-                  {menu.label}
-                </SelectItem>
-              ))
-            )}
-          </SelectContent>
-        </Select>
-      </div>
-    </nav>
+          <div className='flex-1 sm:flex-initial'>
+            <Select value={currentValue} onValueChange={handleMenuChange}>
+              <SelectTrigger
+                variant='custom'
+                className='w-full min-w-20 font-medium sm:w-40'
+                aria-labelledby={selectLabelId}>
+                <SelectValue placeholder={subMenuItems.length === 0 ? '하위 메뉴 없음' : '서브 메뉴 선택'} />
+              </SelectTrigger>
+              <SelectContent
+                position='popper'
+                className='ring-background border-sub-border bg-sub-background flex w-fit min-w-45 flex-col p-2 text-sm font-light select-none'>
+                {subMenuItems.length === 0 ? (
+                  <div className='text-muted-foreground p-2 text-center text-xs' role='status' aria-live='polite'>
+                    하위 메뉴가 없습니다.
+                  </div>
+                ) : (
+                  subMenuItems.map((menu) => (
+                    <SelectItem key={menu.rawId} value={menu.rawId.toString()}>
+                      {menu.label}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+        </nav>
+      ) : (
+        <div className='text-muted-foreground p-2 text-center'>상위 메뉴를 선택하세요.</div>
+      )}
+    </>
   );
 }

@@ -6,6 +6,7 @@ import { Search } from 'lucide-react';
 
 import { MenuSelect } from '@/features/menu/MenuSelect.tsx';
 import { FilterCombobox, type ComboboxOption } from '@/shared/components/FilterCombobox.tsx'; // 임포트
+import { MultiSelect } from '@/shared/components/MultiSelect.tsx';
 
 const sortOptions: ComboboxOption[] = [
   { value: 'latest', label: '최신순' },
@@ -19,13 +20,21 @@ const targetOptions: ComboboxOption[] = [
   { value: 'author', label: '작성자' },
 ];
 
+const frameworks = [
+  { value: 'nextjs', label: 'Nextjs' },
+  { value: 'react', label: 'React' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'tailwind', label: 'Tailwind CSS' },
+];
+
 export function PageFilterBar() {
   // 상태 제어 (각 목록의 초기값 지정)
   const [searchFilter1, setSearchFilter1] = useState('views');
   const [searchTarget, setSearchTarget] = useState('title');
+  const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>([]);
 
   const handleSearch = () => {
-    console.log('조회 실행:', { searchFilter1, searchTarget });
+    console.log('조회 실행:', { searchFilter1, searchTarget, selectedFrameworks });
   };
 
   return (
@@ -37,7 +46,7 @@ export function PageFilterBar() {
       <MenuSelect />
 
       {/* 오른쪽 영역: 공통 컴포넌트로 분리된 콤보박스 2개 + 아이콘 버튼 */}
-      <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
+      <div className='flex flex-1 flex-col justify-end gap-3 sm:flex-row sm:items-center'>
         {/* 1. 정렬 기준 콤보박스 */}
         <FilterCombobox
           label='정렬'
@@ -55,6 +64,14 @@ export function PageFilterBar() {
           onValueChange={setSearchTarget}
           placeholder='검색 조건 선택'
           widthClass='w-24 sm:w-28' // 컴포넌트별로 너비가 다를 때 오버라이딩 가능
+        />
+
+        <MultiSelect
+        // options={frameworks}
+        // selected={selectedFrameworks}
+        // onChange={setSelectedFrameworks}
+        // placeholder='기술 스택을 선택하세요'
+        // widthClass='w-24 sm:w-28'
         />
 
         {/* 조회 버튼 */}
