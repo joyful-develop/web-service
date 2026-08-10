@@ -1,92 +1,232 @@
 import * as React from 'react';
 
-import { ChevronsUpDown, X, Check } from 'lucide-react'; // Check 아이콘 추가
+import { cva, type VariantProps } from 'class-variance-authority';
+import { CheckIcon, XCircle, ChevronDown, XIcon } from 'lucide-react';
 
+import { Badge } from '@/shared/components/shadcn-ui/badge.tsx';
+import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
-  Combobox,
-  ComboboxChip,
-  ComboboxChips,
-  ComboboxChipsInput,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxItem,
-  ComboboxList,
-  ComboboxValue,
-} from '@/shared/components/shadcn-ui/combobox.tsx';
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '@/shared/components/shadcn-ui/command.tsx';
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/shadcn-ui/popover.tsx';
+import { Separator } from '@/shared/components/shadcn-ui/separator.tsx';
+import { cn } from '@/shared/utils/shadcn/utils.ts';
 
-const frameworks = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro'];
+const multiSelectVariants = cva('m-1 transition-all duration-300 ease-in-out hover:scale-105', {
+  variants: {
+    variant: {
+      default: 'border-foreground/10 text-foreground bg-card hover:bg-card/80',
+      secondary: 'border-foreground/10 bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
+      inverted: 'inverted',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
-export function MultiSelect() {
-  const [value, setValue] = React.useState<string[]>([]);
-  const [open, setOpen] = React.useState(false);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  const handleRemove = (itemToRemove: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setValue((prev) => prev.filter((item) => item !== itemToRemove));
-  };
-
-  const handleOpenCombobox = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest('button')) return;
-    setOpen(true);
-    setTimeout(() => inputRef.current?.focus(), 0);
-  };
-
-  return (
-    <Combobox items={frameworks} multiple value={value} onValueChange={setValue} open={open} onOpenChange={setOpen}>
-      <div
-        onClick={handleOpenCombobox}
-        className='border-input bg-background hover:bg-accent/50 focus-within:ring-ring flex w-full cursor-pointer items-center justify-between rounded-md border p-1 text-sm shadow-sm focus-within:ring-1'>
-        <ComboboxChips className='flex flex-1 flex-wrap items-center gap-1 border-0 p-0 shadow-none'>
-          {value.length > 0 ? (
-            <ComboboxValue>
-              {value.map((item) => (
-                <ComboboxChip key={item} className='flex items-center gap-1 pr-1'>
-                  {item}
-                  <button
-                    type='button'
-                    onClick={(e) => handleRemove(item, e)}
-                    className='hover:bg-muted-foreground/20 text-muted-foreground shrink-0 rounded-full p-0.5'>
-                    <X className='h-3 w-3' />
-                  </button>
-                </ComboboxChip>
-              ))}
-            </ComboboxValue>
-          ) : (
-            <ComboboxChipsInput ref={inputRef} placeholder='Add framework' className='border-0 focus-visible:ring-0' />
-          )}
-        </ComboboxChips>
-
-        <div className='text-muted-foreground shrink-0 px-2'>
-          <ChevronsUpDown className='h-4 w-4 opacity-50' />
-        </div>
-      </div>
-
-      <ComboboxContent>
-        <ComboboxEmpty>No items found.</ComboboxEmpty>
-        <ComboboxList>
-          {(item) => {
-            // 현재 아이템이 선택된 상태(value 배열에 포함되어 있는지) 확인
-            // const isSelected = value.includes(item);
-
-            return (
-              <ComboboxItem key={item} value={item} className='flex items-center gap-2 pl-2'>
-                {/* 
-                  왼쪽 고정 체크박스 영역:
-                  선택되었을 때는 Lucide Check 아이콘을 보여주고,
-                  선택되지 않았을 때도 레이아웃(너비)이 틀어지지 않도록 공간(h-4 w-4)을 유지합니다.
-                */}
-                {/* <div className='flex h-4 w-4 shrink-0 items-center justify-center'>
-                  {isSelected && <Check className='text-primary h-4 w-4' />}
-                </div> */}
-
-                {/* 아이템 텍스트 */}
-                <span>{item}</span>
-              </ComboboxItem>
-            );
-          }}
-        </ComboboxList>
-      </ComboboxContent>
-    </Combobox>
-  );
+interface MultiSelectProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof multiSelectVariants> {
+  label: string;
+  options: { label: string; value: string; icon?: React.ComponentType<{ className?: string }> }[];
+  onValueChange: (value: string[]) => void;
+  defaultValue?: string[];
+  placeholder?: string;
+  animation?: number;
+  maxCount?: number;
+  modalPopover?: boolean;
+  asChild?: boolean;
+  className?: string;
 }
+
+export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
+  (
+    {
+      label,
+      options,
+      onValueChange,
+      variant,
+      defaultValue = [],
+      placeholder = 'Select options',
+      maxCount = 3,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const [selectedValues, setSelectedValues] = React.useState<string[]>(defaultValue);
+    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+    const comboLabelId = React.useId();
+
+    React.useEffect(() => {
+      if (JSON.stringify(defaultValue) !== JSON.stringify(selectedValues)) {
+        setSelectedValues(defaultValue);
+      }
+    }, [defaultValue]);
+
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        setIsPopoverOpen(true);
+      } else if (event.key === 'Backspace' && !event.currentTarget.value) {
+        const newSelectedValues = [...selectedValues];
+        newSelectedValues.pop();
+        setSelectedValues(newSelectedValues);
+        onValueChange(newSelectedValues);
+      }
+    };
+
+    const toggleOption = (value: string) => {
+      const newSelectedValues = selectedValues.includes(value)
+        ? selectedValues.filter((v) => v !== value)
+        : [...selectedValues, value];
+      setSelectedValues(newSelectedValues);
+      onValueChange(newSelectedValues);
+    };
+
+    const handleClear = () => {
+      setSelectedValues([]);
+      onValueChange([]);
+    };
+
+    const handleTogglePopover = () => {
+      setIsPopoverOpen((prev) => !prev);
+    };
+
+    const clearExtraOptions = () => {
+      const newSelectedValues = selectedValues.slice(0, maxCount);
+      setSelectedValues(newSelectedValues);
+      onValueChange(newSelectedValues);
+    };
+
+    return (
+      <div className='flex items-center gap-2'>
+        {/* ♿ 접근성: 스크린 리더가 이 텍스트와 콤보박스를 연관지어 읽도록 id 부여 */}
+        <span id={comboLabelId} className='text-muted-foreground text-xs font-medium whitespace-nowrap'>
+          {label}
+        </span>
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant='outline'
+              ref={ref}
+              {...props}
+              onClick={handleTogglePopover}
+              className={cn(
+                'focus-visible:ring-user-theme h-8 justify-between px-3 text-xs font-light focus-visible:ring-2',
+                className
+              )}>
+              {selectedValues.length > 0 ? (
+                <div className='flex w-full items-center justify-between'>
+                  <div className='flex flex-wrap items-center'>
+                    {selectedValues.slice(0, maxCount).map((value) => {
+                      const option = options.find((o) => o.value === value);
+                      const IconComponent = option?.icon;
+                      return (
+                        <Badge key={value} className={cn(multiSelectVariants({ variant }))}>
+                          {IconComponent && <IconComponent className='mr-2 h-4 w-4' />}
+                          {option?.label}
+                          <XIcon
+                            className='ml-2 h-4 w-4 cursor-pointer'
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              toggleOption(value);
+                            }}
+                          />
+                        </Badge>
+                      );
+                    })}
+                    {selectedValues.length > maxCount && (
+                      <Badge
+                        className={cn(
+                          'text-foreground border-foreground/10 bg-transparent hover:bg-transparent',
+                          multiSelectVariants({ variant })
+                        )}>
+                        {`+ ${selectedValues.length - maxCount} more`}
+                        <XIcon
+                          className='ml-2 h-4 w-4 cursor-pointer'
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            clearExtraOptions();
+                          }}
+                        />
+                      </Badge>
+                    )}
+                  </div>
+                  <div className='flex items-center justify-between'>
+                    <XCircle
+                      className='text-muted-foreground mx-2 h-4 w-4 cursor-pointer'
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleClear();
+                      }}
+                    />
+                    <Separator orientation='vertical' className='flex h-full min-h-6' />
+                    <ChevronDown className='text-muted-foreground mx-2 h-4 w-4 cursor-pointer' />
+                  </div>
+                </div>
+              ) : (
+                <div className='mx-auto flex w-full items-center justify-between'>
+                  <span className='text-muted-foreground mx-3 text-sm'>{placeholder}</span>
+                  <ChevronDown className='text-muted-foreground mx-2 h-4 w-4 cursor-pointer' />
+                </div>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-(--radix-popover-trigger-width) p-0' align='start'>
+            <Command>
+              <CommandInput placeholder='Search...' onKeyDown={handleInputKeyDown} />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {options.map((option) => {
+                    const isSelected = selectedValues.includes(option.value);
+                    return (
+                      <CommandItem
+                        key={option.value}
+                        onSelect={() => toggleOption(option.value)}
+                        className='cursor-pointer'>
+                        <div
+                          className={cn(
+                            'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
+                            isSelected ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible'
+                          )}>
+                          <CheckIcon className='h-4 w-4' />
+                        </div>
+                        {option.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
+                        <span>{option.label}</span>
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup>
+                  <div className='flex items-center justify-between space-x-2 p-1'>
+                    <Button variant='outline' size='sm' onClick={handleClear} className='w-full justify-center'>
+                      Clear all
+                    </Button>
+                    <Button
+                      variant='default'
+                      size='sm'
+                      onClick={() => setIsPopoverOpen(false)}
+                      className='w-full justify-center'>
+                      Close
+                    </Button>
+                  </div>
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      </div>
+    );
+  }
+);
+
+MultiSelect.displayName = 'MultiSelect';

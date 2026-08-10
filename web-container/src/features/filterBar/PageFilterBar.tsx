@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 
-import { Search } from 'lucide-react';
+import { Search, Laptop, Smartphone, Watch, Tv } from 'lucide-react';
 
 import { MenuSelect } from '@/features/menu/MenuSelect.tsx';
 import { FilterCombobox, type ComboboxOption } from '@/shared/components/FilterCombobox.tsx'; // 임포트
 import { MultiSelect } from '@/shared/components/MultiSelect.tsx';
+import { InlineMultiSelect } from '@/shared/components/MultiSelect2.tsx';
 
 const sortOptions: ComboboxOption[] = [
   { value: 'latest', label: '최신순' },
@@ -20,21 +21,21 @@ const targetOptions: ComboboxOption[] = [
   { value: 'author', label: '작성자' },
 ];
 
-const frameworks = [
-  { value: 'nextjs', label: 'Nextjs' },
-  { value: 'react', label: 'React' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'tailwind', label: 'Tailwind CSS' },
+const frameworksList = [
+  { value: 'react', label: 'React', icon: Laptop },
+  { value: 'angular', label: 'Angular', icon: Smartphone },
+  { value: 'vue', label: 'Vue', icon: Watch },
+  { value: 'svelte', label: 'Svelte', icon: Tv },
 ];
 
 export function PageFilterBar() {
   // 상태 제어 (각 목록의 초기값 지정)
   const [searchFilter1, setSearchFilter1] = useState('views');
   const [searchTarget, setSearchTarget] = useState('title');
-  const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>(['react']);
 
   const handleSearch = () => {
-    console.log('조회 실행:', { searchFilter1, searchTarget, selectedFrameworks });
+    console.log('조회 실행:', { searchFilter1, searchTarget, selected });
   };
 
   return (
@@ -67,12 +68,16 @@ export function PageFilterBar() {
         />
 
         <MultiSelect
-        // options={frameworks}
-        // selected={selectedFrameworks}
-        // onChange={setSelectedFrameworks}
-        // placeholder='기술 스택을 선택하세요'
-        // widthClass='w-24 sm:w-28'
+          label='기술 스택 다중 선택'
+          options={frameworksList}
+          onValueChange={setSelected}
+          defaultValue={selected}
+          placeholder='프레임워크를 선택하세요'
+          maxCount={2} // 화면에 노출할 최대 뱃지 수
+          className=''
         />
+
+        <InlineMultiSelect />
 
         {/* 조회 버튼 */}
         <button onClick={handleSearch} className='group/refresh icon-button' aria-label='선택한 조건으로 조회하기'>
