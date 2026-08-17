@@ -68,16 +68,15 @@ export function PageFilterBar() {
         />
 
         <MultiSelect
+          key={JSON.stringify(selected)}
           label='기술 스택 다중 선택'
           options={frameworksList}
           onValueChange={setSelected}
           defaultValue={selected}
           placeholder='프레임워크를 선택하세요'
-          maxCount={2} // 화면에 노출할 최대 뱃지 수
-          className=''
+          maxCount={1}
+          widthClass='h-8 w-32 sm:w-50'
         />
-
-        <InlineMultiSelect />
 
         {/* 조회 버튼 */}
         <button onClick={handleSearch} className='group/refresh icon-button' aria-label='선택한 조건으로 조회하기'>
