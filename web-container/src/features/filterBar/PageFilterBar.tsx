@@ -7,7 +7,6 @@ import { Search, Laptop, Smartphone, Watch, Tv } from 'lucide-react';
 import { MenuSelect } from '@/features/menu/MenuSelect.tsx';
 import { FilterCombobox, type ComboboxOption } from '@/shared/components/FilterCombobox.tsx'; // 임포트
 import { MultiSelect } from '@/shared/components/MultiSelect.tsx';
-import { InlineMultiSelect } from '@/shared/components/MultiSelect2.tsx';
 
 const sortOptions: ComboboxOption[] = [
   { value: 'latest', label: '최신순' },
@@ -68,7 +67,6 @@ export function PageFilterBar() {
         />
 
         <MultiSelect
-          key={JSON.stringify(selected)}
           label='기술 스택 다중 선택'
           options={frameworksList}
           onValueChange={setSelected}

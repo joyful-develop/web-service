@@ -28,7 +28,7 @@
   --sub-accent: oklch(0.95 0 0 / 1);
   --accent-foreground: oklch(0.04 0.02 29.23 / 1);
   --border: oklch(0.92 0 0 / 1);
-  --sub-border: oklch(0.92 0 0 / 1);
+  --sub-border: oklch(0.8 0 0 / 1);
   --ring: oklch(0.95 0 0 / 1);
 
   --radius: 0.625rem;
