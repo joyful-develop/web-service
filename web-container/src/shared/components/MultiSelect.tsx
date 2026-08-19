@@ -1,6 +1,6 @@
 import { useState, useId, useMemo, type ComponentType } from 'react';
 
-import { CheckIcon, ChevronDown, XIcon, X, Plus, Eraser } from 'lucide-react';
+import { Eraser, CheckIcon, ChevronDown, ListChevronsDownUp, ListChevronsUpDown, XIcon, X } from 'lucide-react';
 
 import { Badge } from '@/shared/components/shadcn-ui/badge.tsx';
 import { Button } from '@/shared/components/shadcn-ui/button.tsx';
@@ -26,15 +26,18 @@ import {
 } from '@/shared/components/shadcn-ui/select.tsx';
 import { cn } from '@/shared/utils/shadcn/utils.ts';
 
-const filterType = [
+const filterOptions = [
   { label: '일치', value: 'equals' },
-  { label: '불일치', value: 'not_equals' },
+  { label: '불 일치', value: 'does_not_equal' },
   { label: '포함', value: 'contains' },
-  { label: '포함하지 않음', value: 'not_contains' },
-  { label: '보다 작은', value: 'less_than' },
-  { label: '보다 작거나 같은', value: 'less_than_equal' },
+  { label: '미 포함', value: 'not_contains' },
   { label: '보다 큰', value: 'greater_than' },
-  { label: '보다 크거나 같은', value: 'greater_than_equal' },
+  { label: '보다 크거나 같은', value: 'greater_than_or_equal_to' },
+  { label: '보다 작은', value: 'less_than' },
+  { label: '보다 작거나 같은', value: 'less_than_or_equal_to' },
+  { label: '범위', value: 'between' },
+  { label: '공백', value: 'blank' },
+  { label: '공백이 아닌', value: 'not_blank' },
 ];
 
 interface MultiSelectProps {
@@ -99,9 +102,9 @@ export function MultiSelect({
           case 'not_equals':
             return itemValue !== searchValue;
           case 'contains':
-            return itemValue.includes(search);
+            return itemValue.includes(searchValue);
           case 'not_contains':
-            return !itemValue.includes(search);
+            return !itemValue.includes(searchValue);
           case 'less_than':
             return itemNum < searchNum;
           case 'less_than_equal':
@@ -110,6 +113,8 @@ export function MultiSelect({
             return itemNum > searchNum;
           case 'greater_than_equal':
             return itemNum >= searchNum;
+          default:
+            return true;
         }
       };
 
@@ -234,7 +239,11 @@ export function MultiSelect({
                     <FieldLabel htmlFor='checkout-7j9-card-name-43j'>필터</FieldLabel>
                     <div className='flex flex-row items-center justify-between'>
                       <button className='icon-button' onClick={() => setShowSecondFilter(!showSecondFilter)}>
-                        <Plus className='h-4 w-4' />
+                        {showSecondFilter ? (
+                          <ListChevronsDownUp className='h-4 w-4' />
+                        ) : (
+                          <ListChevronsUpDown className='h-4 w-4' />
+                        )}
                       </button>
                       <button className='icon-button' onClick={handleResetFilters}>
                         <Eraser className='h-4 w-4' />
@@ -247,9 +256,9 @@ export function MultiSelect({
                     </SelectTrigger>
                     <SelectContent position='popper' align='start'>
                       <SelectGroup>
-                        {filterType.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
+                        {filterOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -262,16 +271,12 @@ export function MultiSelect({
                     onChange={(e) => setFilter1((prev) => ({ ...prev, search: e.target.value }))}
                   />
                 </Field>
-              </FieldGroup>
-            </CommandGroup>
-            <CommandSeparator className='mx-1 my-2' />
-            <CommandGroup className='mx-1'>
-              <FieldGroup className='max-w-sm'>
+
                 {showSecondFilter && (
                   <Field orientation='vertical' className='items-center justify-between'>
                     <RadioGroup
                       defaultValue={filterOperator}
-                      className='flex flex-row items-center justify-start text-xs'
+                      className='flex flex-row items-center justify-start'
                       onValueChange={(value) => setFilterOperator(value)}>
                       <div className='flex items-center gap-1'>
                         <RadioGroupItem className='size-3' value='AND' id='r1' />
@@ -279,7 +284,7 @@ export function MultiSelect({
                           AND
                         </Label>
                       </div>
-                      <div className='flex items-center gap-1'>
+                      <div className='ml-2 flex items-center gap-1'>
                         <RadioGroupItem className='size-3' value='OR' id='r2' />
                         <Label className='text-xs' htmlFor='r2'>
                           OR
@@ -292,9 +297,9 @@ export function MultiSelect({
                       </SelectTrigger>
                       <SelectContent position='popper' align='start'>
                         <SelectGroup>
-                          {filterType.map((item) => (
-                            <SelectItem key={item.value} value={item.value}>
-                              {item.label}
+                          {filterOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -308,6 +313,11 @@ export function MultiSelect({
                     />
                   </Field>
                 )}
+              </FieldGroup>
+            </CommandGroup>
+            <CommandSeparator className='mx-1 my-2' />
+            <CommandGroup className='mx-1'>
+              <FieldGroup className='max-w-sm'>
                 <Field orientation='horizontal' className='items-center justify-between'>
                   <Button variant='outline' type='button' onClick={() => handleClear(true)}>
                     Select all
