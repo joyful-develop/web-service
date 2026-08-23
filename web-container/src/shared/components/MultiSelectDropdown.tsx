@@ -1,9 +1,17 @@
 import { useState, useId, useMemo, type ComponentType } from 'react';
 
-import { Eraser, CheckIcon, ChevronDown, ListChevronsDownUp, ListChevronsUpDown, XIcon, X } from 'lucide-react';
+import {
+  CheckIcon,
+  ChevronDown,
+  Eraser,
+  ListChevronsDownUp,
+  ListChevronsUpDown,
+  XIcon,
+  X,
+  MinusIcon,
+} from 'lucide-react';
 
 import { Badge } from '@/shared/components/shadcn-ui/badge.tsx';
-import { Button } from '@/shared/components/shadcn-ui/button.tsx';
 import {
   Command,
   CommandEmpty,
@@ -40,7 +48,7 @@ const filterOptions = [
   { label: '공백이 아닌', value: 'not_blank' },
 ];
 
-interface MultiSelectProps {
+interface MultiSelectDropdownProps {
   label: string;
   options: { label: string; value: string; icon?: ComponentType<{ className?: string }> }[];
   onValueChange: (value: string[]) => void;
@@ -55,7 +63,9 @@ interface MultiSelectProps {
 
 const initialFilterState = { search: '', type: 'contains' };
 
-export function MultiSelect({
+// Selection Reorder
+
+export function MultiSelectDropdown({
   label,
   options,
   onValueChange,
@@ -63,7 +73,7 @@ export function MultiSelect({
   placeholder = 'Select options',
   maxCount = 3,
   widthClass = 'w-28 sm:w-32',
-}: MultiSelectProps) {
+}: MultiSelectDropdownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValue);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const comboLabelId = useId();
@@ -71,6 +81,12 @@ export function MultiSelect({
   const [filter2, setFilter2] = useState(initialFilterState);
   const [filterOperator, setFilterOperator] = useState('AND');
   const [showSecondFilter, setShowSecondFilter] = useState(false);
+  const [allSelected, setAllSelected] = useState<'Checked' | 'Unchecked' | 'Indeterminate'>(() => {
+    if (options.length === 0) return 'Unchecked';
+    if (selectedValues.length === options.length) return 'Checked';
+    if (selectedValues.length > 0 && selectedValues.length < options.length) return 'Indeterminate';
+    return 'Unchecked';
+  });
 
   const handleResetFilters = () => {
     setFilter1(initialFilterState);
@@ -85,6 +101,10 @@ export function MultiSelect({
       : [...selectedValues, value];
     setSelectedValues(newSelectedValues);
     onValueChange(newSelectedValues);
+
+    const isAllSelected = options.length > 0 && newSelectedValues.length === options.length;
+    const isSomeSelected = newSelectedValues.length > 0 && newSelectedValues.length < options.length;
+    setAllSelected(isAllSelected ? 'Checked' : isSomeSelected ? 'Indeterminate' : 'Unchecked');
   };
 
   const filteredData = useMemo(() => {
@@ -126,13 +146,17 @@ export function MultiSelect({
     });
   }, [filter1.search, filter1.type, filter2.search, filter2.type, filterOperator, options, showSecondFilter]);
 
-  const handleClear = (isAllChecked: boolean) => {
-    if (isAllChecked) {
-      setSelectedValues(filteredData.map((opt) => opt.value));
-      onValueChange(filteredData.map((opt) => opt.value));
-    } else {
+  const toggleAllOptions = (isAllClear?: boolean | undefined) => {
+    const isAllSelected = options.length > 0 && selectedValues.length === options.length;
+
+    if (isAllClear || isAllSelected) {
       setSelectedValues([]);
       onValueChange([]);
+      setAllSelected('Unchecked');
+    } else {
+      setSelectedValues(filteredData.map((opt) => opt.value));
+      onValueChange(filteredData.map((opt) => opt.value));
+      setAllSelected('Checked');
     }
   };
 
@@ -187,7 +211,7 @@ export function MultiSelect({
                           className='hover:bg-user-theme/30 ml-1 shrink-0 cursor-pointer'
                           onClick={(event) => {
                             event.stopPropagation();
-                            handleClear(false);
+                            toggleAllOptions(true);
                           }}>
                           <XIcon className='h-3 w-3' />
                         </div>
@@ -204,7 +228,7 @@ export function MultiSelect({
                     className='text-muted-foreground m-1 cursor-pointer p-1'
                     onClick={(event) => {
                       event.stopPropagation();
-                      handleClear(false);
+                      toggleAllOptions(true);
                     }}>
                     <X className='h-4 w-4 hover:text-red-500' />
                   </div>
@@ -317,16 +341,23 @@ export function MultiSelect({
             </CommandGroup>
             <CommandSeparator className='mx-1 my-2' />
             <CommandGroup className='mx-1'>
-              <FieldGroup className='max-w-sm'>
-                <Field orientation='horizontal' className='items-center justify-between'>
-                  <Button variant='outline' type='button' onClick={() => handleClear(true)}>
-                    Select all
-                  </Button>
-                  <Button variant='outline' type='button' onClick={() => handleClear(false)}>
-                    Clear all
-                  </Button>
-                </Field>
-              </FieldGroup>
+              <CommandItem
+                key={'(Select All)'}
+                onSelect={() => toggleAllOptions()}
+                className='hover:bg-accent cursor-pointer'>
+                <div
+                  className={cn(
+                    'border-sub-border group-hover/command-item:border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
+                    allSelected === 'Checked'
+                      ? 'bg-primary text-primary-foreground'
+                      : allSelected === 'Indeterminate'
+                        ? 'bg-secondary text-secondary-foreground'
+                        : 'opacity-50 [&_svg]:invisible'
+                  )}>
+                  {allSelected === 'Checked' ? <CheckIcon className='h-4 w-4' /> : <MinusIcon className='h-4 w-4' />}
+                </div>
+                <span className='truncate'>(Select All)</span>
+              </CommandItem>
             </CommandGroup>
             <CommandSeparator className='mx-1 my-2' />
             <CommandList>
@@ -360,4 +391,4 @@ export function MultiSelect({
   );
 }
 
-MultiSelect.displayName = 'MultiSelect';
+MultiSelectDropdown.displayName = 'MultiSelectDropdown';

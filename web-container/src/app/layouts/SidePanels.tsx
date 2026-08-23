@@ -96,7 +96,7 @@ export function RightSideBarComponent({ rightPanel, rightTab }: RightProps) {
           <ChevronRight className='h-4 w-4' />
         </button>
         <div className='flex items-center gap-2'>
-          <span className='font-bold tracking-widest text-[px] text-gray-500 uppercase'>
+          <span className='font-bold tracking-widest text-[px] uppercase'>
             {rightTab === 'info' ? 'Inspector' : 'Timeline'}
           </span>
           {rightTab === 'info' ? (
@@ -116,32 +116,28 @@ export function RightSideBarComponent({ rightPanel, rightTab }: RightProps) {
             </div>
 
             <div className='border-border bg-background text-foreground rounded-xl border p-3 leading-relaxed'>
-              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
               background
             </div>
-            <div className='text-secondary-foreground border-border bg-secondary rounded-xl border p-3 leading-relaxed'>
-              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
-              secondary secondary-foreground
-            </div>
-            <div className='text-accent-foreground border-border bg-accent rounded-xl border p-3 leading-relaxed'>
-              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
-              accent accent-foreground
-            </div>
-            <div className='text-foreground border-sub-border bg-sub-background rounded-xl border p-3 leading-relaxed'>
-              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
+            <div className='text-sub-foreground border-sub-border bg-sub-background rounded-xl border p-3 leading-relaxed'>
               sub-background
             </div>
+            <div className='text-secondary-foreground border-border bg-secondary rounded-xl border p-3 leading-relaxed'>
+              secondary
+            </div>
             <div className='text-secondary-foreground border-sub-border bg-sub-secondary rounded-xl border p-3 leading-relaxed'>
-              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
-              sub-secondary secondary-foreground
+              sub-secondary
+            </div>
+            <div className='text-accent-foreground border-border bg-accent rounded-xl border p-3 leading-relaxed'>
+              accent
             </div>
             <div className='text-accent-foreground border-sub-border bg-sub-accent rounded-xl border p-3 leading-relaxed'>
-              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
-              sub-accent accent-foreground
+              sub-accent
             </div>
-            <div className='text-muted-foreground border-sub-border bg-muted rounded-xl border p-3 leading-relaxed'>
-              <span className='mb-1 block font-semibold text-gray-700'>Selected Element</span>
-              muted muted-foreground
+            <div className='text-muted-foreground border-border bg-muted rounded-xl border p-3 leading-relaxed'>
+              muted
+            </div>
+            <div className='text-muted-foreground border-sub-border bg-sub-muted rounded-xl border p-3 leading-relaxed'>
+              sub-muted
             </div>
           </div>
         ) : (
