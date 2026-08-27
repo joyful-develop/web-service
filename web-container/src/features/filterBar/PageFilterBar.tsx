@@ -27,6 +27,13 @@ const frameworksList = [
   { value: 'svelte', label: 'Svelte', icon: Tv },
 ];
 
+const frameworksList2 = [
+  { value: '1', label: '1' },
+  { value: '2', label: '2' },
+  { value: '3', label: '3' },
+  { value: '4', label: '4' },
+];
+
 export function PageFilterBar() {
   // 상태 제어 (각 목록의 초기값 지정)
   const [searchFilter1, setSearchFilter1] = useState('views');
@@ -68,12 +75,17 @@ export function PageFilterBar() {
 
         <MultiSelectDropdown
           label='기술 스택 다중 선택'
-          options={frameworksList}
+          options={frameworksList2}
           onValueChange={setSelected}
           defaultValue={selected}
           placeholder='프레임워크를 선택하세요'
           maxCount={1}
-          widthClass='h-8 w-32 sm:w-50'
+          widthClass='h-8 w-32 sm:w-100'
+          isSearchable={true}
+          isSimpleSearchable={false}
+          isNumberSearchable={true}
+          isFilterVerticalAlignment={false}
+          isSelectionReorder={false}
         />
 
         {/* 조회 버튼 */}

@@ -27,7 +27,7 @@ import { cn } from '@/shared/utils/shadcn/utils.ts';
 
 const filterOptions = [
   { type: 'string', label: '포함', value: 'contains' },
-  { type: 'string', label: '미 포함', value: 'not_contains' },
+  { type: 'string', label: '미 포함', value: 'does_not_contains' },
   { type: 'common', label: '일치', value: 'equals' },
   { type: 'common', label: '불 일치', value: 'does_not_equal' },
   { type: 'number', label: '보다 큰', value: 'greater_than' },
@@ -53,10 +53,11 @@ interface MultiSelectDropdownProps {
   isSimpleSearchable?: boolean;
   isNumberSearchable?: boolean;
   isFilterVerticalAlignment?: boolean;
+  isSelectionReorder?: boolean;
 }
 
-const initialFilterState = { search: '', type: 'contains' };
-const initialNumberFilterState = { search: '', type: 'equals' };
+const initialFilterState = { search: '', search2: '', type: 'contains' };
+const initialNumberFilterState = { search: '', search2: '', type: 'equals' };
 
 // Selection Reorder
 
@@ -72,6 +73,7 @@ export function MultiSelectDropdown({
   isSimpleSearchable = false,
   isNumberSearchable = false,
   isFilterVerticalAlignment = true,
+  isSelectionReorder = true,
 }: MultiSelectDropdownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>(() => {
     return defaultValue.filter((value) => {
@@ -115,42 +117,66 @@ export function MultiSelectDropdown({
 
   const filteredData = useMemo(() => {
     return options.filter((item) => {
-      const runFilter = (val: string, search: string, type: string) => {
+      const runFilter = (val: string, search: string, search2: string, type: string) => {
         if (!search) return true;
         const itemValue = val.toLowerCase();
         const searchValue = search.toLowerCase();
         const itemNum = parseFloat(val);
         const searchNum = parseFloat(search);
+        const search2Num = parseFloat(search2);
 
         switch (type) {
-          case 'equals':
-            return itemValue === searchValue;
-          case 'not_equals':
-            return itemValue !== searchValue;
           case 'contains':
             return itemValue.includes(searchValue);
           case 'not_contains':
             return !itemValue.includes(searchValue);
-          case 'less_than':
-            return itemNum < searchNum;
-          case 'less_than_or_equal_to':
-            return itemNum <= searchNum;
+          case 'equals':
+            return itemValue === searchValue;
+          case 'not_equals':
+            return itemValue !== searchValue;
           case 'greater_than':
             return itemNum > searchNum;
           case 'greater_than_or_equal_to':
             return itemNum >= searchNum;
+          case 'less_than':
+            return itemNum < searchNum;
+          case 'less_than_or_equal_to':
+            return itemNum <= searchNum;
+          case 'between': {
+            const fromResult = search.trim() === '' || itemNum >= searchNum;
+            const toResult = search2.trim() === '' || itemNum <= search2Num;
+            return fromResult && toResult;
+          }
+          case 'begins_with':
+            return itemValue.startsWith(searchValue);
+          case 'ends_with':
+            return itemValue.endsWith(searchValue);
+          case 'blank':
+            return itemValue.trim() === '';
+          case 'not_blank':
+            return itemValue.trim() !== '';
           default:
             return true;
         }
       };
 
-      const result1 = runFilter(item.value, filter1.search, filter1.type);
-      if (!showSecondFilter) return result1;
+      const result1 = runFilter(item.value, filter1.search, filter1.search2, filter1.type);
+      if (!showSecondFilter || (filter2.search.trim() === '' && filter2.search2.trim() === '')) return result1;
 
-      const result2 = runFilter(item.value, filter2.search, filter2.type);
+      const result2 = runFilter(item.value, filter2.search, filter2.search2, filter2.type);
       return filterOperator === 'AND' ? result1 && result2 : result1 || result2;
     });
-  }, [filter1.search, filter1.type, filter2.search, filter2.type, filterOperator, options, showSecondFilter]);
+  }, [
+    filter1.search,
+    filter1.search2,
+    filter1.type,
+    filter2.search,
+    filter2.search2,
+    filter2.type,
+    filterOperator,
+    options,
+    showSecondFilter,
+  ]);
 
   const toggleAllOptions = (isAllClear?: boolean | undefined) => {
     const isAllSelected =
@@ -174,7 +200,7 @@ export function MultiSelectDropdown({
 
   return (
     <div className='flex items-center gap-2 text-sm'>
-      <span id={comboLabelId} className='text-foreground truncate font-medium'>
+      <span id={comboLabelId} className='text-foreground truncate'>
         {label}
       </span>
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
@@ -196,7 +222,7 @@ export function MultiSelectDropdown({
                         return (
                           <Badge
                             key={value}
-                            className='bg-secondary mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
+                            className='bg-secondary text-secondary-foreground mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
                             {IconComponent && <IconComponent className='mr-1 h-4 w-4' />}
                             <span className='flex-1 truncate'>{option?.label}</span>
                             <div
@@ -213,7 +239,7 @@ export function MultiSelectDropdown({
                     ) : (
                       <Badge
                         key={'All'}
-                        className='bg-secondary mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
+                        className='bg-secondary text-secondary-foreground mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
                         <span className='flex-1 truncate'>All</span>
                         <div
                           className='hover:bg-sub-accent ml-1 shrink-0 cursor-pointer'
@@ -227,24 +253,24 @@ export function MultiSelectDropdown({
                     )}
                   </div>
                   {selectedValues.length > maxCount && (
-                    <Badge className='bg-secondary mr-1 shrink-0 rounded-sm'>{`+${selectedValues.length - maxCount}`}</Badge>
+                    <Badge className='bg-secondary text-secondary-foreground mr-1 shrink-0 rounded-sm'>{`+${selectedValues.length - maxCount}`}</Badge>
                   )}
                 </div>
                 <div className='flex min-w-0 shrink-0 items-center justify-between'>
                   <div className='bg-border h-5 w-px' />
                   <div
-                    className='text-foreground m-1 cursor-pointer p-1'
+                    className='text-foreground hover:bg-accent hover:text-accent-foreground m-1 cursor-pointer p-1'
                     onClick={(event) => {
                       event.stopPropagation();
                       toggleAllOptions(true);
                     }}>
-                    <X className='hover:bg-accent hover:text-accent-foreground h-4 w-4' />
+                    <X className='h-4 w-4' />
                   </div>
                   <div className='bg-border h-5 w-px' />
-                  <div className='text-foreground m-1 cursor-pointer p-1'>
+                  <div className='text-foreground hover:bg-accent hover:text-accent-foreground m-1 cursor-pointer p-1'>
                     <ChevronDown
                       className={cn(
-                        'text-foreground mx-2 h-4 w-4 rotate-0 transform cursor-pointer transition-transform duration-100',
+                        'h-4 w-4 rotate-0 transform transition-transform duration-100',
                         isPopoverOpen && 'rotate-180'
                       )}
                     />
@@ -253,10 +279,10 @@ export function MultiSelectDropdown({
               </div>
             ) : (
               <div className='mx-auto flex w-full items-center justify-between'>
-                <span className={cn('text-foreground mx-3 flex-1 truncate')}>{placeholder}</span>
+                <span className={cn('text-muted-foreground mx-3 flex-1 truncate')}>{placeholder}</span>
                 <ChevronDown
                   className={cn(
-                    'text-foreground mx-2 h-4 w-4 rotate-0 transform cursor-pointer transition-transform duration-100',
+                    'text-muted-foreground mx-2 h-4 w-4 rotate-0 transform cursor-pointer transition-transform duration-100',
                     isPopoverOpen && 'rotate-180'
                   )}
                 />
@@ -267,9 +293,9 @@ export function MultiSelectDropdown({
         <PopoverContent className='w-(--radix-popover-trigger-width) p-0' align='start'>
           <Command>
             {isSearchable && (
-              <CommandGroup className='mx-1 mt-2'>
+              <CommandGroup className='mx-1 mt-1'>
                 <FieldGroup className='max-w-sm gap-2'>
-                  <Field orientation='vertical' className='items-center justify-between'>
+                  <Field orientation='vertical' className='items-center justify-between gap-0'>
                     <div className={cn('flex w-full flex-col gap-1', !isFilterVerticalAlignment && 'flex-row')}>
                       {!isSimpleSearchable && (
                         <Select
@@ -293,7 +319,13 @@ export function MultiSelectDropdown({
                       )}
                       <input
                         className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
-                        placeholder={isSimpleSearchable ? 'search...' : 'filter...'}
+                        placeholder={
+                          isSimpleSearchable
+                            ? 'Search...'
+                            : filter1 && filter1.type === 'between'
+                              ? 'From'
+                              : 'Filter...'
+                        }
                         value={filter1.search}
                         onChange={(e) => {
                           setFilter1((prev) => ({ ...prev, search: e.target.value }));
@@ -302,8 +334,19 @@ export function MultiSelectDropdown({
                           }
                         }}
                       />
+                      {!isSimpleSearchable && filter1 && filter1.type === 'between' && (
+                        <input
+                          className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
+                          placeholder='To'
+                          value={filter1.search2}
+                          onChange={(e) => {
+                            setFilter1((prev) => ({ ...prev, search2: e.target.value }));
+                          }}
+                        />
+                      )}
                     </div>
                   </Field>
+
                   {!isSimpleSearchable && showSecondFilter && (
                     <Field orientation='vertical' className='items-center justify-between'>
                       <RadioGroup
@@ -323,76 +366,134 @@ export function MultiSelectDropdown({
                           </Label>
                         </div>
                       </RadioGroup>
-                      <Select value={filter2.type} onValueChange={(v) => setFilter2((prev) => ({ ...prev, type: v }))}>
-                        <SelectTrigger id='checkout-exp-month-ts6'>
-                          <SelectValue placeholder='필터 타입' />
-                        </SelectTrigger>
-                        <SelectContent position='popper' align='start'>
-                          <SelectGroup>
-                            {typeFilterOptions.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <input
-                        className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
-                        placeholder='filter...'
-                        value={filter2.search}
-                        onChange={(e) => setFilter2((prev) => ({ ...prev, search: e.target.value }))}
-                      />
+                      <div className={cn('flex w-full flex-col gap-1', !isFilterVerticalAlignment && 'flex-row')}>
+                        <Select
+                          value={filter2.type}
+                          onValueChange={(v) => setFilter2((prev) => ({ ...prev, type: v }))}>
+                          <SelectTrigger
+                            className={cn('w-full', !isFilterVerticalAlignment && 'w-fit shrink-0')}
+                            id='checkout-exp-month-ts6'>
+                            <SelectValue placeholder='필터 타입' />
+                          </SelectTrigger>
+                          <SelectContent position='popper' align='start'>
+                            <SelectGroup>
+                              {typeFilterOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        <input
+                          className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
+                          placeholder={filter2 && filter2.type === 'between' ? 'From' : 'Filter...'}
+                          value={filter2.search}
+                          onChange={(e) => setFilter2((prev) => ({ ...prev, search: e.target.value }))}
+                        />
+                        {filter2 && filter2.type === 'between' && (
+                          <input
+                            className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
+                            placeholder='To'
+                            value={filter2.search2}
+                            onChange={(e) => setFilter2((prev) => ({ ...prev, search2: e.target.value }))}
+                          />
+                        )}
+                      </div>
                     </Field>
                   )}
                 </FieldGroup>
               </CommandGroup>
             )}
-            {isSearchable && <CommandSeparator className='mx-1 my-2' />}
-            <CommandList>
+            {isSearchable && <CommandSeparator className='mx-1 mt-2 mb-1' />}
+            <CommandGroup>
               <CommandItem
                 key={'(Select All)'}
                 onSelect={() => toggleAllOptions()}
-                className='hover:bg-background focus: background cursor-pointer'>
+                className='hover:bg-background focus:bg-background cursor-pointer'>
                 <div
                   className={cn(
-                    'border-foreground mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
+                    'border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
                     allSelected === 'Checked'
                       ? 'bg-primary text-primary-foreground'
                       : allSelected === 'Indeterminate'
                         ? 'bg-secondary text-secondary-foreground'
-                        : 'opacity-50 [&_svg]:invisible'
+                        : 'border-foreground opacity-50 [&_svg]:invisible'
                   )}>
                   {allSelected === 'Checked' ? <Check className='h-4 w-4' /> : <Minus className='h-4 w-4' />}
                 </div>
                 <span className='truncate'>(Select All)</span>
               </CommandItem>
+            </CommandGroup>
+            <CommandList>
               {filteredData && filteredData.length > 0 ? (
-                <CommandGroup>
-                  {filteredData.map((option) => {
-                    const isSelected = selectedValues.includes(option.value);
-                    return (
-                      <CommandItem
-                        key={option.value}
-                        onSelect={() => toggleOption(option.value)}
-                        className='hover:bg-accent cursor-pointer'>
-                        <div
-                          className={cn(
-                            'border-foreground mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
-                            isSelected ? 'bg-primary text-primary-foreground' : 'opacity-50 [&_svg]:invisible'
-                          )}>
-                          <Check className='h-4 w-4' />
-                        </div>
-                        {option?.icon && <option.icon className='text-foreground mr-2 h-4 w-4' />}
-                        <span className='truncate'>{option.label}</span>
-                      </CommandItem>
-                    );
-                  })}
-                </CommandGroup>
+                isSelectionReorder ? (
+                  <>
+                    <CommandGroup>
+                      {filteredData
+                        .filter((option) => selectedValues.includes(option.value))
+                        .map((option) => {
+                          return (
+                            <CommandItem
+                              key={option.value}
+                              onSelect={() => toggleOption(option.value)}
+                              className='hover:bg-accent cursor-pointer'>
+                              <div className='bg-primary text-primary-foreground border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border'>
+                                <Check className='h-4 w-4' />
+                              </div>
+                              {option?.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
+                              <span className='truncate'>{option.label}</span>
+                            </CommandItem>
+                          );
+                        })}
+                    </CommandGroup>
+                    <CommandSeparator className='mx-1 my-1' />
+                    <CommandGroup>
+                      {filteredData
+                        .filter((option) => !selectedValues.includes(option.value))
+                        .map((option) => {
+                          return (
+                            <CommandItem
+                              key={option.value}
+                              onSelect={() => toggleOption(option.value)}
+                              className='hover:bg-accent cursor-pointer'>
+                              <div className='bg-primary text-primary-foreground border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border'>
+                                <Check className='h-4 w-4' />
+                              </div>
+                              {option?.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
+                              <span className='truncate'>{option.label}</span>
+                            </CommandItem>
+                          );
+                        })}
+                    </CommandGroup>
+                  </>
+                ) : (
+                  <CommandGroup>
+                    {filteredData.map((option) => {
+                      const isSelected = selectedValues.includes(option.value);
+                      return (
+                        <CommandItem
+                          key={option.value}
+                          onSelect={() => toggleOption(option.value)}
+                          className='hover:bg-accent cursor-pointer'>
+                          <div
+                            className={cn(
+                              'text-foreground mr-2 flex h-4 w-4 items-center justify-center rounded-sm border opacity-50 [&_svg]:invisible',
+                              isSelected
+                                ? 'bg-primary text-primary-foreground'
+                                : 'border-foreground opacity-50 [&_svg]:invisible'
+                            )}>
+                            <Check className='h-4 w-4' />
+                          </div>
+                          {option?.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
+                          <span className='truncate'>{option.label}</span>
+                        </CommandItem>
+                      );
+                    })}
+                  </CommandGroup>
+                )
               ) : filter1.search.trim().length > 0 || filter2.search.trim().length > 0 ? (
-                <CommandEmpty className='px-2 pt-2 pb-4 text-start'>
-                  일치하는 항목이 없습니다. (No matches.)
-                </CommandEmpty>
+                <CommandEmpty className='px-2 pt-2 pb-4 text-start'>일치하는 항목이 없습니다.</CommandEmpty>
               ) : (
                 <CommandEmpty className='px-2 pt-2 pb-4 text-start'>선택 가능한 항목이 없습니다.</CommandEmpty>
               )}
