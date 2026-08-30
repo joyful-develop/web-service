@@ -1,4 +1,4 @@
-import { useState, useId, useMemo, type ComponentType } from 'react';
+import { useState, useId, useMemo, type ComponentType, type Dispatch, type SetStateAction } from 'react';
 
 import { Check, ChevronDown, X, Minus } from 'lucide-react';
 
@@ -41,7 +41,7 @@ const filterOptions = [
   { type: 'common', label: '공백이 아닌', value: 'not_blank' },
 ];
 
-interface MultiSelectDropdownProps {
+interface SelectDropdownProps {
   label: string;
   options: { label: string; value: string; icon?: ComponentType<{ className?: string }> }[];
   onValueChange: (value: string[]) => void;
@@ -56,25 +56,24 @@ interface MultiSelectDropdownProps {
   isSelectionReorder?: boolean;
 }
 
-const initialFilterState = { search: '', search2: '', type: 'contains' };
-const initialNumberFilterState = { search: '', search2: '', type: 'equals' };
+type FilterState = { search: string; search2: string; type: string };
+const initialFilterState: FilterState = { search: '', search2: '', type: 'contains' };
+const initialNumberFilterState: FilterState = { search: '', search2: '', type: 'equals' };
 
-// Selection Reorder
-
-export function MultiSelectDropdown({
+export function SelectDropdown({
   label,
   options,
   onValueChange,
   defaultValue = [],
   placeholder = 'Select options',
-  maxCount = 3,
-  widthClass = 'w-28 sm:w-32',
+  maxCount = 1,
+  widthClass = 'h-8 w-32 sm:w-50',
   isSearchable = true,
   isSimpleSearchable = false,
   isNumberSearchable = false,
-  isFilterVerticalAlignment = true,
+  isFilterVerticalAlignment = false,
   isSelectionReorder = true,
-}: MultiSelectDropdownProps) {
+}: SelectDropdownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>(() => {
     return defaultValue.filter((value) => {
       return options.some((item) => item.value === value);
@@ -109,16 +108,10 @@ export function MultiSelectDropdown({
     setAllSelected(isAllSelected ? 'Checked' : isSomeSelected ? 'Indeterminate' : 'Unchecked');
   };
 
-  const typeFilterOptions = useMemo(() => {
-    return filterOptions.filter((item) => {
-      return isNumberSearchable ? item.type !== 'string' : item.type !== 'number';
-    });
-  }, [isNumberSearchable]);
-
   const filteredData = useMemo(() => {
     return options.filter((item) => {
       const runFilter = (val: string, search: string, search2: string, type: string) => {
-        if (!search) return true;
+        if (type !== 'blank' && type !== 'not_blank' && !search && !search2) return true;
         const itemValue = val.toLowerCase();
         const searchValue = search.toLowerCase();
         const itemNum = parseFloat(val);
@@ -161,7 +154,13 @@ export function MultiSelectDropdown({
       };
 
       const result1 = runFilter(item.value, filter1.search, filter1.search2, filter1.type);
-      if (!showSecondFilter || (filter2.search.trim() === '' && filter2.search2.trim() === '')) return result1;
+      if (
+        filter2.type !== 'blank' &&
+        filter2.type !== 'not_blank' &&
+        filter2.search.trim() === '' &&
+        filter2.search2.trim() === ''
+      )
+        return result1;
 
       const result2 = runFilter(item.value, filter2.search, filter2.search2, filter2.type);
       return filterOperator === 'AND' ? result1 && result2 : result1 || result2;
@@ -295,174 +294,75 @@ export function MultiSelectDropdown({
             {isSearchable && (
               <CommandGroup className='mx-1 mt-1'>
                 <FieldGroup className='max-w-sm gap-2'>
-                  <Field orientation='vertical' className='items-center justify-between gap-0'>
-                    <div className={cn('flex w-full flex-col gap-1', !isFilterVerticalAlignment && 'flex-row')}>
-                      {!isSimpleSearchable && (
-                        <Select
-                          value={filter1.type}
-                          onValueChange={(v) => setFilter1((prev) => ({ ...prev, type: v }))}>
-                          <SelectTrigger
-                            className={cn('w-full', !isFilterVerticalAlignment && 'w-fit shrink-0')}
-                            id='checkout-exp-month-ts6'>
-                            <SelectValue placeholder='필터 타입' />
-                          </SelectTrigger>
-                          <SelectContent position='popper' align='start'>
-                            <SelectGroup>
-                              {typeFilterOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      )}
-                      <input
-                        className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
-                        placeholder={
-                          isSimpleSearchable
-                            ? 'Search...'
-                            : filter1 && filter1.type === 'between'
-                              ? 'From'
-                              : 'Filter...'
-                        }
-                        value={filter1.search}
-                        onChange={(e) => {
-                          setFilter1((prev) => ({ ...prev, search: e.target.value }));
-                          if (!isSimpleSearchable) {
-                            setShowSecondFilter(e.target.value.trim().length > 0);
-                          }
-                        }}
-                      />
-                      {!isSimpleSearchable && filter1 && filter1.type === 'between' && (
-                        <input
-                          className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
-                          placeholder='To'
-                          value={filter1.search2}
-                          onChange={(e) => {
-                            setFilter1((prev) => ({ ...prev, search2: e.target.value }));
-                          }}
-                        />
-                      )}
-                    </div>
-                  </Field>
+                  <SelectDropdownSearch
+                    key={''}
+                    filter={filter1}
+                    isSimpleSearchable={isSimpleSearchable}
+                    isNumberSearchable={isNumberSearchable}
+                    isFilterVerticalAlignment={isFilterVerticalAlignment}
+                    onSetFilter={setFilter1}
+                    onSetShowSecondFilter={setShowSecondFilter}
+                  />
 
                   {!isSimpleSearchable && showSecondFilter && (
-                    <Field orientation='vertical' className='items-center justify-between'>
-                      <RadioGroup
-                        defaultValue={filterOperator}
-                        className='flex flex-row items-center justify-start'
-                        onValueChange={(value) => setFilterOperator(value)}>
-                        <div className='flex items-center gap-1'>
-                          <RadioGroupItem className='size-3' value='AND' id='r1' />
-                          <Label className='text-xs' htmlFor='r1'>
-                            AND
-                          </Label>
-                        </div>
-                        <div className='ml-2 flex items-center gap-1'>
-                          <RadioGroupItem className='size-3' value='OR' id='r2' />
-                          <Label className='text-xs' htmlFor='r2'>
-                            OR
-                          </Label>
-                        </div>
-                      </RadioGroup>
-                      <div className={cn('flex w-full flex-col gap-1', !isFilterVerticalAlignment && 'flex-row')}>
-                        <Select
-                          value={filter2.type}
-                          onValueChange={(v) => setFilter2((prev) => ({ ...prev, type: v }))}>
-                          <SelectTrigger
-                            className={cn('w-full', !isFilterVerticalAlignment && 'w-fit shrink-0')}
-                            id='checkout-exp-month-ts6'>
-                            <SelectValue placeholder='필터 타입' />
-                          </SelectTrigger>
-                          <SelectContent position='popper' align='start'>
-                            <SelectGroup>
-                              {typeFilterOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                        <input
-                          className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
-                          placeholder={filter2 && filter2.type === 'between' ? 'From' : 'Filter...'}
-                          value={filter2.search}
-                          onChange={(e) => setFilter2((prev) => ({ ...prev, search: e.target.value }))}
-                        />
-                        {filter2 && filter2.type === 'between' && (
-                          <input
-                            className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
-                            placeholder='To'
-                            value={filter2.search2}
-                            onChange={(e) => setFilter2((prev) => ({ ...prev, search2: e.target.value }))}
-                          />
-                        )}
-                      </div>
-                    </Field>
+                    <SelectDropdownSearch
+                      key={''}
+                      filter={filter2}
+                      isSimpleSearchable={isSimpleSearchable}
+                      isNumberSearchable={isNumberSearchable}
+                      isFilterVerticalAlignment={isFilterVerticalAlignment}
+                      onSetFilter={setFilter2}
+                      filterOperator={filterOperator}
+                      onSetFilterOperator={setFilterOperator}
+                    />
                   )}
                 </FieldGroup>
               </CommandGroup>
             )}
             {isSearchable && <CommandSeparator className='mx-1 mt-2 mb-1' />}
             <CommandGroup>
-              <CommandItem
+              <SelectDropdownItem
                 key={'(Select All)'}
-                onSelect={() => toggleAllOptions()}
-                className='hover:bg-background focus:bg-background cursor-pointer'>
-                <div
-                  className={cn(
-                    'border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
-                    allSelected === 'Checked'
-                      ? 'bg-primary text-primary-foreground'
-                      : allSelected === 'Indeterminate'
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'border-foreground opacity-50 [&_svg]:invisible'
-                  )}>
-                  {allSelected === 'Checked' ? <Check className='h-4 w-4' /> : <Minus className='h-4 w-4' />}
-                </div>
-                <span className='truncate'>(Select All)</span>
-              </CommandItem>
+                value={'(Select All)'}
+                label={'(Select All)'}
+                onToggleAllOptions={toggleAllOptions}
+                allSelected={allSelected}
+              />
             </CommandGroup>
             <CommandList>
               {filteredData && filteredData.length > 0 ? (
                 isSelectionReorder ? (
                   <>
-                    <CommandGroup>
+                    <CommandGroup className='py-0'>
                       {filteredData
                         .filter((option) => selectedValues.includes(option.value))
                         .map((option) => {
                           return (
-                            <CommandItem
+                            <SelectDropdownItem
                               key={option.value}
-                              onSelect={() => toggleOption(option.value)}
-                              className='hover:bg-accent cursor-pointer'>
-                              <div className='bg-primary text-primary-foreground border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border'>
-                                <Check className='h-4 w-4' />
-                              </div>
-                              {option?.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
-                              <span className='truncate'>{option.label}</span>
-                            </CommandItem>
+                              value={option.value}
+                              label={option.label}
+                              Icon={option?.icon}
+                              onToggleOption={toggleOption}
+                              isSelected={true}
+                            />
                           );
                         })}
                     </CommandGroup>
-                    <CommandSeparator className='mx-1 my-1' />
+                    {selectedValues.length > 0 && <CommandSeparator className='mx-1 my-1' />}
                     <CommandGroup>
                       {filteredData
                         .filter((option) => !selectedValues.includes(option.value))
                         .map((option) => {
                           return (
-                            <CommandItem
+                            <SelectDropdownItem
                               key={option.value}
-                              onSelect={() => toggleOption(option.value)}
-                              className='hover:bg-accent cursor-pointer'>
-                              <div className='bg-primary text-primary-foreground border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border'>
-                                <Check className='h-4 w-4' />
-                              </div>
-                              {option?.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
-                              <span className='truncate'>{option.label}</span>
-                            </CommandItem>
+                              value={option.value}
+                              label={option.label}
+                              Icon={option?.icon}
+                              onToggleOption={toggleOption}
+                              isSelected={false}
+                            />
                           );
                         })}
                     </CommandGroup>
@@ -472,22 +372,14 @@ export function MultiSelectDropdown({
                     {filteredData.map((option) => {
                       const isSelected = selectedValues.includes(option.value);
                       return (
-                        <CommandItem
+                        <SelectDropdownItem
                           key={option.value}
-                          onSelect={() => toggleOption(option.value)}
-                          className='hover:bg-accent cursor-pointer'>
-                          <div
-                            className={cn(
-                              'text-foreground mr-2 flex h-4 w-4 items-center justify-center rounded-sm border opacity-50 [&_svg]:invisible',
-                              isSelected
-                                ? 'bg-primary text-primary-foreground'
-                                : 'border-foreground opacity-50 [&_svg]:invisible'
-                            )}>
-                            <Check className='h-4 w-4' />
-                          </div>
-                          {option?.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
-                          <span className='truncate'>{option.label}</span>
-                        </CommandItem>
+                          value={option.value}
+                          label={option.label}
+                          Icon={option?.icon}
+                          onToggleOption={toggleOption}
+                          isSelected={isSelected}
+                        />
                       );
                     })}
                   </CommandGroup>
@@ -505,4 +397,151 @@ export function MultiSelectDropdown({
   );
 }
 
-MultiSelectDropdown.displayName = 'MultiSelectDropdown';
+SelectDropdown.displayName = 'MultiSelectDropdown';
+
+function SelectDropdownSearch({
+  filter,
+  isSimpleSearchable,
+  isNumberSearchable,
+  isFilterVerticalAlignment,
+  onSetFilter,
+  onSetShowSecondFilter,
+  filterOperator,
+  onSetFilterOperator,
+}: {
+  filter: FilterState;
+  isSimpleSearchable: boolean;
+  isNumberSearchable: boolean;
+  isFilterVerticalAlignment: boolean;
+  onSetFilter: Dispatch<SetStateAction<FilterState>>;
+  onSetShowSecondFilter?: (value: boolean) => void;
+  filterOperator?: string;
+  onSetFilterOperator?: Dispatch<SetStateAction<string>>;
+}) {
+  const typeFilterOptions = useMemo(() => {
+    return filterOptions.filter((item) => {
+      return isNumberSearchable ? item.type !== 'string' : item.type !== 'number';
+    });
+  }, [isNumberSearchable]);
+
+  return (
+    <Field orientation='vertical' className='items-center justify-between'>
+      {onSetFilterOperator && (
+        <RadioGroup
+          defaultValue={filterOperator}
+          className='mb-1.5 flex flex-row items-center justify-start'
+          onValueChange={(value) => onSetFilterOperator(value)}>
+          <div className='flex items-center gap-1'>
+            <RadioGroupItem className='size-3' value='AND' id='r1' />
+            <Label className='text-xs' htmlFor='r1'>
+              AND
+            </Label>
+          </div>
+          <div className='ml-2 flex items-center gap-1'>
+            <RadioGroupItem className='size-3' value='OR' id='r2' />
+            <Label className='text-xs' htmlFor='r2'>
+              OR
+            </Label>
+          </div>
+        </RadioGroup>
+      )}
+      <div className={cn('flex w-full flex-col gap-1', !isFilterVerticalAlignment && 'flex-row')}>
+        {!isSimpleSearchable && (
+          <Select
+            value={filter.type}
+            onValueChange={(value) => {
+              onSetFilter((prev) => ({ ...prev, type: value }));
+              if (onSetShowSecondFilter && (value === 'blank' || value === 'not_blank')) {
+                onSetShowSecondFilter(true);
+              }
+            }}>
+            <SelectTrigger
+              className={cn('w-full', !isFilterVerticalAlignment && 'w-fit shrink-0')}
+              id='checkout-exp-month-ts6'>
+              <SelectValue placeholder='필터 타입' />
+            </SelectTrigger>
+            <SelectContent position='popper' align='start'>
+              <SelectGroup>
+                {typeFilterOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        )}
+        {filter && filter.type !== 'blank' && filter.type !== 'not_blank' && (
+          <input
+            className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
+            placeholder={isSimpleSearchable ? 'Search...' : filter && filter.type === 'between' ? 'From' : 'Filter...'}
+            value={filter.search}
+            onChange={(e) => {
+              onSetFilter((prev) => ({ ...prev, search: e.target.value }));
+              if (onSetShowSecondFilter && !isSimpleSearchable) {
+                onSetShowSecondFilter(e.target.value.trim().length > 0);
+              }
+            }}
+          />
+        )}
+        {!isSimpleSearchable && filter && filter.type === 'between' && (
+          <input
+            className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
+            placeholder='To'
+            value={filter.search2}
+            onChange={(e) => {
+              onSetFilter((prev) => ({ ...prev, search2: e.target.value }));
+            }}
+          />
+        )}
+      </div>
+    </Field>
+  );
+}
+
+function SelectDropdownItem({
+  key,
+  value,
+  label,
+  Icon,
+  onToggleOption,
+  onToggleAllOptions,
+  isSelected,
+  allSelected,
+}: {
+  key: string;
+  value: string;
+  label: string;
+  Icon?: ComponentType<{ className?: string }>;
+  onToggleOption?: (value: string) => void;
+  onToggleAllOptions?: () => void;
+  isSelected?: boolean;
+  allSelected?: 'Checked' | 'Unchecked' | 'Indeterminate';
+}) {
+  return (
+    <CommandItem
+      key={key}
+      onSelect={() => {
+        if (onToggleOption) {
+          onToggleOption(value);
+        } else if (onToggleAllOptions) {
+          onToggleAllOptions();
+        }
+      }}
+      className='hover:bg-accent cursor-pointer'>
+      <div
+        className={cn(
+          'border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
+          isSelected || allSelected === 'Checked'
+            ? 'bg-primary text-primary-foreground'
+            : allSelected === 'Indeterminate'
+              ? 'bg-secondary text-secondary-foreground'
+              : 'border-foreground opacity-50 [&_svg]:invisible'
+        )}>
+        {allSelected === 'Indeterminate' ? <Minus className='h-4 w-4' /> : <Check className='h-4 w-4' />}
+      </div>
+      {Icon && <Icon className='text-muted-foreground mr-2 h-4 w-4' />}
+      <span className='truncate'>{label}</span>
+    </CommandItem>
+  );
+}
