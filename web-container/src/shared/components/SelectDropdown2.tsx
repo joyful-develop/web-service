@@ -41,21 +41,28 @@ const filterOptions = [
   { type: 'common', label: '공백이 아닌', value: 'not_blank' },
 ];
 
+export type SelectDropdownOption = {
+  label: string;
+  value: string;
+  disabled: boolean;
+  icon?: ComponentType<{ className?: string }>;
+};
+
 interface SelectDropdownProps {
   label: string;
-  options: { label: string; value: string; disabled: boolean; icon?: ComponentType<{ className?: string }> }[];
+  options: SelectDropdownOption[];
   onValueChange: (value: string[]) => void;
   defaultValue?: string[];
   placeholder?: string;
   disabled?: boolean;
   isMultiSelectable?: boolean;
-  maxCount?: number;
-  widthClass?: string;
+  maxDisplayCount?: number;
+  isFilterVerticalAlignment?: boolean;
   isSearchable?: boolean;
   isSimpleSearchable?: boolean;
   isNumberSearchable?: boolean;
-  isFilterVerticalAlignment?: boolean;
   isSelectionReorder?: boolean;
+  widthClass?: string;
 }
 
 type FilterState = { search: string; search2: string; type: string };
@@ -70,13 +77,13 @@ export function SelectDropdown({
   placeholder = 'Select options',
   disabled = false,
   isMultiSelectable = true,
-  maxCount = 1,
-  widthClass = 'h-8 w-32 sm:w-50',
+  maxDisplayCount = 1,
+  isFilterVerticalAlignment = false,
   isSearchable = true,
   isSimpleSearchable = false,
   isNumberSearchable = false,
-  isFilterVerticalAlignment = false,
   isSelectionReorder = true,
+  widthClass = 'h-8 w-32 sm:w-50',
 }: SelectDropdownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>(() => {
     return defaultValue.filter((value) => {
@@ -223,13 +230,13 @@ export function SelectDropdown({
                 <div className='flex min-w-0 flex-1 items-center overflow-hidden px-1'>
                   <div className='flex w-fit items-center justify-between overflow-hidden'>
                     {selectedValues.length !== options.length ? (
-                      selectedValues.slice(0, maxCount).map((value) => {
+                      selectedValues.slice(0, maxDisplayCount).map((value) => {
                         const option = options.find((o) => o.value === value);
                         const IconComponent = option?.icon;
                         return (
                           <Badge
-                            variant='custom'
                             key={value}
+                            variant='custom'
                             className='bg-secondary text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-secondary group-disabled/selectdropdown-button:text-muted-foreground mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
                             {IconComponent && <IconComponent className='mr-1 h-4 w-4' />}
                             <span className='flex-1 truncate'>{option?.label}</span>
@@ -246,8 +253,8 @@ export function SelectDropdown({
                       })
                     ) : (
                       <Badge
-                        key={'All'}
-                        className='enabled:bg-secondary enabled:text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-muted group-disabled/selectdropdown-button:text-muted-foreground mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
+                        variant='custom'
+                        className='enabled:bg-secondary enabled:text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-secondary group-disabled/selectdropdown-button:text-muted-foreground mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
                         <span className='flex-1 truncate'>All</span>
                         <div
                           className='enabled:hover:bg-sub-accent ml-1 shrink-0 enabled:cursor-pointer'
@@ -260,8 +267,10 @@ export function SelectDropdown({
                       </Badge>
                     )}
                   </div>
-                  {selectedValues.length > maxCount && (
-                    <Badge className='enabled:bg-secondary enabled:text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-muted group-disabled/selectdropdown-button:text-muted-foreground mr-1 shrink-0 rounded-sm'>{`+${selectedValues.length - maxCount}`}</Badge>
+                  {selectedValues.length > maxDisplayCount && (
+                    <Badge
+                      variant='custom'
+                      className='enabled:bg-secondary enabled:text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-secondary group-disabled/selectdropdown-button:text-muted-foreground mr-1 shrink-0 rounded-sm'>{`+${selectedValues.length - maxDisplayCount}`}</Badge>
                   )}
                 </div>
                 <div className='flex min-w-0 shrink-0 items-center justify-between'>
@@ -304,24 +313,22 @@ export function SelectDropdown({
               <CommandGroup className='mx-1 mt-1'>
                 <FieldGroup className='max-w-sm gap-2'>
                   <SelectDropdownSearch
-                    key={''}
                     filter={filter1}
+                    isFilterVerticalAlignment={isFilterVerticalAlignment}
                     isSimpleSearchable={isSimpleSearchable}
                     isNumberSearchable={isNumberSearchable}
-                    isFilterVerticalAlignment={isFilterVerticalAlignment}
                     onSetFilter={setFilter1}
                     onSetShowSecondFilter={setShowSecondFilter}
                   />
 
                   {!isSimpleSearchable && showSecondFilter && (
                     <SelectDropdownSearch
-                      key={''}
                       filter={filter2}
+                      isFilterVerticalAlignment={isFilterVerticalAlignment}
                       isSimpleSearchable={isSimpleSearchable}
                       isNumberSearchable={isNumberSearchable}
-                      isFilterVerticalAlignment={isFilterVerticalAlignment}
-                      onSetFilter={setFilter2}
                       filterOperator={filterOperator}
+                      onSetFilter={setFilter2}
                       onSetFilterOperator={setFilterOperator}
                     />
                   )}
@@ -333,12 +340,10 @@ export function SelectDropdown({
               <CommandGroup>
                 <SelectDropdownItem
                   key={'(Select All)'}
-                  value={'(Select All)'}
-                  label={'(Select All)'}
-                  disabled={true}
-                  onToggleAllOptions={toggleAllOptions}
+                  option={{ label: '(Select All)', value: '(Select All)', disabled: false }}
                   isMultiSelectable={isMultiSelectable}
                   allSelected={allSelected}
+                  onToggleAllOptions={toggleAllOptions}
                 />
               </CommandGroup>
             )}
@@ -353,13 +358,10 @@ export function SelectDropdown({
                           return (
                             <SelectDropdownItem
                               key={option.value}
-                              value={option.value}
-                              label={option.label}
-                              disabled={option.disabled}
-                              Icon={option?.icon}
-                              onToggleOption={toggleOption}
+                              option={option}
                               isMultiSelectable={isMultiSelectable}
                               isSelected={true}
+                              onToggleOption={toggleOption}
                             />
                           );
                         })}
@@ -372,13 +374,10 @@ export function SelectDropdown({
                           return (
                             <SelectDropdownItem
                               key={option.value}
-                              value={option.value}
-                              label={option.label}
-                              disabled={option.disabled}
-                              Icon={option?.icon}
-                              onToggleOption={toggleOption}
+                              option={option}
                               isMultiSelectable={isMultiSelectable}
                               isSelected={false}
+                              onToggleOption={toggleOption}
                             />
                           );
                         })}
@@ -391,13 +390,10 @@ export function SelectDropdown({
                       return (
                         <SelectDropdownItem
                           key={option.value}
-                          value={option.value}
-                          label={option.label}
-                          disabled={option.disabled}
-                          Icon={option?.icon}
-                          onToggleOption={toggleOption}
+                          option={option}
                           isMultiSelectable={isMultiSelectable}
                           isSelected={isSelected}
+                          onToggleOption={toggleOption}
                         />
                       );
                     })}
@@ -420,21 +416,21 @@ SelectDropdown.displayName = 'MultiSelectDropdown';
 
 function SelectDropdownSearch({
   filter,
+  isFilterVerticalAlignment,
   isSimpleSearchable,
   isNumberSearchable,
-  isFilterVerticalAlignment,
+  filterOperator,
   onSetFilter,
   onSetShowSecondFilter,
-  filterOperator,
   onSetFilterOperator,
 }: {
   filter: FilterState;
+  isFilterVerticalAlignment: boolean;
   isSimpleSearchable: boolean;
   isNumberSearchable: boolean;
-  isFilterVerticalAlignment: boolean;
+  filterOperator?: string;
   onSetFilter: Dispatch<SetStateAction<FilterState>>;
   onSetShowSecondFilter?: (value: boolean) => void;
-  filterOperator?: string;
   onSetFilterOperator?: Dispatch<SetStateAction<string>>;
 }) {
   const typeFilterOptions = useMemo(() => {
@@ -520,35 +516,29 @@ function SelectDropdownSearch({
 
 function SelectDropdownItem({
   key,
-  value,
-  label,
-  disabled,
-  Icon,
-  onToggleOption,
-  onToggleAllOptions,
+  option,
   isMultiSelectable,
   isSelected,
   allSelected,
+  onToggleOption,
+  onToggleAllOptions,
 }: {
   key: string;
-  value: string;
-  label: string;
-  disabled: boolean;
-  Icon?: ComponentType<{ className?: string }>;
-  onToggleOption?: (value: string) => void;
-  onToggleAllOptions?: () => void;
+  option: SelectDropdownOption;
   isMultiSelectable: boolean;
   isSelected?: boolean;
   allSelected?: 'Checked' | 'Unchecked' | 'Indeterminate';
+  onToggleOption?: (value: string) => void;
+  onToggleAllOptions?: () => void;
 }) {
   return (
     <CommandItem
       key={key}
-      disabled={disabled}
+      disabled={option.disabled}
       data-checked={!isMultiSelectable && isSelected}
       onSelect={() => {
         if (onToggleOption) {
-          onToggleOption(value);
+          onToggleOption(option.value);
         } else if (onToggleAllOptions) {
           onToggleAllOptions();
         }
@@ -567,8 +557,8 @@ function SelectDropdownItem({
           {allSelected === 'Indeterminate' ? <Minus className='h-4 w-4' /> : <Check className='h-4 w-4' />}
         </div>
       )}
-      {Icon && <Icon className='text-muted-foreground mr-2 h-4 w-4' />}
-      <span className='truncate'>{label}</span>
+      {option.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
+      <span className='truncate'>{option.label}</span>
     </CommandItem>
   );
 }

@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Search, Laptop, Smartphone, Watch, Tv } from 'lucide-react';
 
 import { MenuSelect } from '@/features/menu/MenuSelect.tsx';
 import { FilterCombobox, type ComboboxOption } from '@/shared/components/FilterCombobox.tsx'; // 임포트
-import { SelectDropdown } from '@/shared/components/SelectDropdown.tsx';
+import { SelectDropdown, type SelectDropdownOption } from '@/shared/components/SelectDropdown2.tsx';
 
 const sortOptions: ComboboxOption[] = [
   { value: 'latest', label: '최신순' },
@@ -20,29 +20,33 @@ const targetOptions: ComboboxOption[] = [
   { value: 'author', label: '작성자' },
 ];
 
-const frameworksList = [
-  { value: 'react', label: 'React', icon: Laptop },
-  { value: 'angular', label: 'Angular', icon: Smartphone },
-  { value: 'vue', label: 'Vue', icon: Watch },
-  { value: 'svelte', label: 'Svelte', icon: Tv },
+const frameworksList: SelectDropdownOption[] = [
+  { value: 'react', label: 'React', disabled: false, icon: Laptop },
+  { value: 'angular', label: 'Angular', disabled: false, icon: Smartphone },
+  { value: 'vue', label: 'Vue', disabled: true, icon: Watch },
+  { value: 'svelte', label: 'Svelte', disabled: false, icon: Tv },
 ];
 
-const frameworksList2 = [
-  { value: '1', label: '1' },
-  { value: '2', label: '2' },
-  { value: '3', label: '3' },
-  { value: '4', label: '4' },
+const frameworksList2: SelectDropdownOption[] = [
+  { value: '1', label: '1', disabled: false },
+  { value: '2', label: '2', disabled: false },
+  { value: '3', label: '3', disabled: false },
+  { value: '4', label: '4', disabled: false },
 ];
 
 export function PageFilterBar() {
   // 상태 제어 (각 목록의 초기값 지정)
   const [searchFilter1, setSearchFilter1] = useState('views');
   const [searchTarget, setSearchTarget] = useState('title');
-  const [selected, setSelected] = useState<string[]>(['react']);
+  const [selected, setSelected] = useState<string[]>([]);
 
   const handleSearch = () => {
     console.log('조회 실행:', { searchFilter1, searchTarget, selected });
   };
+
+  useEffect(() => {
+    console.log('선택된 프레임워크:', selected);
+  }, [selected]);
 
   return (
     <div
@@ -75,17 +79,19 @@ export function PageFilterBar() {
 
         <SelectDropdown
           label='기술 스택 다중 선택'
-          options={frameworksList2}
+          options={frameworksList}
           onValueChange={setSelected}
-          defaultValue={selected}
+          defaultValue={['react']}
           placeholder='프레임워크를 선택하세요'
-          maxCount={1}
-          widthClass='h-8 w-32 sm:w-100'
+          disabled={false}
+          isMultiSelectable={true}
+          maxDisplayCount={1}
+          isFilterVerticalAlignment={false}
           isSearchable={true}
           isSimpleSearchable={false}
-          isNumberSearchable={true}
-          isFilterVerticalAlignment={false}
+          isNumberSearchable={false}
           isSelectionReorder={false}
+          widthClass='h-8 w-32 sm:w-100'
         />
 
         {/* 조회 버튼 */}
