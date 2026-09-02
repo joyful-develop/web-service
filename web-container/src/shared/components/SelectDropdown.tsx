@@ -41,21 +41,28 @@ const filterOptions = [
   { type: 'common', label: '공백이 아닌', value: 'not_blank' },
 ];
 
+export type SelectDropdownOption = {
+  label: string;
+  value: string;
+  disabled: boolean;
+  icon?: ComponentType<{ className?: string }>;
+};
+
 interface SelectDropdownProps {
   label: string;
-  options: { label: string; value: string; disabled: boolean; icon?: ComponentType<{ className?: string }> }[];
-  onValueChange: (value: string[]) => void;
+  options: SelectDropdownOption[];
+  onValueChange: (value: SelectDropdownOption[]) => void;
   defaultValue?: string[];
   placeholder?: string;
   disabled?: boolean;
   isMultiSelectable?: boolean;
-  maxCount?: number;
-  widthClass?: string;
+  maxDisplayCount?: number;
+  isFilterVerticalAlignment?: boolean;
   isSearchable?: boolean;
   isSimpleSearchable?: boolean;
   isNumberSearchable?: boolean;
-  isFilterVerticalAlignment?: boolean;
   isSelectionReorder?: boolean;
+  widthClass?: string;
 }
 
 type FilterState = { search: string; search2: string; type: string };
@@ -70,13 +77,13 @@ export function SelectDropdown({
   placeholder = 'Select options',
   disabled = false,
   isMultiSelectable = true,
-  maxCount = 1,
-  widthClass = 'h-8 w-32 sm:w-50',
+  maxDisplayCount = 1,
+  isFilterVerticalAlignment = false,
   isSearchable = true,
   isSimpleSearchable = false,
   isNumberSearchable = false,
-  isFilterVerticalAlignment = false,
   isSelectionReorder = true,
+  widthClass = 'h-8 w-32 sm:w-50',
 }: SelectDropdownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>(() => {
     return defaultValue.filter((value) => {
@@ -99,22 +106,6 @@ export function SelectDropdown({
     if (selectedValues.length > 0 && selectedValues.length < options.length) return 'Indeterminate';
     return 'Unchecked';
   });
-
-  const toggleOption = (value: string) => {
-    const newSelectedValues = isMultiSelectable
-      ? selectedValues.includes(value)
-        ? selectedValues.filter((v) => v !== value)
-        : [...selectedValues, value]
-      : selectedValues.includes(value)
-        ? []
-        : [value];
-    setSelectedValues(newSelectedValues);
-    onValueChange(newSelectedValues);
-
-    const isAllSelected = options.length > 0 && newSelectedValues.length === options.length;
-    const isSomeSelected = newSelectedValues.length > 0 && newSelectedValues.length < options.length;
-    setAllSelected(isAllSelected ? 'Checked' : isSomeSelected ? 'Indeterminate' : 'Unchecked');
-  };
 
   const filteredData = useMemo(() => {
     return options.filter((item) => {
@@ -184,18 +175,36 @@ export function SelectDropdown({
     options,
   ]);
 
+  const toggleOption = (value: string) => {
+    const newSelectedValues = isMultiSelectable
+      ? selectedValues.includes(value)
+        ? selectedValues.filter((v) => v !== value)
+        : [...selectedValues, value]
+      : selectedValues.includes(value)
+        ? []
+        : [value];
+    setSelectedValues(newSelectedValues);
+    onValueChange(options.filter((opt) => newSelectedValues.includes(opt.value)));
+
+    const isAllSelected = options.length > 0 && newSelectedValues.length === options.length;
+    const isSomeSelected = newSelectedValues.length > 0 && newSelectedValues.length < options.length;
+    setAllSelected(isAllSelected ? 'Checked' : isSomeSelected ? 'Indeterminate' : 'Unchecked');
+  };
+
   const toggleAllOptions = (isAllClear?: boolean | undefined) => {
+    const enableOptions = options.filter((opt) => !opt.disabled);
     const isAllSelected =
-      (options.length > 0 && selectedValues.length === options.length) || selectedValues.length === filteredData.length;
-    const isNoFiltering = options.length > 0 && filteredData.length === options.length;
+      (enableOptions.length > 0 && selectedValues.length === enableOptions.length) ||
+      selectedValues.length === filteredData.length;
+    const isNoFiltering = enableOptions.length > 0 && filteredData.length === enableOptions.length;
 
     if (isAllClear || isAllSelected) {
       setSelectedValues([]);
       onValueChange([]);
       setAllSelected('Unchecked');
     } else {
-      setSelectedValues(filteredData.map((opt) => opt.value));
-      onValueChange(filteredData.map((opt) => opt.value));
+      setSelectedValues(enableOptions.map((opt) => opt.value));
+      onValueChange(enableOptions);
       setAllSelected(isNoFiltering ? 'Checked' : 'Indeterminate');
     }
   };
@@ -215,7 +224,7 @@ export function SelectDropdown({
             disabled={disabled}
             onClick={handleTogglePopover}
             className={cn(
-              'group/selectdropdown-button border-border enabled:hover:ring-sub-accent enabled:focus:ring-sub-accent disabled:bg-muted disabled:text-muted-foreground min-h-5 min-w-28 rounded-sm border enabled:hover:ring enabled:focus:ring',
+              'group/button border-border enabled:hover:border-primary/30 enabled:focus:border-primary/30 disabled:bg-muted/50 disabled:text-muted-foreground min-h-6 min-w-28 rounded-sm border',
               widthClass
             )}>
             {selectedValues.length > 0 ? (
@@ -223,78 +232,24 @@ export function SelectDropdown({
                 <div className='flex min-w-0 flex-1 items-center overflow-hidden px-1'>
                   <div className='flex w-fit items-center justify-between overflow-hidden'>
                     {selectedValues.length !== options.length ? (
-                      selectedValues.slice(0, maxCount).map((value) => {
+                      selectedValues.slice(0, maxDisplayCount).map((value) => {
                         const option = options.find((o) => o.value === value);
-                        const IconComponent = option?.icon;
                         return (
-                          <Badge
-                            variant='custom'
-                            key={value}
-                            className='bg-secondary text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-secondary group-disabled/selectdropdown-button:text-muted-foreground mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
-                            {IconComponent && <IconComponent className='mr-1 h-4 w-4' />}
-                            <span className='flex-1 truncate'>{option?.label}</span>
-                            <div
-                              className='enabled:hover:bg-sub-accent ml-1 shrink-0 enabled:cursor-pointer'
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                toggleOption(value);
-                              }}>
-                              <X className='h-3 w-3' />
-                            </div>
-                          </Badge>
+                          <SelectDropdownBadge key={option?.value} option={option} onToggleOption={toggleOption} />
                         );
                       })
                     ) : (
-                      <Badge
-                        key={'All'}
-                        className='enabled:bg-secondary enabled:text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-muted group-disabled/selectdropdown-button:text-muted-foreground mx-1 flex min-w-0 flex-1 items-center justify-between rounded-sm'>
-                        <span className='flex-1 truncate'>All</span>
-                        <div
-                          className='enabled:hover:bg-sub-accent ml-1 shrink-0 enabled:cursor-pointer'
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            toggleAllOptions(true);
-                          }}>
-                          <X className='h-3 w-3' />
-                        </div>
-                      </Badge>
+                      <SelectDropdownBadge onToggleAllOptions={toggleAllOptions} />
                     )}
                   </div>
-                  {selectedValues.length > maxCount && (
-                    <Badge className='enabled:bg-secondary enabled:text-secondary-foreground group-disabled/selectdropdown-button:bg-sub-muted group-disabled/selectdropdown-button:text-muted-foreground mr-1 shrink-0 rounded-sm'>{`+${selectedValues.length - maxCount}`}</Badge>
+                  {selectedValues.length > maxDisplayCount && (
+                    <SelectDropdownBadge selectedCount={selectedValues.length - maxDisplayCount} />
                   )}
                 </div>
-                <div className='flex min-w-0 shrink-0 items-center justify-between'>
-                  <div className='bg-border h-5 w-px' />
-                  <div
-                    className='enabled:text-foreground disabled:text-muted-foreground enabled:hover:bg-accent enabled:hover:text-accent-foreground m-1 p-1 enabled:cursor-pointer'
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      toggleAllOptions(true);
-                    }}>
-                    <X className='h-4 w-4' />
-                  </div>
-                  <div className='bg-border h-5 w-px' />
-                  <div className='enabled:text-foreground disabled:text-muted-foreground enabled:hover:bg-accent enabled:hover:text-accent-foreground m-1 p-1 enabled:cursor-pointer'>
-                    <ChevronDown
-                      className={cn(
-                        'h-4 w-4 rotate-0 transform transition-transform duration-100',
-                        isPopoverOpen && 'rotate-180'
-                      )}
-                    />
-                  </div>
-                </div>
+                <SelectDropdownButton isPopoverOpen={isPopoverOpen} onToggleAllOptions={toggleAllOptions} />
               </div>
             ) : (
-              <div className='mx-auto flex w-full items-center justify-between'>
-                <span className={cn('text-muted-foreground mx-3 flex-1 truncate')}>{placeholder}</span>
-                <ChevronDown
-                  className={cn(
-                    'text-muted-foreground mx-2 h-4 w-4 rotate-0 transform cursor-pointer transition-transform duration-100',
-                    isPopoverOpen && 'rotate-180'
-                  )}
-                />
-              </div>
+              <SelectDropdownButton isPopoverOpen={isPopoverOpen} placeholder={placeholder} />
             )}
           </button>
         </PopoverTrigger>
@@ -304,24 +259,22 @@ export function SelectDropdown({
               <CommandGroup className='mx-1 mt-1'>
                 <FieldGroup className='max-w-sm gap-2'>
                   <SelectDropdownSearch
-                    key={''}
                     filter={filter1}
+                    isFilterVerticalAlignment={isFilterVerticalAlignment}
                     isSimpleSearchable={isSimpleSearchable}
                     isNumberSearchable={isNumberSearchable}
-                    isFilterVerticalAlignment={isFilterVerticalAlignment}
                     onSetFilter={setFilter1}
                     onSetShowSecondFilter={setShowSecondFilter}
                   />
 
                   {!isSimpleSearchable && showSecondFilter && (
                     <SelectDropdownSearch
-                      key={''}
                       filter={filter2}
+                      isFilterVerticalAlignment={isFilterVerticalAlignment}
                       isSimpleSearchable={isSimpleSearchable}
                       isNumberSearchable={isNumberSearchable}
-                      isFilterVerticalAlignment={isFilterVerticalAlignment}
-                      onSetFilter={setFilter2}
                       filterOperator={filterOperator}
+                      onSetFilter={setFilter2}
                       onSetFilterOperator={setFilterOperator}
                     />
                   )}
@@ -329,16 +282,14 @@ export function SelectDropdown({
               </CommandGroup>
             )}
             {isSearchable && <CommandSeparator className='mx-1 mt-2 mb-1' />}
-            {isMultiSelectable && (
+            {filteredData && filteredData.length > 0 && isMultiSelectable && (
               <CommandGroup>
                 <SelectDropdownItem
                   key={'(Select All)'}
-                  value={'(Select All)'}
-                  label={'(Select All)'}
-                  disabled={true}
-                  onToggleAllOptions={toggleAllOptions}
+                  option={{ label: '(Select All)', value: '(Select All)', disabled: false }}
                   isMultiSelectable={isMultiSelectable}
                   allSelected={allSelected}
+                  onToggleAllOptions={toggleAllOptions}
                 />
               </CommandGroup>
             )}
@@ -353,13 +304,10 @@ export function SelectDropdown({
                           return (
                             <SelectDropdownItem
                               key={option.value}
-                              value={option.value}
-                              label={option.label}
-                              disabled={option.disabled}
-                              Icon={option?.icon}
-                              onToggleOption={toggleOption}
+                              option={option}
                               isMultiSelectable={isMultiSelectable}
                               isSelected={true}
+                              onToggleOption={toggleOption}
                             />
                           );
                         })}
@@ -372,13 +320,10 @@ export function SelectDropdown({
                           return (
                             <SelectDropdownItem
                               key={option.value}
-                              value={option.value}
-                              label={option.label}
-                              disabled={option.disabled}
-                              Icon={option?.icon}
-                              onToggleOption={toggleOption}
+                              option={option}
                               isMultiSelectable={isMultiSelectable}
                               isSelected={false}
+                              onToggleOption={toggleOption}
                             />
                           );
                         })}
@@ -391,22 +336,19 @@ export function SelectDropdown({
                       return (
                         <SelectDropdownItem
                           key={option.value}
-                          value={option.value}
-                          label={option.label}
-                          disabled={option.disabled}
-                          Icon={option?.icon}
-                          onToggleOption={toggleOption}
+                          option={option}
                           isMultiSelectable={isMultiSelectable}
                           isSelected={isSelected}
+                          onToggleOption={toggleOption}
                         />
                       );
                     })}
                   </CommandGroup>
                 )
               ) : filter1.search.trim().length > 0 || filter2.search.trim().length > 0 ? (
-                <CommandEmpty className='px-2 pt-2 pb-4 text-start'>일치하는 항목이 없습니다.</CommandEmpty>
+                <CommandEmpty className='p-2 text-start'>일치하는 항목이 없습니다.</CommandEmpty>
               ) : (
-                <CommandEmpty className='px-2 pt-2 pb-4 text-start'>선택 가능한 항목이 없습니다.</CommandEmpty>
+                <CommandEmpty className='p-2 text-start'>선택 가능한 항목이 없습니다.</CommandEmpty>
               )}
             </CommandList>
           </Command>
@@ -416,25 +358,107 @@ export function SelectDropdown({
   );
 }
 
-SelectDropdown.displayName = 'MultiSelectDropdown';
+SelectDropdown.displayName = 'SelectDropdown';
+
+function SelectDropdownButton({
+  isPopoverOpen,
+  placeholder,
+  onToggleAllOptions,
+}: {
+  isPopoverOpen: boolean;
+  placeholder?: string;
+  onToggleAllOptions?: (isAllClear?: boolean | undefined) => void;
+}) {
+  return (
+    <div className='flex min-w-0 shrink-0 items-center justify-between'>
+      {onToggleAllOptions && (
+        <>
+          <div className='bg-border h-4 w-px' />
+          <div
+            className='text-foreground group-disabled/button:text-muted-foreground group-enabled/button:hover:bg-accent group-enabled/button:hover:text-accent-foreground m-1 px-1 group-enabled/button:cursor-pointer'
+            onClick={(event) => {
+              event.stopPropagation();
+              if (onToggleAllOptions) {
+                onToggleAllOptions?.(true);
+              }
+            }}>
+            <X className='h-4 w-4' />
+          </div>
+        </>
+      )}
+      {placeholder && <span className={cn('text-muted-foreground mx-3 flex-1 truncate')}>{placeholder}</span>}
+      <div className='bg-border h-4 w-px' />
+      <div className='text-foreground group-disabled/button:text-muted-foreground group-enabled/button:hover:bg-accent group-enabled/button:hover:text-accent-foreground m-1 px-1 group-enabled/button:cursor-pointer'>
+        <ChevronDown
+          className={cn('h-4 w-4 rotate-0 transform transition-transform duration-100', isPopoverOpen && 'rotate-180')}
+        />
+      </div>
+    </div>
+  );
+}
+
+function SelectDropdownBadge({
+  option,
+  selectedCount,
+  onToggleOption,
+  onToggleAllOptions,
+}: {
+  option?: SelectDropdownOption;
+  selectedCount?: number;
+  onToggleOption?: (value: string) => void;
+  onToggleAllOptions?: (isAllClear?: boolean | undefined) => void;
+}) {
+  return (
+    <>
+      <Badge
+        variant='custom'
+        className={cn(
+          'bg-secondary text-secondary-foreground group-disabled/button:bg-sub-secondary group-disabled/button:text-muted-foreground mx-1 rounded-sm',
+          selectedCount ? 'shrink-0' : 'flex min-w-0 flex-1 items-center justify-between'
+        )}>
+        {option && option?.icon && <option.icon className='mr-1 h-4 w-4' />}
+        {selectedCount ? (
+          `+${selectedCount}`
+        ) : (
+          <>
+            <span className='flex-1 truncate'>{option ? option.label : 'All'}</span>
+            <div
+              className='group-enabled/button:hover:bg-sub-accent ml-1 shrink-0 group-enabled/button:cursor-pointer'
+              onClick={(event) => {
+                event.stopPropagation();
+                if (option && onToggleOption) {
+                  onToggleOption(option.value);
+                }
+                if (!option && onToggleAllOptions) {
+                  onToggleAllOptions(true);
+                }
+              }}>
+              <X className='h3 w-3' />
+            </div>
+          </>
+        )}
+      </Badge>
+    </>
+  );
+}
 
 function SelectDropdownSearch({
   filter,
+  isFilterVerticalAlignment,
   isSimpleSearchable,
   isNumberSearchable,
-  isFilterVerticalAlignment,
+  filterOperator,
   onSetFilter,
   onSetShowSecondFilter,
-  filterOperator,
   onSetFilterOperator,
 }: {
   filter: FilterState;
+  isFilterVerticalAlignment: boolean;
   isSimpleSearchable: boolean;
   isNumberSearchable: boolean;
-  isFilterVerticalAlignment: boolean;
+  filterOperator?: string;
   onSetFilter: Dispatch<SetStateAction<FilterState>>;
   onSetShowSecondFilter?: (value: boolean) => void;
-  filterOperator?: string;
   onSetFilterOperator?: Dispatch<SetStateAction<string>>;
 }) {
   const typeFilterOptions = useMemo(() => {
@@ -520,35 +544,29 @@ function SelectDropdownSearch({
 
 function SelectDropdownItem({
   key,
-  value,
-  label,
-  disabled,
-  Icon,
-  onToggleOption,
-  onToggleAllOptions,
+  option,
   isMultiSelectable,
   isSelected,
   allSelected,
+  onToggleOption,
+  onToggleAllOptions,
 }: {
   key: string;
-  value: string;
-  label: string;
-  disabled: boolean;
-  Icon?: ComponentType<{ className?: string }>;
-  onToggleOption?: (value: string) => void;
-  onToggleAllOptions?: () => void;
+  option: SelectDropdownOption;
   isMultiSelectable: boolean;
   isSelected?: boolean;
   allSelected?: 'Checked' | 'Unchecked' | 'Indeterminate';
+  onToggleOption?: (value: string) => void;
+  onToggleAllOptions?: () => void;
 }) {
   return (
     <CommandItem
       key={key}
-      disabled={disabled}
+      disabled={option.disabled}
       data-checked={!isMultiSelectable && isSelected}
       onSelect={() => {
         if (onToggleOption) {
-          onToggleOption(value);
+          onToggleOption(option.value);
         } else if (onToggleAllOptions) {
           onToggleAllOptions();
         }
@@ -567,8 +585,8 @@ function SelectDropdownItem({
           {allSelected === 'Indeterminate' ? <Minus className='h-4 w-4' /> : <Check className='h-4 w-4' />}
         </div>
       )}
-      {Icon && <Icon className='text-muted-foreground mr-2 h-4 w-4' />}
-      <span className='truncate'>{label}</span>
+      {option.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
+      <span className='truncate'>{option.label}</span>
     </CommandItem>
   );
 }
