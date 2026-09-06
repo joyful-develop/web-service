@@ -1,4 +1,4 @@
-import { useState, useId, useMemo, type ComponentType, type Dispatch, type SetStateAction } from 'react';
+import { useState, useMemo, type ComponentType, type Dispatch, type SetStateAction } from 'react';
 
 import { Check, ChevronDown, X, Minus } from 'lucide-react';
 
@@ -34,7 +34,7 @@ const filterOptions = [
   { type: 'number', label: '보다 크거나 같은', value: 'greater_than_or_equal_to' },
   { type: 'number', label: '보다 작은', value: 'less_than' },
   { type: 'number', label: '보다 작거나 같은', value: 'less_than_or_equal_to' },
-  { type: 'number', label: '범위', value: 'between' },
+  { type: 'number', label: '~ 사이', value: 'between' },
   { type: 'string', label: '다음으로 시작', value: 'begins_with' },
   { type: 'string', label: '다음으로 끝', value: 'ends_with' },
   { type: 'common', label: '공백', value: 'blank' },
@@ -49,13 +49,14 @@ export type SelectDropdownOption = {
 };
 
 interface SelectDropdownProps {
-  label: string;
+  label?: string;
   options: SelectDropdownOption[];
-  onValueChange: (value: SelectDropdownOption[]) => void;
+  onValueChange?: (value: SelectDropdownOption[]) => void;
   defaultValue?: string[];
   placeholder?: string;
   disabled?: boolean;
   isMultiSelectable?: boolean;
+  showBadge?: boolean;
   maxDisplayCount?: number;
   isFilterVerticalAlignment?: boolean;
   isSearchable?: boolean;
@@ -77,6 +78,7 @@ export function SelectDropdown({
   placeholder = 'Select options',
   disabled = false,
   isMultiSelectable = true,
+  showBadge = true,
   maxDisplayCount = 1,
   isFilterVerticalAlignment = false,
   isSearchable = true,
@@ -87,11 +89,10 @@ export function SelectDropdown({
 }: SelectDropdownProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>(() => {
     return defaultValue.filter((value) => {
-      return options.some((item) => item.value === value);
+      return options.some((option) => option.value === value);
     });
   });
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const comboLabelId = useId();
   const [filter1, setFilter1] = useState(
     !isSimpleSearchable && isNumberSearchable ? initialNumberFilterState : initialFilterState
   );
@@ -108,51 +109,48 @@ export function SelectDropdown({
   });
 
   const filteredData = useMemo(() => {
-    return options.filter((item) => {
-      const runFilter = (val: string, search: string, search2: string, type: string) => {
+    return options.filter((option) => {
+      const runFilter = (label: string, search: string, search2: string, type: string) => {
         if (type !== 'blank' && type !== 'not_blank' && !search && !search2) return true;
-        const itemValue = val.toLowerCase();
-        const searchValue = search.toLowerCase();
-        const itemNum = parseFloat(val);
+        const labelStr = label.toLowerCase();
+        const searchStr = search.toLowerCase();
+        const labelNum = parseFloat(label);
         const searchNum = parseFloat(search);
         const search2Num = parseFloat(search2);
 
         switch (type) {
           case 'contains':
-            return itemValue.includes(searchValue);
+            return labelStr.includes(searchStr);
           case 'not_contains':
-            return !itemValue.includes(searchValue);
+            return !labelStr.includes(searchStr);
           case 'equals':
-            return itemValue === searchValue;
+            return labelStr === searchStr;
           case 'not_equals':
-            return itemValue !== searchValue;
+            return labelStr !== searchStr;
           case 'greater_than':
-            return itemNum > searchNum;
+            return labelNum > searchNum;
           case 'greater_than_or_equal_to':
-            return itemNum >= searchNum;
+            return labelNum >= searchNum;
           case 'less_than':
-            return itemNum < searchNum;
+            return labelNum < searchNum;
           case 'less_than_or_equal_to':
-            return itemNum <= searchNum;
-          case 'between': {
-            const fromResult = search.trim() === '' || itemNum >= searchNum;
-            const toResult = search2.trim() === '' || itemNum <= search2Num;
-            return fromResult && toResult;
-          }
+            return labelNum <= searchNum;
+          case 'between':
+            return (search.trim() === '' || labelNum >= searchNum) && (search2.trim() === '' || labelNum <= search2Num);
           case 'begins_with':
-            return itemValue.startsWith(searchValue);
+            return labelStr.startsWith(searchStr);
           case 'ends_with':
-            return itemValue.endsWith(searchValue);
+            return labelStr.endsWith(searchStr);
           case 'blank':
-            return itemValue.trim() === '';
+            return labelStr.trim() === '';
           case 'not_blank':
-            return itemValue.trim() !== '';
+            return labelStr.trim() !== '';
           default:
             return true;
         }
       };
 
-      const result1 = runFilter(item.value, filter1.search, filter1.search2, filter1.type);
+      const result1 = runFilter(option.label, filter1.search, filter1.search2, filter1.type);
       if (
         filter2.type !== 'blank' &&
         filter2.type !== 'not_blank' &&
@@ -161,7 +159,7 @@ export function SelectDropdown({
       )
         return result1;
 
-      const result2 = runFilter(item.value, filter2.search, filter2.search2, filter2.type);
+      const result2 = runFilter(option.label, filter2.search, filter2.search2, filter2.type);
       return filterOperator === 'AND' ? result1 && result2 : result1 || result2;
     });
   }, [
@@ -184,27 +182,37 @@ export function SelectDropdown({
         ? []
         : [value];
     setSelectedValues(newSelectedValues);
-    onValueChange(options.filter((opt) => newSelectedValues.includes(opt.value)));
+    if (onValueChange) {
+      onValueChange(options.filter((option) => newSelectedValues.includes(option.value)));
+    }
 
     const isAllSelected = options.length > 0 && newSelectedValues.length === options.length;
     const isSomeSelected = newSelectedValues.length > 0 && newSelectedValues.length < options.length;
     setAllSelected(isAllSelected ? 'Checked' : isSomeSelected ? 'Indeterminate' : 'Unchecked');
+
+    if (!isMultiSelectable) {
+      handleTogglePopover();
+    }
   };
 
   const toggleAllOptions = (isAllClear?: boolean | undefined) => {
-    const enableOptions = options.filter((opt) => !opt.disabled);
+    const enabledOptions = options.filter((option) => !option.disabled);
     const isAllSelected =
-      (enableOptions.length > 0 && selectedValues.length === enableOptions.length) ||
+      (enabledOptions.length > 0 && selectedValues.length === enabledOptions.length) ||
       selectedValues.length === filteredData.length;
-    const isNoFiltering = enableOptions.length > 0 && filteredData.length === enableOptions.length;
+    const isNoFiltering = enabledOptions.length > 0 && filteredData.length === enabledOptions.length;
 
     if (isAllClear || isAllSelected) {
       setSelectedValues([]);
-      onValueChange([]);
+      if (onValueChange) {
+        onValueChange([]);
+      }
       setAllSelected('Unchecked');
     } else {
-      setSelectedValues(enableOptions.map((opt) => opt.value));
-      onValueChange(enableOptions);
+      setSelectedValues(enabledOptions.map((option) => option.value));
+      if (onValueChange) {
+        onValueChange(enabledOptions);
+      }
       setAllSelected(isNoFiltering ? 'Checked' : 'Indeterminate');
     }
   };
@@ -213,37 +221,48 @@ export function SelectDropdown({
     setIsPopoverOpen((prev) => !prev);
   };
 
+  const selectedLabel = () => {
+    const selectedOptions = options.filter((option) => {
+      return selectedValues.includes(option.value);
+    });
+    return selectedOptions.map((option) => option.label).join(', ');
+  };
+
   return (
     <div className='flex items-center gap-2 text-sm'>
-      <span id={comboLabelId} className='text-foreground truncate'>
-        {label}
-      </span>
+      <span className='text-foreground truncate'>{label}</span>
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
           <button
             disabled={disabled}
             onClick={handleTogglePopover}
             className={cn(
-              'group/button border-border enabled:hover:border-primary/30 enabled:focus:border-primary/30 disabled:bg-muted/50 disabled:text-muted-foreground min-h-6 min-w-28 rounded-sm border',
+              'group/button bg-secondary data-[state=open]:ring-primary border-border enabled:hover:ring-primary enabled:focus:ring-primary disabled:bg-muted/50 disabled:text-muted-foreground min-h-6 min-w-28 rounded-sm border enabled:hover:ring enabled:focus:ring data-[state=open]:ring',
               widthClass
             )}>
             {selectedValues.length > 0 ? (
               <div className='flex w-full items-center justify-between overflow-hidden'>
                 <div className='flex min-w-0 flex-1 items-center overflow-hidden px-1'>
-                  <div className='flex w-fit items-center justify-between overflow-hidden'>
-                    {selectedValues.length !== options.length ? (
-                      selectedValues.slice(0, maxDisplayCount).map((value) => {
-                        const option = options.find((o) => o.value === value);
-                        return (
-                          <SelectDropdownBadge key={option?.value} option={option} onToggleOption={toggleOption} />
-                        );
-                      })
-                    ) : (
-                      <SelectDropdownBadge onToggleAllOptions={toggleAllOptions} />
-                    )}
-                  </div>
-                  {selectedValues.length > maxDisplayCount && (
-                    <SelectDropdownBadge selectedCount={selectedValues.length - maxDisplayCount} />
+                  {showBadge ? (
+                    <>
+                      <div className='flex w-fit items-center justify-between overflow-hidden'>
+                        {selectedValues.length !== options.length ? (
+                          selectedValues.slice(0, maxDisplayCount).map((value) => {
+                            const option = options.find((option) => option.value === value);
+                            return (
+                              <SelectDropdownBadge key={option?.value} option={option} onToggleOption={toggleOption} />
+                            );
+                          })
+                        ) : (
+                          <SelectDropdownBadge onToggleAllOptions={toggleAllOptions} />
+                        )}
+                      </div>
+                      {selectedValues.length > maxDisplayCount && (
+                        <SelectDropdownBadge selectedCount={selectedValues.length - maxDisplayCount} />
+                      )}
+                    </>
+                  ) : (
+                    <span className='flex-1 truncate px-2 text-start'>{selectedLabel()}</span>
                   )}
                 </div>
                 <SelectDropdownButton isPopoverOpen={isPopoverOpen} onToggleAllOptions={toggleAllOptions} />
@@ -367,7 +386,7 @@ function SelectDropdownButton({
 }: {
   isPopoverOpen: boolean;
   placeholder?: string;
-  onToggleAllOptions?: (isAllClear?: boolean | undefined) => void;
+  onToggleAllOptions?: (isAllClear: boolean) => void;
 }) {
   return (
     <div className='flex min-w-0 shrink-0 items-center justify-between'>
@@ -375,18 +394,16 @@ function SelectDropdownButton({
         <>
           <div className='bg-border h-4 w-px' />
           <div
-            className='text-foreground group-disabled/button:text-muted-foreground group-enabled/button:hover:bg-accent group-enabled/button:hover:text-accent-foreground m-1 px-1 group-enabled/button:cursor-pointer'
+            className='text-foreground group-disabled/button:text-muted-foreground group-enabled/button:hover:bg-accent group-enabled/button:hover:text-accent-foreground p-1 group-enabled/button:cursor-pointer'
             onClick={(event) => {
               event.stopPropagation();
-              if (onToggleAllOptions) {
-                onToggleAllOptions?.(true);
-              }
+              onToggleAllOptions(true);
             }}>
             <X className='h-4 w-4' />
           </div>
         </>
       )}
-      {placeholder && <span className={cn('text-muted-foreground mx-3 flex-1 truncate')}>{placeholder}</span>}
+      {!onToggleAllOptions && <span className='text-muted-foreground mx-3 flex-1 truncate'>{placeholder}</span>}
       <div className='bg-border h-4 w-px' />
       <div className='text-foreground group-disabled/button:text-muted-foreground group-enabled/button:hover:bg-accent group-enabled/button:hover:text-accent-foreground m-1 px-1 group-enabled/button:cursor-pointer'>
         <ChevronDown
@@ -406,14 +423,14 @@ function SelectDropdownBadge({
   option?: SelectDropdownOption;
   selectedCount?: number;
   onToggleOption?: (value: string) => void;
-  onToggleAllOptions?: (isAllClear?: boolean | undefined) => void;
+  onToggleAllOptions?: (isAllClear: boolean) => void;
 }) {
   return (
     <>
       <Badge
         variant='custom'
         className={cn(
-          'bg-secondary text-secondary-foreground group-disabled/button:bg-sub-secondary group-disabled/button:text-muted-foreground mx-1 rounded-sm',
+          'bg-background text-foreground group-disabled/button:bg-sub-muted group-disabled/button:text-muted-foreground mx-1 rounded-sm',
           selectedCount ? 'shrink-0' : 'flex min-w-0 flex-1 items-center justify-between'
         )}>
         {option && option?.icon && <option.icon className='mr-1 h-4 w-4' />}
@@ -433,7 +450,7 @@ function SelectDropdownBadge({
                   onToggleAllOptions(true);
                 }
               }}>
-              <X className='h3 w-3' />
+              <X className='h-3 w-3' />
             </div>
           </>
         )}
@@ -462,8 +479,8 @@ function SelectDropdownSearch({
   onSetFilterOperator?: Dispatch<SetStateAction<string>>;
 }) {
   const typeFilterOptions = useMemo(() => {
-    return filterOptions.filter((item) => {
-      return isNumberSearchable ? item.type !== 'string' : item.type !== 'number';
+    return filterOptions.filter((option) => {
+      return isNumberSearchable ? option.type !== 'string' : option.type !== 'number';
     });
   }, [isNumberSearchable]);
 
@@ -472,16 +489,16 @@ function SelectDropdownSearch({
       {onSetFilterOperator && (
         <RadioGroup
           defaultValue={filterOperator}
-          className='mb-1.5 flex flex-row items-center justify-start'
+          className='flex flex-row items-center justify-start'
           onValueChange={(value) => onSetFilterOperator(value)}>
           <div className='flex items-center gap-1'>
-            <RadioGroupItem className='size-3' value='AND' id='r1' />
+            <RadioGroupItem className='border-sub-border size-3.5' value='AND' id='r1' />
             <Label className='text-xs' htmlFor='r1'>
               AND
             </Label>
           </div>
           <div className='ml-2 flex items-center gap-1'>
-            <RadioGroupItem className='size-3' value='OR' id='r2' />
+            <RadioGroupItem className='border-sub-border size-3.5' value='OR' id='r2' />
             <Label className='text-xs' htmlFor='r2'>
               OR
             </Label>
@@ -498,9 +515,7 @@ function SelectDropdownSearch({
                 onSetShowSecondFilter(true);
               }
             }}>
-            <SelectTrigger
-              className={cn('w-full', !isFilterVerticalAlignment && 'w-fit shrink-0')}
-              id='checkout-exp-month-ts6'>
+            <SelectTrigger className={cn('border-sub-borderw-full', !isFilterVerticalAlignment && 'w-fit shrink-0')}>
               <SelectValue placeholder='필터 타입' />
             </SelectTrigger>
             <SelectContent position='popper' align='start'>
@@ -516,7 +531,8 @@ function SelectDropdownSearch({
         )}
         {filter && filter.type !== 'blank' && filter.type !== 'not_blank' && (
           <input
-            className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
+            lang='en'
+            className='border-sub-border w-full flex-1 rounded-sm border px-2 py-1 focus:outline-none'
             placeholder={isSimpleSearchable ? 'Search...' : filter && filter.type === 'between' ? 'From' : 'Filter...'}
             value={filter.search}
             onChange={(e) => {
@@ -529,7 +545,8 @@ function SelectDropdownSearch({
         )}
         {!isSimpleSearchable && filter && filter.type === 'between' && (
           <input
-            className='border-border hover:border-sub-border focus:border-sub-border w-full flex-1 rounded-sm border px-2 py-1 text-sm font-light focus:outline-none'
+            lang='en'
+            className='border-sub-border w-full flex-1 rounded-sm border px-2 py-1 focus:outline-none'
             placeholder='To'
             value={filter.search2}
             onChange={(e) => {
@@ -575,14 +592,18 @@ function SelectDropdownItem({
       {isMultiSelectable && (
         <div
           className={cn(
-            'border-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
+            'border-sub-border mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
             isSelected || allSelected === 'Checked'
               ? 'bg-primary text-primary-foreground'
               : allSelected === 'Indeterminate'
                 ? 'bg-secondary text-secondary-foreground'
                 : 'border-foreground opacity-50 [&_svg]:invisible'
           )}>
-          {allSelected === 'Indeterminate' ? <Minus className='h-4 w-4' /> : <Check className='h-4 w-4' />}
+          {allSelected === 'Indeterminate' ? (
+            <Minus strokeWidth={4} className='size-3' />
+          ) : (
+            <Check strokeWidth={4} className='size-3' />
+          )}
         </div>
       )}
       {option.icon && <option.icon className='text-muted-foreground mr-2 h-4 w-4' />}
